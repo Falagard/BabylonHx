@@ -25,7 +25,7 @@ import haxe.Timer;
 #if (openfl || lime)
 //typedef Assets = openfl.Assets;
 //#elseif lime
-typedef Assets = lime.Assets;
+typedef Assets = lime.utils.Assets;
 #end
 
 
@@ -121,7 +121,7 @@ typedef Assets = lime.Assets;
 			return null;
 		}
 		
-		if(!Std.is(obj, Array) && Reflect.getProperty(obj, "keys") != null) {
+		if(!Std.isOfType(obj, Array) && Reflect.getProperty(obj, "keys") != null) {
 			var ret:Array<Dynamic> = [];
 			var map:Map<Dynamic, Dynamic> = cast obj;
 			for (key in map.keys()) {
@@ -130,7 +130,7 @@ typedef Assets = lime.Assets;
 			return ret;
 		}
 		
-		return Std.is(obj, Array) ? obj : [obj];
+		return Std.isOfType(obj, Array) ? obj : [obj];
 	}
 	
 	// Misc.
@@ -888,11 +888,11 @@ typedef Assets = lime.Assets;
 		if (source == null)
 			return null;
 			
-		if (Std.is(source, Mesh)) {
+		if (Std.isOfType(source, Mesh)) {
 			return null;
 		}
 		
-		if (Std.is(source, SubMesh)) {
+		if (Std.isOfType(source, SubMesh)) {
 			return cast(source, SubMesh).clone(cast(destinationObject, AbstractMesh));
 		}
 		else if (Reflect.hasField(source, "clone")) {
@@ -902,7 +902,7 @@ typedef Assets = lime.Assets;
 	}
 
 	public static function IsEmpty(obj:Dynamic):Bool {
-		if(Std.is(obj, Array)) {
+		if(Std.isOfType(obj, Array)) {
 			for (i in cast(obj, Array<Dynamic>)) {
 				return false;
 			}
@@ -955,7 +955,7 @@ typedef Assets = lime.Assets;
 			if (val != null && val.getHashCode != null) {
 				val = val.getHashCode();
 			}
-			if (Std.is(val, String)) {
+			if (Std.isOfType(val, String)) {
 				return Tools.hashCodeFromStream(Tools.arrayOrStringFeeder(val));
 			}
 			

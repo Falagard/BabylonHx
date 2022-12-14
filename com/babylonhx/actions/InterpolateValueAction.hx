@@ -54,19 +54,19 @@ import com.babylonhx.tools.Observable;
 		
 		var dataType:Int = -1;
 		
-		if (Std.is(this.value, Int) || Std.is(this.value, Float)) {
+		if (Std.isOfType(this.value, Int) || Std.isOfType(this.value, Float)) {
 			dataType = Animation.ANIMATIONTYPE_FLOAT;
 		} 
-		else if (Std.is(this.value, Color3)) {
+		else if (Std.isOfType(this.value, Color3)) {
 			dataType = Animation.ANIMATIONTYPE_COLOR3;
 		} 
-		else if (Std.is(this.value, Vector3)) {
+		else if (Std.isOfType(this.value, Vector3)) {
 			dataType = Animation.ANIMATIONTYPE_VECTOR3;
 		} 
-		else if (Std.is(this.value, Matrix)) {
+		else if (Std.isOfType(this.value, Matrix)) {
 			dataType = Animation.ANIMATIONTYPE_MATRIX;
 		} 
-		else if (Std.is(this.value, Quaternion)) {
+		else if (Std.isOfType(this.value, Quaternion)) {
 			dataType = Animation.ANIMATIONTYPE_QUATERNION;
 		} 
 		else {

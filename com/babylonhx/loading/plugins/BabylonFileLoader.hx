@@ -260,7 +260,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
                 if (meshesNames == "" || meshesNames == null) {
                     meshesNames = null;
                 } 
-				else if (!Std.is(meshesNames, Array)) {
+				else if (!Std.isOfType(meshesNames, Array)) {
                     meshesNames = [meshesNames];
                 }
 				
@@ -287,7 +287,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
                                     //find the correct geometry and add it to the scene
                                     var found:Bool = false;
                                     for(geometryType in ["boxes", "spheres", "cylinders", "toruses", "grounds", "planes", "torusKnots", "vertexData"]) {
-                                        if (found || Reflect.getProperty(parsedData.geometries, geometryType) == null || !(Std.is(Reflect.getProperty(parsedData.geometries, geometryType), Array))) {
+                                        if (found || Reflect.getProperty(parsedData.geometries, geometryType) == null || !(Std.isOfType(Reflect.getProperty(parsedData.geometries, geometryType), Array))) {
                                             return false;
                                         } 
 										else {
@@ -823,7 +823,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
     } 
  
     public static function isDescendantOf(mesh:Dynamic, _names:Dynamic, hierarchyIds:Array<Int>):Bool {
-        var names = Std.is(_names, Array) ? _names : [_names];
+        var names = Std.isOfType(_names, Array) ? _names : [_names];
         for (name in names) {
             if (mesh.name == name) {
                 hierarchyIds.push(mesh.id);

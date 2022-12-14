@@ -1238,7 +1238,7 @@ typedef SMD = StandardMaterialDefines
 						if (!this._refractionTexture.isCube) {
 							this._uniformBuffer.updateMatrix("refractionMatrix", this._refractionTexture.getReflectionTextureMatrix());
 							
-							if (Std.is(this.refractionTexture, RefractionTexture)) {
+							if (Std.isOfType(this.refractionTexture, RefractionTexture)) {
 								depth = untyped this.refractionTexture.depth;
 							}
 						}

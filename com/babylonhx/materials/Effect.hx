@@ -344,7 +344,7 @@ using StringTools;
 	public function _loadVertexShader(vertex:Dynamic, callbackFn:Dynamic->Void) {
 		#if (js || purejs)
 		// DOM element ?
-		if (Std.is(vertex, js.html.Element)) {
+		if (Std.isOfType(vertex, js.html.Element)) {
 			var vertexCode = Tools.GetDOMTextContent(vertex);
 			callbackFn(vertexCode);
 			return;
@@ -380,7 +380,7 @@ using StringTools;
 	public function _loadFragmentShader(fragment:Dynamic, callbackFn:Dynamic->Void) {
 		#if (js || purejs)
 		// DOM element ?
-		if (Std.is(fragment, js.html.Element)) {
+		if (Std.isOfType(fragment, js.html.Element)) {
 			var fragmentCode = Tools.GetDOMTextContent(fragment);
 			callbackFn(fragmentCode);
 			return;

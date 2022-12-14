@@ -553,7 +553,7 @@ class FurMaterial extends PushMaterial {
 		var meshes:Array<Mesh> = [sourceMesh];
 		var mat:FurMaterial = cast sourceMesh.material;
 		
-		if (!Std.is(mat, FurMaterial)) {
+		if (!Std.isOfType(mat, FurMaterial)) {
 			throw "The material of the source mesh must be a Fur Material";
 		}
 		

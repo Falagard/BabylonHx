@@ -266,7 +266,7 @@ class SerializationHelper {
 			
             do {
 				#if js
-                parent = untyped __js__('Object.getPrototypeOf(currentTarget)');
+                parent = js.Syntax.code('Object.getPrototypeOf(currentTarget)');
 				#end
                 if (parent.getClassName == null) {
                     done = true;

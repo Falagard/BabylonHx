@@ -35,7 +35,7 @@ import js.html.AudioElement;
             this.canUseWebAudio = true;
         }
 
-        if (untyped __js__("/iPad|iPhone|iPod/.test(navigator.platform)")) {
+        if (js.Syntax.code("/iPad|iPhone|iPod/.test(navigator.platform)")) {
             this._unlockiOSaudio();
         } else {
             this.unlocked = true;

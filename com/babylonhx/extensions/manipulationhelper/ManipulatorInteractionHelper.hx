@@ -366,7 +366,7 @@ class ManipulatorInteractionHelper {
 			return;
 		}
 		
-		if (Std.is(this._manipulatedNode, AbstractMesh)) {
+		if (Std.isOfType(this._manipulatedNode, AbstractMesh)) {
 			var mesh:AbstractMesh = cast this._manipulatedNode;
 			
 			if (mesh.parent != null) {
@@ -388,7 +388,7 @@ class ManipulatorInteractionHelper {
 			return null;
 		}
 		
-		if (Std.is(this._manipulatedNode, AbstractMesh)) {
+		if (Std.isOfType(this._manipulatedNode, AbstractMesh)) {
 			return untyped this._manipulatedNode.getWorldMatrix();
 		}
 	}
@@ -452,7 +452,7 @@ class ManipulatorInteractionHelper {
 			return;
 		}
 		
-		if (Std.is(this._manipulatedNode, AbstractMesh)) {
+		if (Std.isOfType(this._manipulatedNode, AbstractMesh)) {
 			var mesh:AbstractMesh = cast this._manipulatedNode;
 			var worldMtx = mesh.getWorldMatrix();
 			var l = Vector3.Distance(this._scene.activeCamera.position, worldMtx.getTranslation());

@@ -736,7 +736,7 @@ import com.babylonhx.events.PointerEvent;
 	}
 	
 	override public function setTarget(target:Dynamic/*AbstractMesh | Vector3*/, toBoundingCenter:Bool = false, allowSamePosition:Bool = false) {
-		if (Std.is(target, AbstractMesh)) {
+		if (Std.isOfType(target, AbstractMesh)) {
 			if (toBoundingCenter){
 				this._targetBoundingCenter = cast(target, AbstractMesh).getBoundingInfo().boundingBox.centerWorld.clone();
 			} 
@@ -924,7 +924,7 @@ import com.babylonhx.events.PointerEvent;
 	override public function serialize():Dynamic {
 		var serializationObject = super.serialize();
 		
-		if (Std.is(this.target, Vector3)) {
+		if (Std.isOfType(this.target, Vector3)) {
 			serializationObject.target = this.target.asArray();
 		}
 		

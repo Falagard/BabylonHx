@@ -113,7 +113,7 @@ package com.babylonhx.math;
 		return new Plane(array[0], array[1], array[2], array[3]);
 	}
 
-	inline inline public static function FromPoints(point1:Vector3, point2:Vector3, point3:Vector3):Plane {
+	inline public static function FromPoints(point1:Vector3, point2:Vector3, point3:Vector3):Plane {
 		var result = new Plane(0, 0, 0, 0);
 		result.copyFromPoints(point1, point2, point3);
 		return result;

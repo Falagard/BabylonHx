@@ -48,7 +48,7 @@ class ShaderMaterialHelper {
 	
 	static public function SetUniforms(meshes:Array<Mesh>, cameraPos:Vector3, cameraTarget:Vector3, mouse:Vector2, screen:Vector2, time:Float) {
 		for (ms in meshes) { 			
-			if (ms.material != null && Std.is(ms.material, ShaderMat) && (untyped ms.material.shaderSetting != null)) { 
+			if (ms.material != null && Std.isOfType(ms.material, ShaderMat) && (untyped ms.material.shaderSetting != null)) { 
 				if (untyped ms.material.shaderSetting.Camera != null) {               
 					untyped ms.material.setVector3(ShaderMaterialHelperStatics.Camera, cameraPos); 
 				}

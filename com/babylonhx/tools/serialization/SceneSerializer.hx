@@ -144,7 +144,7 @@ import com.babylonhx.tools.Tags;
 		for (index in 0...scene.meshes.length) {
 			var abstractMesh = scene.meshes[index];
 			
-			if (Std.is(abstractMesh, Mesh)) {
+			if (Std.isOfType(abstractMesh, Mesh)) {
 				var mesh:Mesh = cast abstractMesh;
 				if (mesh.delayLoadState == Engine.DELAYLOADSTATE_LOADED || mesh.delayLoadState == Engine.DELAYLOADSTATE_NONE) {
 					serializationObject.meshes.push(serializeMesh(mesh, serializationObject));
@@ -185,13 +185,13 @@ import com.babylonhx.tools.Tags;
 	public static function SerializeMesh(toSerialize:Dynamic, withParents:Bool = false, withChildren:Bool = false):Dynamic {
 		var serializationObject:Dynamic = { };
 		
-		var _toSerialize:Array<Mesh> = cast (Std.is(toSerialize, Array) ? toSerialize : [toSerialize]);
+		var _toSerialize:Array<Mesh> = cast (Std.isOfType(toSerialize, Array) ? toSerialize : [toSerialize]);
 		
 		if (withParents || withChildren) {
 			//deliberate for loop! not for each, appended should be processed as well.
 			if (withChildren) {
 				for (node in toSerialize[i].getDescendants()) {
-					if (Std.is(node, Mesh) && (toSerialize.indexOf(node) < 0)) {
+					if (Std.isOfType(node, Mesh) && (toSerialize.indexOf(node) < 0)) {
 						toSerialize.push(node);
 					}
 				}
@@ -214,28 +214,28 @@ import com.babylonhx.tools.Tags;
             return;
         }
 		
-        if (Std.is(geometry, Box)) {
+        if (Std.isOfType(geometry, Box)) {
             serializationGeometries.boxes.push(serializeBox(cast geometry));
         }
-        else if (Std.is(geometry, Sphere)) {
+        else if (Std.isOfType(geometry, Sphere)) {
             serializationGeometries.spheres.push(serializeSphere(cast geometry));
         }
-        else if (Std.is(geometry, Cylinder)) {
+        else if (Std.isOfType(geometry, Cylinder)) {
             serializationGeometries.cylinders.push(serializeCylinder(cast geometry));
         }
-        else if (Std.is(geometry, Torus)) {
+        else if (Std.isOfType(geometry, Torus)) {
             serializationGeometries.toruses.push(serializeTorus(cast geometry));
         }
-        else if (Std.is(geometry, Ground)) {
+        else if (Std.isOfType(geometry, Ground)) {
 			serializationGeometries.grounds.push(serializeGround(cast geometry));
         }
-        else if (Std.is(geometry, Plane)) {
+        else if (Std.isOfType(geometry, Plane)) {
 			serializationGeometries.planes.push(serializePlane(cast geometry));
         }
-        else if (Std.is(geometry, TorusKnot)) {
+        else if (Std.isOfType(geometry, TorusKnot)) {
             serializationGeometries.torusKnots.push(serializeTorusKnot(cast geometry));
         }
-        else if (Std.is(geometry, _Primitive)) {
+        else if (Std.isOfType(geometry, _Primitive)) {
 			trace("Unknown primitive type");
         }
         else {
@@ -370,7 +370,7 @@ import com.babylonhx.tools.Tags;
         if (mesh.delayLoadState == Engine.DELAYLOADSTATE_LOADED || mesh.delayLoadState == Engine.DELAYLOADSTATE_NONE) {
             //serialize material
             if (mesh.material != null) {
-                if (Std.is(mesh.material, StandardMaterial)) {
+                if (Std.isOfType(mesh.material, StandardMaterial)) {
                     serializationObject.materials = serializationObject.materials != null ? serializationObject.materials : [];
 					
 					for (mat in serializationObject.materials) {
@@ -379,7 +379,7 @@ import com.babylonhx.tools.Tags;
 						}
 					}
                 } 
-				else if (Std.is(mesh.material, MultiMaterial)) {
+				else if (Std.isOfType(mesh.material, MultiMaterial)) {
                     serializationObject.multiMaterials = serializationObject.multiMaterials != null ? serializationObject.multiMaterials : [];
 					
 					for (mat in serializationObject.multiMaterials) {

@@ -31,7 +31,7 @@ import lime.utils.UInt32Array;
 		this.scene = scene;
 		
 		var points:Array<Vector2> = [];
-		if (Std.is(contours, Path2)) {
+		if (Std.isOfType(contours, Path2)) {
 			points = cast(contours, Path2).getPoints();
 		} 
 		else {

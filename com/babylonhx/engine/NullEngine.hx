@@ -282,7 +282,7 @@ class NullEngine extends Engine {
 	public function createRenderTargetTexture(size:Dynamic, options:Dynamic):InternalTexture {
 		var fullOptions = new RenderTargetCreationOptions();
 		
-		if (options != null && !Std.is(options, Bool)) {
+		if (options != null && !Std.isOfType(options, Bool)) {
 			fullOptions.generateMipMaps = options.generateMipMaps;
 			fullOptions.generateDepthBuffer = options.generateDepthBuffer == null ? true : options.generateDepthBuffer;
 			fullOptions.generateStencilBuffer = fullOptions.generateDepthBuffer && options.generateStencilBuffer;

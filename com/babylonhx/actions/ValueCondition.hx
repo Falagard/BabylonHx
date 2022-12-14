@@ -18,10 +18,10 @@ package com.babylonhx.actions;
 	
 	public var propertyPath:String;
 	public var value:Dynamic;
-	public var operator:Int;
+	public var op:Int;
 	
 
-	public function new(actionManager:ActionManager, target:Dynamic, propertyPath:String, value:Dynamic, operator:Int = ValueCondition.IsEqual) {
+	public function new(actionManager:ActionManager, target:Dynamic, propertyPath:String, value:Dynamic, op:Int = ValueCondition.IsEqual) {
 		super(actionManager);
 		
 		this._target = this._getEffectiveTarget(target, this.propertyPath);
@@ -29,12 +29,12 @@ package com.babylonhx.actions;
 		
 		this.propertyPath = propertyPath;
 		this.value = value;
-		this.operator = operator;
+		this.op = op;
 	}
 
 	// Methods
 	override public function isValid():Bool {
-		switch (this.operator) {
+		switch (this.op) {
 			case ValueCondition.IsGreater:
 				return Reflect.getProperty(this._target, this._property) > this.value;
 				
@@ -51,7 +51,7 @@ package com.babylonhx.actions;
 					check = this.value == Reflect.getProperty(this._target, this._property);
 				}
 				
-				return this.operator == ValueCondition.IsEqual ? check : !check;
+				return this.op == ValueCondition.IsEqual ? check : !check;
 		}
 		
 		return false;

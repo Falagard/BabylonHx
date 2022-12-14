@@ -98,7 +98,7 @@ import js.html.AudioElement;
             }
             this._scene.mainSoundTrack.AddSound(this);
             if (Ts2Hx.isTrue(urlOrArrayBuffer)) {
-                if (Std.is(urlOrArrayBuffer, String)) {
+                if (Std.isOfType(urlOrArrayBuffer, String)) {
                     if (!Ts2Hx.isTrue(this._streaming)) {
                         Tools.LoadFile(urlOrArrayBuffer, function(data) {
                             __this._soundLoaded(data);
@@ -121,7 +121,7 @@ import js.html.AudioElement;
                         js.Browser.window.document.body.appendChild(this._htmlAudioElement);
                     }
                 } else {
-                    if (Std.is(urlOrArrayBuffer, ArrayBuffer)) {
+                    if (Std.isOfType(urlOrArrayBuffer, ArrayBuffer)) {
                         if ((cast(urlOrArrayBuffer, ArrayBuffer)).byteLength > 0) {
                             this._soundLoaded(urlOrArrayBuffer);
                         }

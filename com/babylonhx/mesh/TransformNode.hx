@@ -321,7 +321,7 @@ class TransformNode extends Node {
 		var absolutePositionX:Float = 0;
 		var absolutePositionY:Float = 0;
 		var absolutePositionZ:Float = 0;
-		if (Std.is(absolutePosition, Array)) {
+		if (Std.isOfType(absolutePosition, Array)) {
 			if (untyped absolutePosition.length < 3) {
 				return this;
 			}
@@ -329,7 +329,7 @@ class TransformNode extends Node {
 			absolutePositionY = absolutePosition[1];
 			absolutePositionZ = absolutePosition[2];
 		}
-		else if (Std.is(absolutePosition, Vector3)) {
+		else if (Std.isOfType(absolutePosition, Vector3)) {
 			absolutePositionX = absolutePosition.x;
 			absolutePositionY = absolutePosition.y;
 			absolutePositionZ = absolutePosition.z;
@@ -870,7 +870,7 @@ class TransformNode extends Node {
 		if (this.scaling.isNonUniform) {
 			this._updateNonUniformScalingState(true);
 		} 
-		else if (this.parent != null && Std.is(this.parent, TransformNode) && untyped this.parent._nonUniformScaling) {
+		else if (this.parent != null && Std.isOfType(this.parent, TransformNode) && untyped this.parent._nonUniformScaling) {
 			this._updateNonUniformScalingState(untyped this.parent._nonUniformScaling);
 		} 
 		else {

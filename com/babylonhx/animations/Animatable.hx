@@ -164,7 +164,7 @@ package com.babylonhx.animations;
 				
 				var index = runtimeAnimations.length - 1;
 				while (index >= 0) {
-					if (Std.is(animationName, String) && runtimeAnimations[index].animation.name != animationName) {
+					if (Std.isOfType(animationName, String) && runtimeAnimations[index].animation.name != animationName) {
 						continue;
 					}
 					

@@ -137,10 +137,12 @@ class Keycodes {
 
             default: {
 
-                var decoder = new haxe.Utf8();
-                    decoder.addChar(keycode);
+                return String.fromCharCode(keycode);
+                
+                // var decoder = new haxe.Utf8();
+                //     decoder.addChar(keycode);
 
-                return decoder.toString();
+                // return decoder.toString();
 
             } //default
 

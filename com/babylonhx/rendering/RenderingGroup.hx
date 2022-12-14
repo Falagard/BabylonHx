@@ -399,7 +399,7 @@ import com.babylonhx.particles.IParticleSystem;
 			}
 			
 			var emitter:Dynamic = particleSystem.emitter;
-			if (emitter.position == null || activeMeshes == null || (Std.is(emitter, AbstractMesh) && activeMeshes.indexOf(particleSystem.emitter) != -1)) {
+			if (emitter.position == null || activeMeshes == null || (Std.isOfType(emitter, AbstractMesh) && activeMeshes.indexOf(particleSystem.emitter) != -1)) {
 				//this._scene._activeParticles.addCount(particleSystem.render(), false);
 				particleSystem.render();
 			}

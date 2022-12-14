@@ -58,22 +58,22 @@ import com.babylonhx.Node;
 	private static function _PrepareAnimation(name:String, targetProperty:String, framePerSecond:Int, totalFrame:Int, from:Dynamic, to:Dynamic, ?loopMode:Int, ?easingFunction:EasingFunction):Animation {
 		var dataType:Int = -1;
 		
-		if (Std.is(from, Float)) {
+		if (Std.isOfType(from, Float)) {
 			dataType = Animation.ANIMATIONTYPE_FLOAT;
 		} 
-		else if (Std.is(from, Quaternion)) {
+		else if (Std.isOfType(from, Quaternion)) {
 			dataType = Animation.ANIMATIONTYPE_QUATERNION;
 		} 
-		else if (Std.is(from, Vector3)) {
+		else if (Std.isOfType(from, Vector3)) {
 			dataType = Animation.ANIMATIONTYPE_VECTOR3;
 		} 
-		else if (Std.is(from, Vector2)) {
+		else if (Std.isOfType(from, Vector2)) {
 			dataType = Animation.ANIMATIONTYPE_VECTOR2;
 		} 
-		else if (Std.is(from, Color3)) {
+		else if (Std.isOfType(from, Color3)) {
 			dataType = Animation.ANIMATIONTYPE_COLOR3;
 		}
-		else if (Std.is(from, Size)) {
+		else if (Std.isOfType(from, Size)) {
 			dataType = Animation.ANIMATIONTYPE_SIZE;
 		}
 		

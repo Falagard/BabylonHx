@@ -12,7 +12,7 @@ import com.babylonhx.mesh.Mesh;
 	public static var UpdateSelectionTree:Bool = false;
 
 	private function _canBeMerged(abstractMesh:AbstractMesh):Bool {
-		if (!Std.is(abstractMesh, Mesh)) {
+		if (!Std.isOfType(abstractMesh, Mesh)) {
 			return false;
 		}
 		

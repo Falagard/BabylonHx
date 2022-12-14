@@ -10,7 +10,7 @@ class Ts2Hx {
     static private var _nextTimerId:Int = 1;
 
     static public function getValue(obj:Dynamic, key:Dynamic):Dynamic {
-        if (Std.is(obj, Array)) {
+        if (Std.isOfType(obj, Array)) {
             return cast(obj, Array<Dynamic>)[Std.int(key)];
         } else {
             return Reflect.field(obj, cast(key, String));
@@ -18,7 +18,7 @@ class Ts2Hx {
     }
 
     static public function setValue(obj:Dynamic, key:Dynamic, val:Dynamic):Dynamic {
-        if (Std.is(obj, Array)) {
+        if (Std.isOfType(obj, Array)) {
             cast(obj, Array<Dynamic>)[Std.int(key)] = val;
         } else {
             Reflect.setField(obj, cast(key, String), val);
@@ -47,10 +47,10 @@ class Ts2Hx {
     }
 
     static public function isTrue(obj:Dynamic):Bool {
-        return (Reflect.isObject(obj) && (!Std.is(obj, String) || cast(obj, String).length > 0))
-            || (Std.is(obj, Bool) && cast(obj, Bool) == true)
-            || (Std.is(obj, Int) && isTrueInt(cast(obj, Int)))
-            || (Std.is(obj, Float) && isTrueFloat(cast(obj, Float)));
+        return (Reflect.isObject(obj) && (!Std.isOfType(obj, String) || cast(obj, String).length > 0))
+            || (Std.isOfType(obj, Bool) && cast(obj, Bool) == true)
+            || (Std.isOfType(obj, Int) && isTrueInt(cast(obj, Int)))
+            || (Std.isOfType(obj, Float) && isTrueFloat(cast(obj, Float)));
     }
 
     static public function areEqual(obj1:Dynamic, obj2:Dynamic):Bool {
@@ -95,7 +95,7 @@ class Ts2Hx {
 
     static public function JSONstringify(value:Dynamic, replacer:Dynamic = null, space:Dynamic = null):String {
         var finalSpace:String;
-        if (Std.is(space, Int)) {
+        if (Std.isOfType(space, Int)) {
             finalSpace = "";
             var i:Int = 0;
             while (i < space) {
@@ -113,7 +113,7 @@ class Ts2Hx {
     }
 
     static public function forEach(input:Dynamic, callback:Dynamic):Void {
-        if (Std.is(input, Array)) {
+        if (Std.isOfType(input, Array)) {
             var inputAsArray:Array<Dynamic> = cast(input, Array<Dynamic>);
             var len:Int = inputAsArray.length;
             var i:Int = 0;

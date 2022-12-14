@@ -1487,7 +1487,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
 			var particleSystem = this.getScene().particleSystems[index];
 			var emitter = particleSystem.emitter;
 			
-			if (Std.is(emitter, Node) && emitter.position != null && descendants.indexOf(cast emitter) != -1) {
+			if (Std.isOfType(emitter, Node) && emitter.position != null && descendants.indexOf(cast emitter) != -1) {
 				results.push(particleSystem);
 			}
 		}
@@ -2789,7 +2789,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
 	 * MinMax vector3 computed from a mesh array.
      */
 	public static function Center(meshesOrMinMaxVector:Dynamic):Vector3 {
-		var minMaxVector:BabylonMinMax = Std.is(meshesOrMinMaxVector, Array) ? Mesh.MinMax(meshesOrMinMaxVector) : meshesOrMinMaxVector;
+		var minMaxVector:BabylonMinMax = Std.isOfType(meshesOrMinMaxVector, Array) ? Mesh.MinMax(meshesOrMinMaxVector) : meshesOrMinMaxVector;
 		return Vector3.Center(minMaxVector.minimum, minMaxVector.maximum);
 	}
 	

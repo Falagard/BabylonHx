@@ -404,7 +404,7 @@ class EnvironmentHelper {
 			return;
 		}
 		
-		if (Std.is(this._options.environmentTexture, BaseTexture)) {
+		if (Std.isOfType(this._options.environmentTexture, BaseTexture)) {
 			this._scene.environmentTexture = this._options.environmentTexture;
 			return;
 		}
@@ -462,7 +462,7 @@ class EnvironmentHelper {
 		var sceneDiagonal = sceneExtends.max.subtract(sceneExtends.min);
 		
 		if (this._options.sizeAuto) {
-			if (Std.is(this._scene.activeCamera, ArcRotateCamera) && untyped this._scene.activeCamera.upperRadiusLimit != 0) {
+			if (Std.isOfType(this._scene.activeCamera, ArcRotateCamera) && untyped this._scene.activeCamera.upperRadiusLimit != 0) {
 				groundSize = untyped this._scene.activeCamera.upperRadiusLimit * 2;
 				skyboxSize = groundSize;
 			}
@@ -531,7 +531,7 @@ class EnvironmentHelper {
 			return;
 		}
 		
-		if (Std.is(this._options.groundTexture, BaseTexture)) {
+		if (Std.isOfType(this._options.groundTexture, BaseTexture)) {
 			this._groundMaterial.diffuseTexture = this._options.groundTexture;
 			return;
 		}
@@ -638,7 +638,7 @@ class EnvironmentHelper {
 			return;
 		}
 		
-		if (Std.is(this._options.skyboxTexture, BaseTexture)) {
+		if (Std.isOfType(this._options.skyboxTexture, BaseTexture)) {
 			this._skyboxMaterial.reflectionTexture = this._skyboxTexture;
 			return;
 		}

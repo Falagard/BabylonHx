@@ -27,8 +27,8 @@ package com.babylonhx.actions;
 		this._target = this._getEffectiveTarget(this._target, this.propertyPath);
 		this._property = this._getProperty(this.propertyPath);
 		
-		var isInt = Std.is(Reflect.getProperty(this._target, this._property), Int);
-		var isFloat = Std.is(Reflect.getProperty(this._target, this._property), Float);
+		var isInt = Std.isOfType(Reflect.getProperty(this._target, this._property), Int);
+		var isFloat = Std.isOfType(Reflect.getProperty(this._target, this._property), Float);
 		if (!isInt && !isFloat) {
 			trace("Warning:IncrementValueAction can only be used with number values");
 		}

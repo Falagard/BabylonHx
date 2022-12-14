@@ -30,7 +30,7 @@ interface IParticleSystem extends ISmartArrayCompatible {
 	/**
 	 * ID of the rendering group used by the Particle system to chose when to render.
 	 */
-	var renderingGroupId:Int = 0;
+	var renderingGroupId:Int; 
 	/**
 	 * The layer mask we are rendering the particles through.
 	 */

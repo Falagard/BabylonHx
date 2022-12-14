@@ -511,7 +511,7 @@ import openfl.display.OpenGLView;
 		
 		// GL
 		#if (purejs)
-		if (!Std.is(this._renderingCanvas, js.html.CanvasElement)) {
+		if (!Std.isOfType(this._renderingCanvas, js.html.CanvasElement)) {
 			this._renderingCanvas = Browser.document.getElementsByTagName('canvas')[0];
 		}
 		
@@ -534,7 +534,7 @@ import openfl.display.OpenGLView;
 		#end
 		
 		#if !purejs
-		this._webGLVersion = #if !js 1.0 #else gl.version #end ;
+		this._webGLVersion = #if !js 1.0 #else gl.VERSION #end ;
 		#end
 		trace(this._webGLVersion);
 		
@@ -2140,7 +2140,7 @@ import openfl.display.OpenGLView;
 			gl.bufferSubData(GL.ARRAY_BUFFER, 0, data);
 		}
 		
-		if (Std.is(offsetLocations[0], InstancingAttributeInfo)) {
+		if (Std.isOfType(offsetLocations[0], InstancingAttributeInfo)) {
 			var stride = 0;
 			for (i in 0...offsetLocations.length) {
 				var ai:InstancingAttributeInfo = offsetLocations[i];
@@ -2974,7 +2974,7 @@ import openfl.display.OpenGLView;
 				}, samplingMode);				
 			};
 			
-			if (!Std.is(fromData, Array)) {
+			if (!Std.isOfType(fromData, Array)) {
 				Tools.LoadImage(url, onload, onerror, scene.database);
 			}
 			else {
@@ -2982,13 +2982,13 @@ import openfl.display.OpenGLView;
 			}
 			
 			if (!fromData || isBase64)
-				if (Std.is(buffer, Image)) {
+				if (Std.isOfType(buffer, Image)) {
 					onload(buffer);
 				} 
 				else {
 					Tools.LoadImage(url, onload, onerror, scene != null ? scene.database : null);
 				}
-			else if (Std.is(buffer, Array) || Std.is(buffer, String)) {
+			else if (Std.isOfType(buffer, Array) || Std.isOfType(buffer, String)) {
 				Tools.LoadImage(buffer, onload, onerror);
 			}
 			else {
@@ -3797,7 +3797,7 @@ import openfl.display.OpenGLView;
 	public function createRenderTargetTexture(size:Dynamic, options:Dynamic):InternalTexture {
 		var fullOptions:RenderTargetCreationOptions = new RenderTargetCreationOptions();
 		
-		if (options != null && !Std.is(options, Bool)) {
+		if (options != null && !Std.isOfType(options, Bool)) {
 			fullOptions.generateMipMaps = options.generateMipMaps;
 			fullOptions.generateDepthBuffer = options.generateDepthBuffer == null ? true : options.generateDepthBuffer;
 			fullOptions.generateStencilBuffer = fullOptions.generateDepthBuffer && options.generateStencilBuffer;
@@ -4784,7 +4784,7 @@ import openfl.display.OpenGLView;
 		}
 		
 		// Video
-		if (Std.is(texture, VideoTexture)) {
+		if (Std.isOfType(texture, VideoTexture)) {
 			this._activeChannel = channel;
 			cast(texture, VideoTexture).update();
 		} 

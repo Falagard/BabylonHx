@@ -259,7 +259,7 @@ import com.babylonhx.postprocess.PostProcessManager;
 	}
 	
 	private function _processSizeParameter(size:Dynamic) {
-		if (Std.is(size, Int)) {
+		if (Std.isOfType(size, Int)) {
 			this._size.width = size;
 			this._size.height = size;
 		}
@@ -377,7 +377,7 @@ import com.babylonhx.postprocess.PostProcessManager;
 	}
 	
 	public function getRenderWidth():Int {
-		if (Std.is(this._size, Int)) {
+		if (Std.isOfType(this._size, Int)) {
 			return this._size;
 		}
 		else {
@@ -386,7 +386,7 @@ import com.babylonhx.postprocess.PostProcessManager;
 	}
 
 	public function getRenderHeight():Int {
-		if (Std.is(this._size, Int)) {
+		if (Std.isOfType(this._size, Int)) {
 			return this._size;
 		}
 		else {

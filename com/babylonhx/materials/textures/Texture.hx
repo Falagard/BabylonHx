@@ -392,7 +392,7 @@ import com.babylonhx.tools.serialization.SerializationHelper;
 	override public function serialize():Dynamic {		
 		var serializationObject = super.serialize();
 		
-		if (Std.is(this._buffer, String) && this._buffer.substr(0, 5) == "data:") {
+		if (Std.isOfType(this._buffer, String) && this._buffer.substr(0, 5) == "data:") {
 			serializationObject.base64String = this._buffer;
 			serializationObject.name = StringTools.replace(serializationObject.name, "data:", "");
 		}

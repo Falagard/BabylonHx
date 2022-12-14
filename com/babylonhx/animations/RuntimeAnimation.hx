@@ -271,7 +271,7 @@ class RuntimeAnimation {
 				}
 			}
 			
-			if (Std.is(this._originalBlendValue, Float) || Std.is(this._originalBlendValue, Int)) {		// Direct value
+			if (Std.isOfType(this._originalBlendValue, Float) || Std.isOfType(this._originalBlendValue, Int)) {		// Direct value
 				Reflect.setProperty(destination, path, this._originalBlendValue * (1.0 - this._blendingFactor) + this._blendingFactor * currentValue);
 			}
 			else if (this._originalBlendValue.m != null) { // Matrix

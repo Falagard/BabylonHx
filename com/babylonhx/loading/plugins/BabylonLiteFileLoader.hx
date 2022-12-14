@@ -80,9 +80,9 @@ import com.babylonhx.utils.typedarray.Int32Array;
         importMesh: function(meshesNames:Dynamic, scene:Scene, data:Dynamic, rootUrl:String, meshes:Array<AbstractMesh>, particleSystems:Array<ParticleSystem>, skeletons:Array<Skeleton>):Bool {
 						
 			var parsedData:Dynamic = null;
-			if (Std.is(data, String)) {
+			if (Std.isOfType(data, String)) {
 				parsedData = Json.parse(data);
-			} else if(Std.is(data, Bytes)) {
+			} else if(Std.isOfType(data, Bytes)) {
 				//parsedData = MsgPack.decode(data);
 			} else {
 				trace("Unknown data type!");
@@ -97,7 +97,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
             for (index in 0...pdm.length) {
                 var parsedMesh = pdm[index];
                 if (meshesNames == null || meshesNames == "" || isDescendantOf(parsedMesh, meshesNames, hierarchyIds)) {
-					if (Std.is(meshesNames, Array)) {
+					if (Std.isOfType(meshesNames, Array)) {
                         // Remove found mesh name from list.
                         meshesNames.splice(meshesNames.indexOf(parsedMesh.n), 1);
                     }
@@ -179,9 +179,9 @@ import com.babylonhx.utils.typedarray.Int32Array;
 		load: function(scene:Scene, data:Dynamic, rootUrl:String):Bool {
 			
 			var parsedData:Dynamic = null;
-			if (Std.is(data, String)) {
+			if (Std.isOfType(data, String)) {
 				parsedData = Json.parse(data);
-			} else if(Std.is(data, Bytes)) {
+			} else if(Std.isOfType(data, Bytes)) {
 				//parsedData = MsgPack.decode(data);
 			} else {
 				trace("Unknown data type!");
@@ -849,7 +849,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
         }
 		
         // Test for lockedTargetMesh & FreeCamera outside of if-else-if nest, since things like GamepadCamera extend FreeCamera
-        if (lockedTargetMesh != null && Std.is(camera, FreeCamera)) {
+        if (lockedTargetMesh != null && Std.isOfType(camera, FreeCamera)) {
             cast(camera, FreeCamera).lockedTarget = lockedTargetMesh;
         }
 		
@@ -864,7 +864,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
 		
         // Target
         if (parsedCamera.tg != null) {
-			if(Std.is(camera, FreeCamera)) {
+			if(Std.isOfType(camera, FreeCamera)) {
 				cast(camera, FreeCamera).setTarget(Vector3.FromArray(parsedCamera.tg));
 			} else {
 				// For ArcRotateCamera
@@ -1284,11 +1284,11 @@ import com.babylonhx.utils.typedarray.Int32Array;
             }
 			
             // Return appropriate value with its type
-            if (Std.is(target, Bool)) {
+            if (Std.isOfType(target, Bool)) {
                 return values[0] == "true";
 			}
 			
-            if (Std.is(target, String)) {
+            if (Std.isOfType(target, String)) {
                 return values[0];
 			}
 			
@@ -1298,19 +1298,19 @@ import com.babylonhx.utils.typedarray.Int32Array;
                 split.push(Std.parseFloat(values[i]));
 			}
 			
-            if (Std.is(target, Vector3)) {
+            if (Std.isOfType(target, Vector3)) {
                 return Vector3.FromArray(split);
 			}
 			
-            if (Std.is(target, Vector4)) {
+            if (Std.isOfType(target, Vector4)) {
                 return Vector4.FromArray(split);
 			}
 			
-            if (Std.is(target, Color3)) {
+            if (Std.isOfType(target, Color3)) {
                 return Color3.FromArray(split);
 			}
 			
-            if (Std.is(target, Color4)) {
+            if (Std.isOfType(target, Color4)) {
                 return Color4.FromArray(split);
 			}
 			
@@ -1376,7 +1376,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
             // Action or condition(s)
             var newAction:Dynamic = instanciate(parsedAction.name, parameters);
 			if(newAction != null) {
-				if (Std.is(newAction, Condition)) {
+				if (Std.isOfType(newAction, Condition)) {
 					condition = newAction;
 					newAction = action;
 				} 
@@ -1419,7 +1419,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
     }
 
     public static function isDescendantOf(mesh:Dynamic, _names:Dynamic, hierarchyIds:Array<Int>):Bool {
-        var names = Std.is(_names, Array) ? _names : [_names];
+        var names = Std.isOfType(_names, Array) ? _names : [_names];
         for (name in names) {
             if (mesh.name == name) {
                 hierarchyIds.push(mesh.id);

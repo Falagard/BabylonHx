@@ -344,7 +344,7 @@ import com.babylonhx.culling.Ray;
 			
 			// for VR rig, there does not have to be a post process 
 			if (rigPostProcess != null) {
-				var isPass = Std.is(rigPostProcess, PassPostProcess);
+				var isPass = Std.isOfType(rigPostProcess, PassPostProcess);
 				if (isPass) {
 					// any rig which has a PassPostProcess for rig[0], cannot be isIntermediate when there are also user postProcesses
 					cam.isIntermediate = this._postProcesses.length == 0;

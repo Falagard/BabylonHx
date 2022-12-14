@@ -266,7 +266,7 @@ class HighlightLayer extends EffectLayer {
 		});
 		
 		// Prevent autoClear.
-		this._postProcesses.map(function(pp) { pp.autoClear = false; });
+		this._postProcesses.map(function(pp) { pp.autoClear = false; return null; });
 	}
 
 	/**

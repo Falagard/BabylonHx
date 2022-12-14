@@ -273,7 +273,7 @@ class UniformBuffer {
 		// This function must be called in the order of the shader layout !
 		// size can be the size of the uniform, or data directly
 		var data:Array<Float> = [];
-		if (Std.is(size, Int)) {			
+		if (Std.isOfType(size, Int)) {			
 			// Fill with zeros
 			for (i in 0...Std.int(size)) {
 				data.push(0);

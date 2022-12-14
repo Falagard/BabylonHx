@@ -17,7 +17,7 @@ class FractalNoiseBase extends Generator {
 	public function new(param:Dynamic) {
 		super();
 		
-		if (Std.is(param, Int)) {
+		if (Std.isOfType(param, Int)) {
 			m_Noise = new GradientNoise(param);
 		}
 		else {

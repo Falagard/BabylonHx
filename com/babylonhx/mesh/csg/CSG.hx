@@ -47,7 +47,7 @@ import lime.utils.UInt32Array;
 		var meshRotation:Vector3;
 		var meshScaling:Vector3;
 		
-		if (Std.is(mesh, Mesh)) {
+		if (Std.isOfType(mesh, Mesh)) {
 			mesh.computeWorldMatrix(true);
 			matrix = mesh.getWorldMatrix();
 			meshPosition = mesh.position.clone();

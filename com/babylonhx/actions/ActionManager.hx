@@ -292,8 +292,8 @@ import com.babylonhx.tools.Tools;
 			
 			var triggerOptions = this.actions[i].triggerOptions;
 			
-			if (triggerOptions != null && !Std.is(triggerOptions, Int)) {
-				if (Std.is(triggerOptions.parameter, Node)) {
+			if (triggerOptions != null && !Std.isOfType(triggerOptions, Int)) {
+				if (Std.isOfType(triggerOptions.parameter, Node)) {
 					triggerObject.properties.push(Action._GetTargetProperty(triggerOptions.parameter));
 				}
 				else {

@@ -3711,7 +3711,7 @@ import com.babylonhx.audio.*;
 				
 				if (action.trigger == ActionManager.OnIntersectionEnterTrigger || action.trigger == ActionManager.OnIntersectionExitTrigger) {
 					var parameters = action.getTriggerParameter();
-					var otherMesh:AbstractMesh = Std.is(parameters, AbstractMesh) ? cast parameters : parameters.mesh;
+					var otherMesh:AbstractMesh = Std.isOfType(parameters, AbstractMesh) ? cast parameters : parameters.mesh;
 					
 					var areIntersecting = otherMesh.intersectsMesh(sourceMesh, parameters.usePreciseIntersection);
 					var currentIntersectionInProgress = sourceMesh._intersectionsInProgress.indexOf(otherMesh);

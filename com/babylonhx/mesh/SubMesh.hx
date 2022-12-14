@@ -108,7 +108,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
 		if (rootMaterial == null) {
 			return this._mesh.getScene().defaultMaterial;
 		}
-		else if(Std.is(rootMaterial, MultiMaterial)) {
+		else if(Std.isOfType(rootMaterial, MultiMaterial)) {
 			var multiMaterial:MultiMaterial = cast rootMaterial;
 			var effectiveMaterial = multiMaterial.getSubMaterial(this.materialIndex);
 			
@@ -263,7 +263,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
 		}*/
 		
 		// LineMesh first as it's also a Mesh...
-		if (Std.is(this._mesh, LinesMesh)) {
+		if (Std.isOfType(this._mesh, LinesMesh)) {
 			var lineMesh:LinesMesh = cast this._mesh;
 			
 			// Line test

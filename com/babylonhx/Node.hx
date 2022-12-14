@@ -507,7 +507,7 @@ class NodeCache {
 		var results:Array<AbstractMesh> = [];
 		
 		this._getDescendants(cast results, directDecendantsOnly, function(node:Node):Bool {
-			return ((predicate == null || predicate(node)) && Std.is(node, AbstractMesh));
+			return ((predicate == null || predicate(node)) && Std.isOfType(node, AbstractMesh));
 		});
 		
 		return results;
@@ -522,7 +522,7 @@ class NodeCache {
 		var results:Array<TransformNode> = [];
 		
 		this._getDescendants(cast results, directDescendantsOnly, function(node:Node) {
-			return ((predicate == null || predicate(node)) && Std.is(node, TransformNode));
+			return ((predicate == null || predicate(node)) && Std.isOfType(node, TransformNode));
 		});
 		return results;
 	}

@@ -587,7 +587,7 @@ typedef DepthSortedFacet = {
 	 * @param {boolean} fullDetails - support for multiple levels of logging within scene loading
 	 */
 	public function toString(fullDetails:Bool = false):String {
-		var ret = "Name: " + this.name + ", isInstance: " + (Std.is(this, InstancedMesh) ? "YES" : "NO");
+		var ret = "Name: " + this.name + ", isInstance: " + (Std.isOfType(this, InstancedMesh) ? "YES" : "NO");
 		ret += ", # of submeshes: " + (this.subMeshes != null ? this.subMeshes.length : 0);
 		if (this._skeleton != null) {
 			ret += ", skeleton: " + this._skeleton.name;

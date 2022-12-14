@@ -66,7 +66,7 @@ package com.babylonhx.tools;
 	// a tag cannot start with '||', '&&', and '!'
 	// it cannot contain whitespaces
 	public static function AddTagsTo(obj:Dynamic, tagsString:String = "") {
-		if (!Std.is(tagsString, String) || tagsString == "") {
+		if (!Std.isOfType(tagsString, String) || tagsString == "") {
 			return;
 		}
 		

@@ -1236,7 +1236,7 @@ class PBRBaseMaterial extends PushMaterial {
 						this._uniformBuffer.updateMatrix("reflectionMatrix", reflectionTexture.getReflectionTextureMatrix());
 						this._uniformBuffer.updateFloat2("vReflectionInfos", reflectionTexture.level, 0);
 						
-						if (Std.is(reflectionTexture, CubeTexture) && untyped reflectionTexture.boundingBoxSize != null) {
+						if (Std.isOfType(reflectionTexture, CubeTexture) && untyped reflectionTexture.boundingBoxSize != null) {
                             var cubeTexture = cast (reflectionTexture, CubeTexture);
 							
                             this._uniformBuffer.updateVector3("vReflectionPosition", cubeTexture.boundingBoxPosition);
@@ -1309,7 +1309,7 @@ class PBRBaseMaterial extends PushMaterial {
 						
 						var depth = 1.0;
 						if (!refractionTexture.isCube) {
-							if (Std.is(refractionTexture, RefractionTexture)) {
+							if (Std.isOfType(refractionTexture, RefractionTexture)) {
 								depth = untyped refractionTexture.depth;
 							}
 						}

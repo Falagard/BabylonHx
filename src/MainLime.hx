@@ -1,19 +1,20 @@
 package;
 
+import lime.ui.MouseWheelMode;
 #if cpp
 //import hxtelemetry.HxTelemetry;
 #end
 
 import haxe.Timer;
 import lime.app.Application;
-import lime.Assets;
-import lime.graphics.GLRenderContext;
-import lime.graphics.opengl.WebGL2Context;
-import lime.graphics.opengl.WebGLContext;
+import lime.utils.Assets;
+//import lime.graphics.GLRenderContext;
+import lime.graphics.WebGL2RenderContext;
+//import lime.graphics.opengl.WebGLContext;
 import lime.ui.KeyCode;
 import lime.ui.KeyModifier;
 import lime.graphics.RenderContext;
-import lime.graphics.Renderer;
+//import lime.graphics.Renderer;
 import lime.ui.Touch;
 import lime.ui.Window;
 
@@ -21,7 +22,6 @@ import com.babylonhx.engine.Engine;
 import com.babylonhx.events.PointerEvent;
 import com.babylonhx.events.PointerEventTypes;
 import com.babylonhx.Scene;
-
 
 /**
  * ...
@@ -45,19 +45,19 @@ class MainLime extends Application {
 		super();
 	}
 	
-	override public function onWindowCreate(window:Window) {
-		switch (window.renderer.context) {
-			case OPENGL (gl):
-				var gl:WebGL2Context = gl;
+	override public function onWindowCreate() {
+		//switch (window.context) {
+			//case OPENGL (gl):
+				var gl:WebGL2RenderContext = window.context;
 				engine = new Engine(window, gl, true);	
 				scene = new Scene(engine);
 				
 				engine.width = window.width;
 				engine.height = window.height;
 				
-			default:
+			//default:
 				//
-		}
+		//}
 		
 		pointerEvent = new PointerEvent();
 	}
@@ -298,7 +298,7 @@ class MainLime extends Application {
 		//scene.stage2D.addChild(new com.babylonhx.d2.text.FPS());
 	}
 	
-	override function onMouseDown(window:Window, x:Float, y:Float, button:Int) {
+	override function onMouseDown(x:Float, y:Float, button:Int) {
 		for (f in engine.mouseDown) {
 			pointerEvent.x = x;
 			pointerEvent.y = y;
@@ -311,7 +311,7 @@ class MainLime extends Application {
 	}
 	
 	#if !neko
-	override function onMouseUp(window:Window, x:Float, y:Float, button:Int) {
+	override function onMouseUp(x:Float, y:Float, button:Int) {
 		for(f in engine.mouseUp) {
 			pointerEvent.x = x;
 			pointerEvent.y = y;
@@ -323,7 +323,7 @@ class MainLime extends Application {
 	}
 	#end
 	
-	override function onMouseMove(window:Window, x:Float, y:Float) {
+	override function onMouseMove(x:Float, y:Float) {
 		for(f in engine.mouseMove) {
 			pointerEvent.x = x;
 			pointerEvent.y = y;
@@ -333,7 +333,7 @@ class MainLime extends Application {
 		}
 	}
 	
-	override function onMouseWheel(window:Window, deltaX:Float, deltaY:Float) {
+	override function onMouseWheel(deltaX:Float, deltaY:Float, deltaMode:MouseWheelMode) {
 		for (f in engine.mouseWheel) {
 			pointerEvent.type = PointerEventTypes.POINTERWHEEL;
 			pointerEvent.pointerType = "mouse";
@@ -374,21 +374,21 @@ class MainLime extends Application {
 		}
 	}
 
-	override function onKeyUp(window:Window, keycode:Int, modifier:KeyModifier) {
+	override function onKeyUp(keycode:Int, modifier:KeyModifier) {
 		for(f in engine.keyUp) {
 			f(keycode);
 		}
 		//scene.stage2D._onKU(modifier.altKey, modifier.ctrlKey, modifier.shiftKey, keycode, 0);
 	}
 	
-	override function onKeyDown(window:Window, keycode:Int, modifier:KeyModifier) {
+	override function onKeyDown(keycode:Int, modifier:KeyModifier) {
 		for(f in engine.keyDown) {
 			f(keycode);
 		}
 		//scene.stage2D._onKD(modifier.altKey, modifier.ctrlKey, modifier.shiftKey, keycode, 0);
 	}
 	
-	override public function onWindowResize(window:Window, width:Int, height:Int) {
+	override public function onWindowResize(width:Int, height:Int) {
 		if (engine != null) {
 			engine.width = width;
 			engine.height = height;

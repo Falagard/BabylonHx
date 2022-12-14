@@ -150,25 +150,25 @@ import com.babylonhx.tools.Observable;
 	}
 	
 	public static function _SerializeValueAsString(value:Dynamic):String {
-		if (Std.is(value, Float)) {
+		if (Std.isOfType(value, Float)) {
 			return value + '';
 		}
 		
-		if (Std.is(value, Bool)) {
+		if (Std.isOfType(value, Bool)) {
 			return value ? "true" : "false";
 		}
 		
-		if (Std.is(value, Vector2)) {
+		if (Std.isOfType(value, Vector2)) {
 			return value.x + ", " + value.y;
 		}
-		if (Std.is(value, Vector3)) {
+		if (Std.isOfType(value, Vector3)) {
 			return value.x + ", " + value.y + ", " + value.z;
 		}
 		
-		if (Std.is(value, Color3)) {
+		if (Std.isOfType(value, Color3)) {
 			return value.r + ", " + value.g + ", " + value.b;
 		}
-		if (Std.is(value, Color4)) {
+		if (Std.isOfType(value, Color4)) {
 			return value.r + ", " + value.g + ", " + value.b + ", " + value.a;
 		}
 		
@@ -178,11 +178,11 @@ import com.babylonhx.tools.Observable;
 	public static function _GetTargetProperty(target:Dynamic):Dynamic {
 		return {
 			name: "target",
-			targetType: Std.is(target, Mesh) ? "MeshProperties"
-						: Std.is(target, Light) ? "LightProperties"
-						: Std.is(target, Camera) ? "CameraProperties"
+			targetType: Std.isOfType(target, Mesh) ? "MeshProperties"
+						: Std.isOfType(target, Light) ? "LightProperties"
+						: Std.isOfType(target, Camera) ? "CameraProperties"
 						: "SceneProperties",
-			value: Std.is(target, Scene) ? "Scene" : target.name
+			value: Std.isOfType(target, Scene) ? "Scene" : target.name
 		}  
 	}
 	

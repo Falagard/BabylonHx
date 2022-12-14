@@ -58,7 +58,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	
 	
 	public function new(engine:Engine, data:Dynamic, kind:String, updatable:Bool, postponeInternalCreation:Bool = false, ?stride:Int, ?instanced:Bool, offset:Int = 0, ?size:Int) {		
-		if (Std.is(data, Buffer)) {
+		if (Std.isOfType(data, Buffer)) {
 			if (stride == null) {
 				stride = untyped data.getStrideSize();
 			}
