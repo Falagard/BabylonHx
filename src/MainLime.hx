@@ -66,7 +66,7 @@ class MainLime extends Application {
 		//new samples.TestWireframe(scene);
 		//new samples.BScene(scene);
 		//new samples.DRPDemo(scene);
-		//new samples.BasicScene(scene);
+		new samples.BasicScene(scene);
 		//new samples.BasicElements(scene);
 		//new samples.DashedLinesMesh(scene);
 		//new samples.RotationAndScaling(scene);
@@ -238,7 +238,7 @@ class MainLime extends Application {
 		//new samples.StandardRenderingPipelineTest(scene);
 		//new samples.MeshFacetDepthSortTest(scene);
 		//new samples.SuperEllipsoid(scene);
-		new samples.MoleculeViewer(scene);
+		//new samples.MoleculeViewer(scene);
 		//new samples.PPFilm(scene);
 		//new samples.PPDreamVision(scene);
 		//new samples.PPInk(scene);
