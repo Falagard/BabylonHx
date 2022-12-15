@@ -110,20 +110,20 @@ class BackgroundMaterialDefines extends MaterialDefines implements IImageProcess
 	public var MAINUV2:Bool = false;
 	public var UV1:Bool = false;
 	public var UV2:Bool = false;
-	public var CLIPPLANE:Bool = false;
+	//public var CLIPPLANE:Bool = false;
 	public var POINTSIZE:Bool = false;
 	public var FOG:Bool = false;
 	public var NORMAL:Bool = false;
 	public var NUM_BONE_INFLUENCERS:Int = 0;
 	public var BonesPerMesh:Int = 0;
-	public var INSTANCES:Bool = false;
+	//public var INSTANCES:Bool = false;
 	public var SHADOWFLOAT:Bool = false;
 	
 	public var SHADOWS:Bool = false;				// BHX
 	public var LOGARITHMICDEPTH:Bool = false;		// BHX: always false
 	public var NONUNIFORMSCALING:Bool = false;		// BHX: always false
 	public var ALPHATEST:Bool = false;				// BHX: always false
-	public var DEPTHPREPASS:Bool = false;			// BHX: always false
+	//public var DEPTHPREPASS:Bool = false;			// BHX: always false
 	
 
 	public function new() {
@@ -331,13 +331,13 @@ class BackgroundMaterialDefines extends MaterialDefines implements IImageProcess
 		this.MAINUV2 = false;
 		this.UV1 = false;
 		this.UV2 = false;
-		this.CLIPPLANE = false;
+		this.CLIPPLANE = 0;
 		this.POINTSIZE = false;
 		this.FOG = false;
 		this.NORMAL = false;
 		this.NUM_BONE_INFLUENCERS = 0;
 		this.BonesPerMesh = 0;
-		this.INSTANCES = false;
+		this.INSTANCES = 0;
 		this.SHADOWFLOAT = false;
 		this.SHADOWS = false;
 	}
@@ -474,7 +474,7 @@ class BackgroundMaterialDefines extends MaterialDefines implements IImageProcess
 		if (this.UV2) {
 			result += "#define UV2 \n";
 		}
-		if (this.CLIPPLANE) {
+		if (this.CLIPPLANE != 0) {
 			result += "#define CLIPPLANE \n";
 		}
 		if (this.POINTSIZE) {
@@ -486,7 +486,7 @@ class BackgroundMaterialDefines extends MaterialDefines implements IImageProcess
 		if (this.NORMAL) {
 			result += "#define NORMAL \n";
 		}
-		if (this.INSTANCES) {
+		if (this.INSTANCES != 0) {
 			result += "#define INSTANCES \n";
 		}
 		if (this.SHADOWFLOAT) {

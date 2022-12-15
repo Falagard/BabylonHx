@@ -4508,14 +4508,16 @@ import openfl.display.OpenGLView;
 			for (y in 0...height) {
 				var index = Std.int((y * width + x) * 3);
 				var newIndex = Std.int((y * width + x) * 4);
+
+				//TODO2022
 				
 				// Map Old Value to new value.
-				untyped rgbaData[newIndex + 0] = rgbData[index + 0];
-				untyped rgbaData[newIndex + 1] = rgbData[index + 1];
-				untyped rgbaData[newIndex + 2] = rgbData[index + 2];
+				//untyped rgbaData[newIndex + 0] = rgbData[index + 0];
+				//untyped rgbaData[newIndex + 1] = rgbData[index + 1];
+				//untyped rgbaData[newIndex + 2] = rgbData[index + 2];
 				
 				// Add fully opaque alpha channel.
-				untyped rgbaData[newIndex + 3] = 1;
+				//untyped rgbaData[newIndex + 3] = 1;
 			}
 		}
 		return rgbaData;

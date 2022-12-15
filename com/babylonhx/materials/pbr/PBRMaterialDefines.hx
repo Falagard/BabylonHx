@@ -32,7 +32,7 @@ class PBRMaterialDefines extends MaterialDefines implements IImageProcessingConf
 	public var OPACITYDIRECTUV:Int;
 	public var OPACITYRGB:Int;
 	public var ALPHATEST:Int;
-	public var DEPTHPREPASS:Int;
+	//public var DEPTHPREPASS:Int;
 	public var ALPHABLEND:Int;
 	public var ALPHAFROMALBEDO:Int;
 	public var ALPHATESTVALUE:Float = 0.5;
@@ -105,7 +105,7 @@ class PBRMaterialDefines extends MaterialDefines implements IImageProcessingConf
 	public var GAMMAREFRACTION:Int;
 	public var LINKREFRACTIONTOTRANSPARENCY:Int;
 
-	public var INSTANCES:Int;
+	//public var INSTANCES:Int;
 	
 	public var NUM_BONE_INFLUENCERS:Int;
 	public var BonesPerMesh:Int;
@@ -135,7 +135,7 @@ class PBRMaterialDefines extends MaterialDefines implements IImageProcessingConf
 	public var TWOSIDEDLIGHTING:Int;
 	public var SHADOWFLOAT:Int;
 	public var USERIGHTHANDEDSYSTEM:Int;
-	public var CLIPPLANE:Int;
+	//public var CLIPPLANE:Int;
 	public var POINTSIZE:Int;
 	public var FOG:Int;
 	public var LOGARITHMICDEPTH:Int;

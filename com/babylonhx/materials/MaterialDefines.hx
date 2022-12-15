@@ -55,6 +55,9 @@ class MaterialDefines {
 	
 	var finalString:String = "";
 	
+	public var CLIPPLANE:Int;
+	public var DEPTHPREPASS:Int;
+	public var INSTANCES:Int;
 
 	public function new() {	}
 

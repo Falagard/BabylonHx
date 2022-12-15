@@ -1,5 +1,6 @@
 package com.babylonhx.materials;
 
+import samples.DepthPrePassTest;
 import com.babylonhx.engine.Engine;
 import com.babylonhx.lights.SpotLight;
 import com.babylonhx.mesh.Mesh;
@@ -192,18 +193,18 @@ class MaterialHelper {
 			useClipPlane = (scene.clipPlane != null);
 		}
 		
-		if (untyped defines.CLIPPLANE != (useClipPlane ? 1 : 0)) {
-			untyped defines.CLIPPLANE = (useClipPlane ? 1 : 0);
+		if (defines.CLIPPLANE != (useClipPlane ? 1 : 0)) {
+			defines.CLIPPLANE = (useClipPlane ? 1 : 0);
 			changed = true;
 		}
-		
-		if (untyped defines.DEPTHPREPASS != !engine.getColorWrite() ? 1 : 0) {
-            untyped defines.DEPTHPREPASS = defines.DEPTHPREPASS == 0 ? 1 : 0;
+
+		if (defines.DEPTHPREPASS != (!engine.getColorWrite() ? 1 : 0)) {
+            defines.DEPTHPREPASS = defines.DEPTHPREPASS == 0 ? 1 : 0;
             changed = true;
         } 
 		
-		if (untyped defines.INSTANCES != (useInstances ? 1 : 0)) {
-			untyped defines.INSTANCES = (useInstances ? 1 : 0);
+		if (defines.INSTANCES != (useInstances ? 1 : 0)) {
+			defines.INSTANCES = (useInstances ? 1 : 0);
 			changed = true;
 		}
 		
@@ -561,7 +562,7 @@ class MaterialHelper {
 	 * @param defines The current Defines of the effect
 	 */
 	public static function PrepareAttributesForInstances(attribs:Array<String>, defines:MaterialDefines) {
-		if (untyped defines.INSTANCES == true) {
+		if (defines.INSTANCES != 0) {
 			attribs.push("world0");
 			attribs.push("world1");
 			attribs.push("world2");

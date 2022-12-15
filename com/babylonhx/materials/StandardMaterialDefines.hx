@@ -32,9 +32,9 @@ class StandardMaterialDefines extends MaterialDefines implements IImageProcessin
 	public var PARALLAX:Int;
 	public var PARALLAXOCCLUSION:Int;
 	public var SPECULAROVERALPHA:Int;
-	public var CLIPPLANE:Int;
+	//public var CLIPPLANE:Int;
 	public var ALPHATEST:Int;
-	public var DEPTHPREPASS:Int;
+	//public var DEPTHPREPASS:Int;
 	public var ALPHAFROMDIFFUSE:Int;
 	public var POINTSIZE:Int;
 	public var FOG:Int;
@@ -54,7 +54,7 @@ class StandardMaterialDefines extends MaterialDefines implements IImageProcessin
 	public var VERTEXALPHA:Int;
 	public var NUM_BONE_INFLUENCERS:Int;
 	public var BonesPerMesh:Int;
-	public var INSTANCES:Int;
+	//public var INSTANCES:Int;
 	public var GLOSSINESS:Int;
 	public var ROUGHNESS:Int;
 	public var EMISSIVEASILLUMINATION:Int;
