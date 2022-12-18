@@ -31,6 +31,8 @@ import com.babylonhx.Scene;
 //@:build(haxebullet.MacroUtil.buildAll())
 #end
 class MainLime extends Application {
+
+	
 	
 	var scene:Scene;
 	var engine:Engine;
@@ -63,7 +65,7 @@ class MainLime extends Application {
 	}
 	
 	override public function onPreloadComplete() {
-		//new samples.TestWireframe(scene);
+		//new samples.TestWireframe(scene); 
 		//new samples.BScene(scene);
 		//new samples.DRPDemo(scene);
 		new samples.BasicScene(scene);

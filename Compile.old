@@ -1,0 +1,6 @@
+-cp src
+-lib lime
+-lib hlsdl
+-lib actuate
+-hl main.hl
+-main MainLime

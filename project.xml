@@ -10,7 +10,8 @@
 	
 	<haxelib name="lime" />
 	<haxelib name="actuate" />
-		
+	<haxelib name="hxcpp-debug-server" />
+			
 	<assets path="assets" exclude="*.svg" />
 	<icon path="assets/lime.svg" />
 	

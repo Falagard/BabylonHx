@@ -89,7 +89,7 @@ class BasicScene {
 		
 		//var ndPP = new NotebookDrawingsPostProcess("notebookDrawings_PP", 1.0, camera);
 		//var wPP = new WatercolorPostProcess("watercolor_PP", 1.0, camera);
-		var noisePP = new NoisePostProcess("noise_PP", 1.0, camera);
+		//var noisePP = new NoisePostProcess("noise_PP", 1.0, camera);
 		
 		scene.getEngine().runRenderLoop(function () {
             scene.render();
