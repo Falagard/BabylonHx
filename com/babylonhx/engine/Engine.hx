@@ -1299,7 +1299,11 @@ import openfl.display.OpenGLView;
 		}
 		
 		if (depth) {
+			#if(lime_native)
+			gl.clearDepthf(1.0);
+			#else
 			gl.clearDepth(1.0);
+			#end
 			mode |= GL.DEPTH_BUFFER_BIT;
 		}
 		
@@ -1777,7 +1781,11 @@ import openfl.display.OpenGLView;
 		var ret = new WebGLBuffer(vbo);
 		this.bindArrayBuffer(ret);
 		
+		#if(lime_native)
+		gl.bufferData(GL.ARRAY_BUFFER, vertices.length, vertices, GL.STATIC_DRAW);		
+		#else
 		gl.bufferData(GL.ARRAY_BUFFER, vertices, GL.STATIC_DRAW);		
+		#end
 		this._resetVertexBufferBinding();
 		ret.references = 1;		
 		return ret;
@@ -1793,7 +1801,11 @@ import openfl.display.OpenGLView;
 		var ret = new WebGLBuffer(vbo);		
 		this.bindArrayBuffer(ret);		
 		
+		#if(lime_native)
+		gl.bufferData(GL.ARRAY_BUFFER, vertices.length, vertices, GL.DYNAMIC_DRAW);
+		#else
 		gl.bufferData(GL.ARRAY_BUFFER, vertices, GL.DYNAMIC_DRAW);
+		#end
 		this._resetVertexBufferBinding();
 		ret.references = 1;
 		
@@ -1815,10 +1827,19 @@ import openfl.display.OpenGLView;
 		this.bindArrayBuffer(vertexBuffer);
 		
 		if (count == -1) {
+			#if(lime_native)
+			gl.bufferSubData(GL.ARRAY_BUFFER, offset, vertices.length, vertices);
+			#else
 			gl.bufferSubData(GL.ARRAY_BUFFER, offset, vertices);
+			#end
 		}
 		else {
-			gl.bufferSubData(GL.ARRAY_BUFFER, 0, vertices.subarray(offset, offset + count));
+			var subArray = vertices.subarray(offset, offset + count);
+			#if(lime_native)
+			gl.bufferSubData(GL.ARRAY_BUFFER, 0, subArray.length, subArray);
+			#else
+			gl.bufferSubData(GL.ARRAY_BUFFER, 0, subArray);
+			#end
 		}
 		
 		this._resetVertexBufferBinding();
@@ -1834,7 +1855,11 @@ import openfl.display.OpenGLView;
 		var ret = new WebGLBuffer(vbo);		
 		this.bindIndexBuffer(ret);
 		
+		#if(lime_native)
+		gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices.length, indices, updatable ? GL.DYNAMIC_DRAW : GL.STATIC_DRAW);
+		#else
 		gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices, updatable ? GL.DYNAMIC_DRAW : GL.STATIC_DRAW);
+		#end
 		this._resetIndexBufferBinding();
 		ret.references = 1;
 		ret.is32Bits = true;		
@@ -3288,7 +3313,11 @@ import openfl.display.OpenGLView;
 		}
 		
 		if (compression != "" && data != null) {
+			#if(lime_wegl)
 			#if purejs untyped #end gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data);
+			#else
+			#if purejs untyped #end gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data);
+			#end
 		} 
 		else {
 			#if purejs untyped #end gl.texImage3D(GL.TEXTURE_3D, 0, internalFormat, texture.width, texture.height, texture.depth, 0, internalFormat, GL.UNSIGNED_BYTE, data);
@@ -3415,8 +3444,12 @@ import openfl.display.OpenGLView;
 			gl.pixelStorei(GL.UNPACK_ALIGNMENT, 1);
 		}
 		
-		if (compression != "" && data != null) {
+		if (compression != "" && data != null) { 
+			#if(lime_native)
+			gl.compressedTexImage2D(GL.TEXTURE_2D, 0, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, data.length, data);
+			#else
 			gl.compressedTexImage2D(GL.TEXTURE_2D, 0, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, data);
+			#end
 		}
 		else {
 			gl.texImage2D(GL.TEXTURE_2D, 0, internalSizedFomat, texture.width, texture.height, 0, internalFormat, textureType, data);
@@ -3839,7 +3872,12 @@ import openfl.display.OpenGLView;
 		gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
 		gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 		
+		#if(lime_native)
+
+		#else
+		//TODO2022 - this is binding an empty image by passing null in js, but in other targets null is not allowed. What should this do?
 		gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(fullOptions.type), width, height, 0, GL.RGBA, this._getWebGLTextureType(fullOptions.type), null);
+		#end
 		
 		// Create the framebuffer
 		var framebuffer = gl.createFramebuffer();
