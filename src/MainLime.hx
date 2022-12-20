@@ -55,6 +55,8 @@ class MainLime extends Application {
 				
 				//var gles3:lime.graphics.OpenGLES3RenderContext = window.context;
 
+				trace("before creating engine");
+
 				var renderContext = lime.graphics.opengl.GL.context;
 
 				engine = new Engine(window, renderContext, true);	

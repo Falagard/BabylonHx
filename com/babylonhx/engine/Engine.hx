@@ -485,6 +485,8 @@ import openfl.display.OpenGLView;
 	
 	public function new(canvas:Dynamic, ?_gl:WebGL2Context, antialias:Bool = false, ?options:Dynamic, adaptToDeviceRatio:Bool = false) {
 		
+		trace("engine constructor");
+
 		this.gl = _gl;
 		
 		//this._canvasClientRect.width = Reflect.getProperty(canvas, "width") != null ? Reflect.getProperty(canvas, "width") : 960;

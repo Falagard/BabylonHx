@@ -370,69 +370,72 @@ import com.babylonhx.utils.typedarray.UInt32Array;
 	}
 	
 	public function serialize():Dynamic {
-		var serializationObject = this.serialize();
+		// var serializationObject = this.serialize();
 		
-		if (this.positions != null) {
-			serializationObject.positions = this.positions;
-		}
+		// if (this.positions != null) {
+		// 	serializationObject.positions = this.positions;
+		// }
 		
-		if (this.normals != null) {
-			serializationObject.normals = this.normals;
-		}
+		// if (this.normals != null) {
+		// 	serializationObject.normals = this.normals;
+		// }
 		
-		if (this.tangents != null) {
-			serializationObject.tangents = this.tangents;
-		}
+		// if (this.tangents != null) {
+		// 	serializationObject.tangents = this.tangents;
+		// }
 		
-		if (this.uvs != null) {
-			serializationObject.uvs = this.uvs;
-		}
+		// if (this.uvs != null) {
+		// 	serializationObject.uvs = this.uvs;
+		// }
 		
-		if (this.uvs2 != null) {
-			serializationObject.uvs2 = this.uvs2;
-		}
+		// if (this.uvs2 != null) {
+		// 	serializationObject.uvs2 = this.uvs2;
+		// }
 		
-		if (this.uvs3 != null) {
-			serializationObject.uvs3 = this.uvs3;
-		}
+		// if (this.uvs3 != null) {
+		// 	serializationObject.uvs3 = this.uvs3;
+		// }
 		
-		if (this.uvs4 != null) {
-			serializationObject.uvs4 = this.uvs4;
-		}
+		// if (this.uvs4 != null) {
+		// 	serializationObject.uvs4 = this.uvs4;
+		// }
 		
-		if (this.uvs5 != null) {
-			serializationObject.uvs5 = this.uvs5;
-		}
+		// if (this.uvs5 != null) {
+		// 	serializationObject.uvs5 = this.uvs5;
+		// }
 		
-		if (this.uvs6 != null) {
-			serializationObject.uvs6 = this.uvs6;
-		}
+		// if (this.uvs6 != null) {
+		// 	serializationObject.uvs6 = this.uvs6;
+		// }
 		
-		if (this.colors != null) {
-			serializationObject.colors = this.colors;
-		}
+		// if (this.colors != null) {
+		// 	serializationObject.colors = this.colors;
+		// }
 		
-		if (this.matricesIndices != null) {
-			serializationObject.matricesIndices = this.matricesIndices;
-			//serializationObject.matricesIndices._isExpanded = true;
-		}
+		// if (this.matricesIndices != null) {
+		// 	serializationObject.matricesIndices = this.matricesIndices;
+		// 	//serializationObject.matricesIndices._isExpanded = true;
+		// }
 		
-		if (this.matricesWeights != null) {
-			serializationObject.matricesWeights = this.matricesWeights;
-		}
+		// if (this.matricesWeights != null) {
+		// 	serializationObject.matricesWeights = this.matricesWeights;
+		// }
 		
-		if (this.matricesIndicesExtra != null) {
-			serializationObject.matricesIndicesExtra = this.matricesIndicesExtra;
-			//serializationObject.matricesIndicesExtra._isExpanded = true;
-		}
+		// if (this.matricesIndicesExtra != null) {
+		// 	serializationObject.matricesIndicesExtra = this.matricesIndicesExtra;
+		// 	//serializationObject.matricesIndicesExtra._isExpanded = true;
+		// }
 		
-		if (this.matricesWeightsExtra != null) {
-			serializationObject.matricesWeightsExtra = this.matricesWeightsExtra;
-		}
+		// if (this.matricesWeightsExtra != null) {
+		// 	serializationObject.matricesWeightsExtra = this.matricesWeightsExtra;
+		// }
 		
-		serializationObject.indices = this.indices;
+		// serializationObject.indices = this.indices;
 		
-		return serializationObject;
+		// return serializationObject;
+
+		//TODO2022 - removed due to warning, need to look at serialization
+		return null;
 	}
 
 	// Statics
