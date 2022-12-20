@@ -1731,7 +1731,11 @@ import openfl.display.OpenGLView;
 		var ret = new WebGLBuffer(ubo);
 		this.bindUniformBuffer(ret);
 		
+		#if(lime_native)
+		gl.bufferData(GL.UNIFORM_BUFFER, elements.byteLength, elements, GL.STATIC_DRAW);
+		#else
 		gl.bufferData(GL.UNIFORM_BUFFER, elements, GL.STATIC_DRAW);
+		#end
 		
 		this.bindUniformBuffer(null);
 		
@@ -1744,7 +1748,11 @@ import openfl.display.OpenGLView;
 		var ret = new WebGLBuffer(ubo);
 		this.bindUniformBuffer(ret);
 		
+		#if(lime_native)
+		gl.bufferData(GL.UNIFORM_BUFFER, elements.byteLength, elements, GL.DYNAMIC_DRAW);
+		#else
 		gl.bufferData(GL.UNIFORM_BUFFER, elements, GL.DYNAMIC_DRAW);
+		#end
 		
 		this.bindUniformBuffer(null);
 		
@@ -1756,10 +1764,19 @@ import openfl.display.OpenGLView;
 		this.bindUniformBuffer(uniformBuffer);
 		
 		if (count == -1) {
+			#if(lime_native)
+			gl.bufferSubData(GL.UNIFORM_BUFFER, offset, elements.length, elements);
+			#else
 			gl.bufferSubData(GL.UNIFORM_BUFFER, offset, elements);
+			#end
 		} 
 		else {
+			#if(lime_native)
+			var subArray = elements.subarray(offset, offset + count);
+			gl.bufferSubData(GL.UNIFORM_BUFFER, 0, subArray.byteLength, subArray);
+			#else
 			gl.bufferSubData(GL.UNIFORM_BUFFER, 0, elements.subarray(offset, offset + count));
+			#end
 		}
 		
 		this.bindUniformBuffer(null);
@@ -1782,7 +1799,7 @@ import openfl.display.OpenGLView;
 		this.bindArrayBuffer(ret);
 		
 		#if(lime_native)
-		gl.bufferData(GL.ARRAY_BUFFER, vertices.length, vertices, GL.STATIC_DRAW);		
+		gl.bufferData(GL.ARRAY_BUFFER, vertices.byteLength, vertices, GL.STATIC_DRAW);		
 		#else
 		gl.bufferData(GL.ARRAY_BUFFER, vertices, GL.STATIC_DRAW);		
 		#end
@@ -1802,7 +1819,7 @@ import openfl.display.OpenGLView;
 		this.bindArrayBuffer(ret);		
 		
 		#if(lime_native)
-		gl.bufferData(GL.ARRAY_BUFFER, vertices.length, vertices, GL.DYNAMIC_DRAW);
+		gl.bufferData(GL.ARRAY_BUFFER, vertices.byteLength, vertices, GL.DYNAMIC_DRAW);
 		#else
 		gl.bufferData(GL.ARRAY_BUFFER, vertices, GL.DYNAMIC_DRAW);
 		#end
@@ -1817,7 +1834,11 @@ import openfl.display.OpenGLView;
 		this._currentBoundBuffer[GL.ELEMENT_ARRAY_BUFFER] = null;
         this.bindIndexBuffer(indexBuffer);
 		
-        gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices, GL.DYNAMIC_DRAW);
+		#if(lime_native)
+        gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices.byteLength, indices, GL.DYNAMIC_DRAW);
+		#else
+		gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices, GL.DYNAMIC_DRAW);
+		#end
         
         this._resetIndexBufferBinding();
     }
@@ -1828,7 +1849,7 @@ import openfl.display.OpenGLView;
 		
 		if (count == -1) {
 			#if(lime_native)
-			gl.bufferSubData(GL.ARRAY_BUFFER, offset, vertices.length, vertices);
+			gl.bufferSubData(GL.ARRAY_BUFFER, offset, vertices.byteLength, vertices);
 			#else
 			gl.bufferSubData(GL.ARRAY_BUFFER, offset, vertices);
 			#end
@@ -1836,7 +1857,7 @@ import openfl.display.OpenGLView;
 		else {
 			var subArray = vertices.subarray(offset, offset + count);
 			#if(lime_native)
-			gl.bufferSubData(GL.ARRAY_BUFFER, 0, subArray.length, subArray);
+			gl.bufferSubData(GL.ARRAY_BUFFER, 0, subArray.byteLength, subArray);
 			#else
 			gl.bufferSubData(GL.ARRAY_BUFFER, 0, subArray);
 			#end
@@ -1856,7 +1877,7 @@ import openfl.display.OpenGLView;
 		this.bindIndexBuffer(ret);
 		
 		#if(lime_native)
-		gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices.length, indices, updatable ? GL.DYNAMIC_DRAW : GL.STATIC_DRAW);
+		gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices.byteLength, indices, updatable ? GL.DYNAMIC_DRAW : GL.STATIC_DRAW);
 		#else
 		gl.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices, updatable ? GL.DYNAMIC_DRAW : GL.STATIC_DRAW);
 		#end
@@ -1902,7 +1923,11 @@ import openfl.display.OpenGLView;
 	}
 
 	inline public function updateArrayBuffer(data:Float32Array) {
+		#if(lime_native)
+		gl.bufferSubData(GL.ARRAY_BUFFER, 0, data.byteLength, data);
+		#else 
 		gl.bufferSubData(GL.ARRAY_BUFFER, 0, data);
+		#end
 	}
 	
 	private function vertexAttribPointer(buffer:WebGLBuffer, indx:Int, size:Int, type:Int, normalized:Bool, stride:Int, offset:Int) {
@@ -2148,7 +2173,10 @@ import openfl.display.OpenGLView;
 		buffer.capacity = capacity;
 		
 		this.bindArrayBuffer(buffer);
-		gl.bufferData(GL.ARRAY_BUFFER, new Float32Array(capacity), GL.DYNAMIC_DRAW);
+
+		var tempBuffer = new Float32Array(capacity);
+		
+		gl.bufferData(GL.ARRAY_BUFFER, tempBuffer.byteLength, tempBuffer, GL.DYNAMIC_DRAW);
 		
 		return buffer;
 	}
@@ -2162,7 +2190,11 @@ import openfl.display.OpenGLView;
 		this.bindArrayBuffer(instancesBuffer);
 		
 		if (data != null) {
+			#if(lime_native)
+			gl.bufferSubData(GL.ARRAY_BUFFER, 0, data.byteLength, data);
+			#else
 			gl.bufferSubData(GL.ARRAY_BUFFER, 0, data);
+			#end
 		}
 		
 		if (Std.isOfType(offsetLocations[0], InstancingAttributeInfo)) {
@@ -2491,97 +2523,173 @@ import openfl.display.OpenGLView;
 	
 	public function setIntArray(uniform:GLUniformLocation, array:Int32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			gl.uniform1iv(uniform, array.length, array);
+			#else
 			gl.uniform1iv(uniform, array);
+			#end
 		}	
 	}
 
 	public function setIntArray2(uniform:GLUniformLocation, array:Int32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 2 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 2);
+			gl.uniform2iv(uniform, count, array);
+			#else
 			gl.uniform2iv(uniform, array);
+			#end
 		}
 	}
 
 	public function setIntArray3(uniform:GLUniformLocation, array:Int32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 3 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 3);
+			gl.uniform3iv(uniform, count, array);
+			#else
 			gl.uniform3iv(uniform, array);
+			#end
 		}
 	}
 
 	public function setIntArray4(uniform:GLUniformLocation, array:Int32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 4 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 4);
+			gl.uniform4iv(uniform, count, array);
+			#else
 			gl.uniform4iv(uniform, array);
+			#end
 		}
 	}
 
 	public function setFloatArray(uniform:GLUniformLocation, array:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			gl.uniform1fv(uniform, array.length, array);
+			#else
 			gl.uniform1fv(uniform, array);
+			#end
 		}
 	}
 
 	public function setFloatArray2(uniform:GLUniformLocation, array:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 2 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 2);
+			gl.uniform2fv(uniform, count, array);
+			#else 
 			gl.uniform2fv(uniform, array);
+			#end
 		}
 	}
 
 	public function setFloatArray3(uniform:GLUniformLocation, array:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 3 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 3);
+			gl.uniform3fv(uniform, count, array);
+			#else
 			gl.uniform3fv(uniform, array);
+			#end
 		}
 	}
 
 	public function setFloatArray4(uniform:GLUniformLocation, array:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 4 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 4);
+			gl.uniform4fv(uniform, count, array);
+			#else
 			gl.uniform4fv(uniform, array);
+			#end
 		}
 	}
 	
 	inline public function setArray(uniform:GLUniformLocation, array:Array<Float>) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			gl.uniform1fv(uniform, array.length, new Float32Array(array)); 
+			#else
 			gl.uniform1fv(uniform, new Float32Array(array)); 
+			#end
 		}		
 	}
 	
 	inline public function setArray2(uniform:GLUniformLocation, array:Array<Float>) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 2 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 2);
+			gl.uniform2fv(uniform, count, new Float32Array(array));
+			#else
 			gl.uniform2fv(uniform, new Float32Array(array));
+			#end
 		}
 	}
 
 	inline public function setArray3(uniform:GLUniformLocation, array:Array<Float>) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 3 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 3);
+			gl.uniform3fv(uniform, count, new Float32Array(array));
+			#else
 			gl.uniform3fv(uniform, new Float32Array(array));
+			#end
 		}
 	}
 
 	inline public function setArray4(uniform:GLUniformLocation, array:Array<Float>) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 4 == 0) {
+			#if(lime_native)
+			var count:Int = Std.int(array.length / 4);
+			gl.uniform4fv(uniform, count, new Float32Array(array));
+			#else
 			gl.uniform4fv(uniform, new Float32Array(array));
+			#end
 		}
 	}
 
 	inline public function setMatrices(uniform:GLUniformLocation, matrices:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			var count:Int = Std.int(matrices.length / (4*4));
+			gl.uniformMatrix4fv(uniform, count, false, matrices);
+			#else
 			gl.uniformMatrix4fv(uniform, false, matrices);
+			#end
 		}
 	}
 
 	inline public function setMatrix(uniform:GLUniformLocation, matrix:Matrix) {	
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			gl.uniformMatrix4fv(uniform, 1, false, matrix.m);
+			#else
 			gl.uniformMatrix4fv(uniform, false, matrix.m);
+			#end
 		}
 	}
 	
 	inline public function setMatrix3x3(uniform:GLUniformLocation, matrix:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			var count:Int = Std.int(matrix.length / (3*3));
+			gl.uniformMatrix3fv(uniform, count, false, matrix);
+			#else
 			gl.uniformMatrix3fv(uniform, false, matrix);
+			#end
 		}
 	}
 
 	inline public function setMatrix2x2(uniform:GLUniformLocation, matrix:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+			#if(lime_native)
+			var count:Int = Std.int(matrix.length / (2*2));
+			gl.uniformMatrix2fv(uniform, count, false, matrix);
+			#else
 			gl.uniformMatrix2fv(uniform, false, matrix);
+			#end
 		}
 	}
 	
@@ -3136,7 +3244,11 @@ import openfl.display.OpenGLView;
 			var faceData = data[index];
 			
 			if (compression != null) {
+				#if(lime_native)
+				gl.compressedTexImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + index, level, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, faceData.byteLength, faceData);
+				#else 
 				gl.compressedTexImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + index, level, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, faceData);
+				#end
 			} 
 			else {
 				if (needConversion) {
@@ -3316,7 +3428,7 @@ import openfl.display.OpenGLView;
 			#if(lime_wegl)
 			#if purejs untyped #end gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data);
 			#else
-			#if purejs untyped #end gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data);
+			gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data.byteLength, data);
 			#end
 		} 
 		else {
@@ -3446,7 +3558,7 @@ import openfl.display.OpenGLView;
 		
 		if (compression != "" && data != null) { 
 			#if(lime_native)
-			gl.compressedTexImage2D(GL.TEXTURE_2D, 0, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, data.length, data);
+			gl.compressedTexImage2D(GL.TEXTURE_2D, 0, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, data.byteLength, data);
 			#else
 			gl.compressedTexImage2D(GL.TEXTURE_2D, 0, Reflect.getProperty(this.getCaps().s3tc, compression), texture.width, texture.height, 0, data);
 			#end
@@ -3731,20 +3843,40 @@ import openfl.display.OpenGLView;
 		
 		this._setupDepthStencilTexture(internalTexture, size, internalOptions.generateStencil, internalOptions.bilinearFiltering, internalOptions.comparisonFunction);
 		
+		#if(lime_native)
+		var nullBuffer:ArrayBufferView = null;
+		#end
+
 		if (this.webGLVersion > 1) {
 			if (internalOptions.generateStencil) {
+				#if(lime_native)
+				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH24_STENCIL8, internalTexture.width, internalTexture.height, 0, GL.DEPTH_STENCIL, GL.UNSIGNED_INT_24_8, nullBuffer);
+				#else
 				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH24_STENCIL8, internalTexture.width, internalTexture.height, 0, GL.DEPTH_STENCIL, GL.UNSIGNED_INT_24_8, null);
+				#end
 			}
 			else {
+				#if(lime_native)
+				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT24, internalTexture.width, internalTexture.height, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_INT, nullBuffer);
+				#else
 				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT24, internalTexture.width, internalTexture.height, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_INT, null);
+				#end
 			}
 		}
 		else {
 			if (internalOptions.generateStencil) {
+				#if(lime_native)
+				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_STENCIL, internalTexture.width, internalTexture.height, 0, GL.DEPTH_STENCIL, GL.UNSIGNED_INT_24_8, nullBuffer);
+				#else
 				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_STENCIL, internalTexture.width, internalTexture.height, 0, GL.DEPTH_STENCIL, GL.UNSIGNED_INT_24_8, null);
+				#end
 			}
 			else {
+				#if(lime_native)
+				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT, internalTexture.width, internalTexture.height, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_INT, nullBuffer);
+				#else
 				gl.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT, internalTexture.width, internalTexture.height, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_INT, null);
+				#end
 			}
 		}
 		
@@ -3779,13 +3911,25 @@ import openfl.display.OpenGLView;
 		
 		this._setupDepthStencilTexture(internalTexture, size, internalOptions.generateStencil, internalOptions.bilinearFiltering, internalOptions.comparisonFunction);
 		
+		#if(lime_native)
+		var nullBuffer:ArrayBufferView = null;
+		#end
+
 		// Create the depth/stencil buffer
 		for (face in 0...6) {
 			if (internalOptions.generateStencil) {
+				#if(lime_native)
+				gl.texImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL.DEPTH24_STENCIL8, size, size, 0, GL.DEPTH_STENCIL, GL.UNSIGNED_INT_24_8, nullBuffer);
+				#else
 				gl.texImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL.DEPTH24_STENCIL8, size, size, 0, GL.DEPTH_STENCIL, GL.UNSIGNED_INT_24_8, null);
+				#end
 			}
 			else {
+				#if(lime_native)
+				gl.texImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL.DEPTH_COMPONENT24, size, size, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_INT, nullBuffer);
+				#else
 				gl.texImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL.DEPTH_COMPONENT24, size, size, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_INT, null);
+				#end
 			}
 		}
 		
@@ -3873,9 +4017,9 @@ import openfl.display.OpenGLView;
 		gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 		
 		#if(lime_native)
-
+		var data:ArrayBufferView = null;
+		gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(fullOptions.type), width, height, 0, GL.RGBA, this._getWebGLTextureType(fullOptions.type), data);
 		#else
-		//TODO2022 - this is binding an empty image by passing null in js, but in other targets null is not allowed. What should this do?
 		gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(fullOptions.type), width, height, 0, GL.RGBA, this._getWebGLTextureType(fullOptions.type), null);
 		#end
 		
@@ -3995,7 +4139,12 @@ import openfl.display.OpenGLView;
 			gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
 			gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 			
+			#if(lime_native)
+			var nullBuffer:ArrayBufferView = null;
+			gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(type), width, height, 0, GL.RGBA, this._getWebGLTextureType(type), nullBuffer);
+			#else
 			gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(type), width, height, 0, GL.RGBA, this._getWebGLTextureType(type), null);
+			#end
 			
 			gl.framebufferTexture2D(GL.DRAW_FRAMEBUFFER, attachment, GL.TEXTURE_2D, texture._webGLTexture, 0);
 			
@@ -4033,6 +4182,21 @@ import openfl.display.OpenGLView;
 			gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
 			gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
 			gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+
+			#if(lime_native)
+			var nullBuffer:ArrayBufferView = null;
+			gl.texImage2D(
+				GL.TEXTURE_2D,
+				0,
+				this.webGLVersion < 2 ? GL.DEPTH_COMPONENT : GL.DEPTH_COMPONENT16,
+				width,
+				height,
+				0,
+				GL.DEPTH_COMPONENT,
+				GL.UNSIGNED_SHORT,
+				nullBuffer
+			);
+			#else
 			gl.texImage2D(
 				GL.TEXTURE_2D,
 				0,
@@ -4044,6 +4208,8 @@ import openfl.display.OpenGLView;
 				GL.UNSIGNED_SHORT,
 				null
 			);
+			#end
+
 			
 			gl.framebufferTexture2D(
 				GL.FRAMEBUFFER,
@@ -4250,7 +4416,11 @@ import openfl.display.OpenGLView;
     }
 
     public function _uploadCompressedDataToTexture(target:Int, lod:Int, internalFormat:Int, width:Int, height:Int, data:ArrayBufferView) {
-        gl.compressedTexImage2D(target, lod, internalFormat, width, height, 0, data);
+		#if(lime_native)
+        gl.compressedTexImage2D(target, lod, internalFormat, width, height, 0, data.byteLength, data);
+		#else
+		gl.compressedTexImage2D(target, lod, internalFormat, width, height, 0, data);
+		#end
     }
 	
 	public function createRenderTargetCubeTexture(size:Dynamic, ?options:RenderTargetCreationOptions):InternalTexture {
@@ -4281,7 +4451,12 @@ import openfl.display.OpenGLView;
 		this._bindTextureDirectly(GL.TEXTURE_CUBE_MAP, texture, true);
 		
 		for (face in 0...6) {
+			#if(lime_native)
+			var nullBuffer:ArrayBufferView = null;
+			gl.texImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL.RGBA, size.width, size.height, 0, GL.RGBA, GL.UNSIGNED_BYTE, nullBuffer);
+			#else
 			gl.texImage2D(GL.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL.RGBA, size.width, size.height, 0, GL.RGBA, GL.UNSIGNED_BYTE, null);
+			#end
 		}
 		
 		gl.texParameteri(GL.TEXTURE_CUBE_MAP, GL.TEXTURE_MAG_FILTER, filters.mag);
@@ -4534,6 +4709,7 @@ import openfl.display.OpenGLView;
 	private function _convertRGBtoRGBATextureData(rgbData:ArrayBufferView, width:Int, height:Int, textureType:Int):ArrayBufferView {
 		// Create new RGBA data container.
 		var rgbaData:ArrayBufferView = null;
+		
 		if (textureType == Engine.TEXTURETYPE_FLOAT) {
 			rgbaData = new Float32Array(width * height * 4);
 		}
@@ -4977,7 +5153,11 @@ import openfl.display.OpenGLView;
 			this._textureUnits[i] = this._getCorrectTextureChannel(channel + i, textures[i].getInternalTexture());
 		}
 		
+		#if(lime_native)
+		gl.uniform1iv(uniform, this._textureUnits.length, this._textureUnits);
+		#else
 		gl.uniform1iv(uniform, this._textureUnits);
+		#end
 		
 		for (index in 0...textures.length) {
 			this._setTexture(this._textureUnits[index], textures[index], true);
@@ -5183,7 +5363,12 @@ import openfl.display.OpenGLView;
 		
 		var texture = gl.createTexture();
 		gl.bindTexture(GL.TEXTURE_2D, texture);
+		#if(lime_native)
+		var nullBuffer:ArrayBufferView = null;
+		gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(type), 1, 1, 0, GL.RGBA, this._getWebGLTextureType(type), nullBuffer);
+		#else
 		gl.texImage2D(GL.TEXTURE_2D, 0, this._getRGBABufferInternalSizedFormat(type), 1, 1, 0, GL.RGBA, this._getWebGLTextureType(type), null);
+		#end
 		gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
 		gl.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
 
