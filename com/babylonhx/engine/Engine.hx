@@ -2174,9 +2174,12 @@ import openfl.display.OpenGLView;
 		
 		this.bindArrayBuffer(buffer);
 
+		#if(lime_native)
 		var tempBuffer = new Float32Array(capacity);
-		
 		gl.bufferData(GL.ARRAY_BUFFER, tempBuffer.byteLength, tempBuffer, GL.DYNAMIC_DRAW);
+		#else
+		gl.bufferData(GL.ARRAY_BUFFER, new Float32Array(capacity), GL.DYNAMIC_DRAW);
+		#end
 		
 		return buffer;
 	}
