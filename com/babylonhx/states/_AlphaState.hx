@@ -4,7 +4,7 @@ import com.babylonhx.utils.GL;
 
 #if (lime_webgl)
 typedef WebGL2Context = lime.graphics.WebGL2RenderContext
-#elseif(lime_opengl)
+#elseif(lime_opengles)
 typedef WebGL2Context = lime.graphics.OpenGLES3RenderContext
 #elseif (js || purejs)
 typedef WebGL2Context = js.html.webgl.RenderingContext;

@@ -115,8 +115,9 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		
 		//this._checkUniform(name);
 		
-		this.setTextureArray(name, textures);
-		
+		//TODO2022 - 
+		//this.setTextureArray(name, textures);
+
 		return this;
 	}
 

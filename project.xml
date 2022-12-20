@@ -7,10 +7,13 @@
 	<window require-shaders="true" hardware="true" depth-buffer="true" stencil-buffer="true" antialiasing="0" />
 	
 	<source path="src" />
-	
+
 	<haxelib name="lime" />
-	<haxelib name="actuate" />
+	<!-- <haxelib name="actuate" /> -->
 	<haxelib name="hxcpp-debug-server" />
+
+	<undefine name="lime-opengl" />
+	<define name="lime-opengles" />
 			
 	<assets path="assets" exclude="*.svg" />
 	<icon path="assets/lime.svg" />

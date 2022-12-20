@@ -22,6 +22,7 @@ import com.babylonhx.engine.Engine;
 import com.babylonhx.events.PointerEvent;
 import com.babylonhx.events.PointerEventTypes;
 import com.babylonhx.Scene;
+import com.babylonhx.states._AlphaState;
 
 /**
  * ...
@@ -50,8 +51,13 @@ class MainLime extends Application {
 	override public function onWindowCreate() {
 		//switch (window.context) {
 			//case OPENGL (gl):
-				var gl:WebGL2RenderContext = window.context;
-				engine = new Engine(window, gl, true);	
+				//var gl:WebGL2Context = window.context;
+				
+				//var gles3:lime.graphics.OpenGLES3RenderContext = window.context;
+
+				var renderContext = lime.graphics.opengl.GL.context;
+
+				engine = new Engine(window, renderContext, true);	
 				scene = new Scene(engine);
 				
 				engine.width = window.width;

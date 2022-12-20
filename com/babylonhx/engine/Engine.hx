@@ -484,10 +484,11 @@ import openfl.display.OpenGLView;
 	
 	
 	public function new(canvas:Dynamic, ?_gl:WebGL2Context, antialias:Bool = false, ?options:Dynamic, adaptToDeviceRatio:Bool = false) {
+		
 		this.gl = _gl;
 		
-		this._canvasClientRect.width = Reflect.getProperty(canvas, "width") != null ? Reflect.getProperty(canvas, "width") : 960;
-		this._canvasClientRect.height = Reflect.getProperty(canvas, "height") != null ? Reflect.getProperty(canvas, "height") : 640;
+		//this._canvasClientRect.width = Reflect.getProperty(canvas, "width") != null ? Reflect.getProperty(canvas, "width") : 960;
+		//this._canvasClientRect.height = Reflect.getProperty(canvas, "height") != null ? Reflect.getProperty(canvas, "height") : 640;
 		/*this.width = this._canvasClientRect.width;
 		this.height = this._canvasClientRect.height;*/
 		
@@ -5472,7 +5473,7 @@ import openfl.display.OpenGLView;
 
 	public inline function endQuery(algorithmType:Int) {
 		var glAlgorithm = this.getGlAlgorithmType(algorithmType);
-		#if purejs untyped #end endQuery(glAlgorithm);
+		#if purejs untyped #end gl.endQuery(glAlgorithm);
 	}
 
 	private inline function getGlAlgorithmType(algorithmType:Int):Int {
