@@ -3425,10 +3425,10 @@ import openfl.display.OpenGLView;
 		}
 		
 		if (compression != "" && data != null) {
-			#if(lime_wegl)
-			#if purejs untyped #end gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data);
-			#else
+			#if(lime_native)
 			gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data.byteLength, data);
+			#else
+			#if purejs untyped #end gl.compressedTexImage3D(GL.TEXTURE_3D, 0, this.getCaps().s3tc.compression, texture.width, texture.height, texture.depth, 0, data);
 			#end
 		} 
 		else {
@@ -4709,7 +4709,7 @@ import openfl.display.OpenGLView;
 	private function _convertRGBtoRGBATextureData(rgbData:ArrayBufferView, width:Int, height:Int, textureType:Int):ArrayBufferView {
 		// Create new RGBA data container.
 		var rgbaData:ArrayBufferView = null;
-		
+
 		if (textureType == Engine.TEXTURETYPE_FLOAT) {
 			rgbaData = new Float32Array(width * height * 4);
 		}
