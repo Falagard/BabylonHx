@@ -6,17 +6,17 @@ package com.babylonhx.materials.lib.shadowonly;
  */
 class ShadowOnlyMaterialDefines extends MaterialDefines {
 	
-	public var CLIPPLANE:Bool = false;
+	//public var CLIPPLANE:Bool = false;
 	public var POINTSIZE:Bool = false;
 	public var FOG:Bool = false;
 	public var NORMAL:Bool = false;
 	public var NUM_BONE_INFLUENCERS:Int = 0;
 	public var BonesPerMesh:Int = 0;
-	public var INSTANCES:Bool = false;
+	//public var INSTANCES:Bool = false;
 	
 	// BHX: not used but needed by MaterialHelper
 	public var ALPHATEST:Bool = false;
-	public var DEPTHPREPASS:Bool = false;
+	//public var DEPTHPREPASS:Bool = false;
 	public var LOGARITHMICDEPTH:Bool = false;
 	public var NONUNIFORMSCALING:Bool = false;
 	public var SHADOWS:Bool = false;
@@ -26,7 +26,10 @@ class ShadowOnlyMaterialDefines extends MaterialDefines {
 	
 
 	public function new() {
-		super();
+		super(); 
+		this.CLIPPLANE = 0;
+		this.INSTANCES = 0;
+		this.DEPTHPREPASS = 0;
 	}
 	
 	override public function isEqual(other:MaterialDefines):Bool {
@@ -60,19 +63,19 @@ class ShadowOnlyMaterialDefines extends MaterialDefines {
 	override public function reset() {
 		super.reset();
 		
-		this.CLIPPLANE = false;
+		this.CLIPPLANE = 0;
 		this.POINTSIZE = false;
 		this.FOG = false;
 		this.NORMAL = false;
 		this.NUM_BONE_INFLUENCERS = 0;
 		this.BonesPerMesh = 0;
-		this.INSTANCES = false;
+		this.INSTANCES = 0;
 	}
 	
 	override public function toString():String {
 		var result = super.toString();
 		
-		if (this.CLIPPLANE) {
+		if (this.CLIPPLANE != 0) {
 			result += "#define CLIPPLANE \n";
 		}
 		if (this.POINTSIZE) {
@@ -84,7 +87,7 @@ class ShadowOnlyMaterialDefines extends MaterialDefines {
 		if (this.NORMAL) {
 			result += "#define NORMAL \n";
 		}
-		if (this.INSTANCES) {
+		if (this.INSTANCES != 0) {
 			result += "#define INSTANCES \n";
 		}
 		

@@ -539,7 +539,8 @@ import openfl.display.OpenGLView;
 		#if !purejs
 		this._webGLVersion = #if !js 1.0 #else gl.VERSION #end ;
 		#end
-		trace(this._webGLVersion);
+		
+		//trace(this._webGLVersion);
 		
 		#if openfl
 		this._workingContext = new OpenGLView();
@@ -585,9 +586,9 @@ import openfl.display.OpenGLView;
 		_glRenderer = gl.getParameter(GL.RENDERER);
 		_glExtensions = gl.getSupportedExtensions();
 		
-		for (ext in _glExtensions) {
-			trace(ext);
-		}
+		// for (ext in _glExtensions) {
+		// 	trace(ext);
+		// }
 		
 		Engine.HALF_FLOAT_OES = 0x140B;// 0x8D61; // Half floating-point type (16-bit).	
         Engine.RGBA16F = 0x881A; // RGBA 16-bit floating-point color-renderable internal sized format.
@@ -604,7 +605,9 @@ import openfl.display.OpenGLView;
 						   //gl.getExtension('WEBGL_compressed_texture_es3_0'); // also a requirement of OpenGL ES 3
 		
 		this._caps.textureAnisotropicFilterExtension = gl.getExtension('EXT_texture_filter_anisotropic');
-		this._caps.maxAnisotropy = this._caps.textureAnisotropicFilterExtension ? gl.getParameter(this._caps.textureAnisotropicFilterExtension.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0;
+		
+		//TODO2022
+		//this._caps.maxAnisotropy = this._caps.textureAnisotropicFilterExtension ? gl.getParameter(this._caps.textureAnisotropicFilterExtension.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0;
 		
 		this._caps.uintIndices = this._webGLVersion > 1 || gl.getExtension('OES_element_index_uint') != null;
 		this._caps.fragmentDepthSupported = this._webGLVersion > 1 || gl.getExtension('EXT_frag_depth') != null;
@@ -818,9 +821,9 @@ import openfl.display.OpenGLView;
 		
 		this._linkTrackers(this._firstBoundInternalTextureTracker, this._lastBoundInternalTextureTracker);
 		
-		for (entry in Reflect.fields(this._caps)) {
-			trace(entry + ' , ' + Reflect.field(this._caps, entry));
-		}
+		// for (entry in Reflect.fields(this._caps)) {
+		// 	trace(entry + ' , ' + Reflect.field(this._caps, entry));
+		// }
 		
 		var msg:String = "BabylonHx - Cross-Platform 3D Engine | " + Date.now().getFullYear() + " | www.babylonhx.com";
 		msg +=  " | GL version: " + gl.getParameter(GL.VERSION) + " | GL vendor: " + _glVendor + " | GL renderer: " + _glVendor; 

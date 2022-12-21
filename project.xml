@@ -10,7 +10,7 @@
 
 	<haxelib name="lime" />
 	<!-- <haxelib name="actuate" /> -->
-	<haxelib name="hxcpp-debug-server" />
+	<!-- <haxelib name="hxcpp-debug-server" /> -->
 
 	<undefine name="lime-opengl" />
 	<define name="lime-opengles" />

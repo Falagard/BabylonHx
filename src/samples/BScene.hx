@@ -52,7 +52,8 @@ class BScene {
 		
 		var size = 512;
 		var tex = new Image(null, size, size);// new Texture("assets/img/ll_SS.png", scene);
-		tex.perlinNoise(size / 11, size / 11, 7, Std.int(Math.random() * Math.POSITIVE_INFINITY));
+		//tex.perlinNoise(size / 11, size / 11, 7, Std.int(Math.random() * Math.POSITIVE_INFINITY));
+        tex.perlinNoise(size / 11, size / 11, 7);
 		
 		var diffTex = new Texture("assets/img/ll_SS.png", scene);
 		

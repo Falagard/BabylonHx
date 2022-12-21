@@ -74,9 +74,9 @@ class MainLime extends Application {
 	
 	override public function onPreloadComplete() {
 		//new samples.TestWireframe(scene); 
-		//new samples.BScene(scene);
+		new samples.BScene(scene);
 		//new samples.DRPDemo(scene);
-		new samples.BasicScene(scene);
+		//new samples.BasicScene(scene);
 		//new samples.BasicElements(scene);
 		//new samples.DashedLinesMesh(scene);
 		//new samples.RotationAndScaling(scene);
