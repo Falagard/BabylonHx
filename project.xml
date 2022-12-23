@@ -12,8 +12,8 @@
 	<!-- <haxelib name="actuate" /> -->
 	<!-- <haxelib name="hxcpp-debug-server" /> -->
 
-	<undefine name="lime-opengl" />
-	<define name="lime-opengles" />
+	<undefine name="lime-opengl" if="windows"/>
+	<define name="lime-opengles" if="windows" />
 			
 	<assets path="assets" exclude="*.svg" />
 	<icon path="assets/lime.svg" />

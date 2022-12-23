@@ -55,17 +55,20 @@ class BScene {
 		//tex.perlinNoise(size / 11, size / 11, 7, Std.int(Math.random() * Math.POSITIVE_INFINITY));
         tex.perlinNoise(size / 11, size / 11, 7);
 		
-		var diffTex = new Texture("assets/img/ll_SS.png", scene);
+		var diffTex = new Texture("assets/img/rock.png", scene);
 		
 		var mat = new StandardMaterial("mat", scene);
 		//mat.diffuseTexture = diffTex;
 		
-		var texBumpImg = Image.CreateBumpMap(diffTex.readPixels());
+		//var texBumpImg = Image.CreateBumpMap(diffTex.readPixels());
 		
-		var texBump = Texture.fromImage("bump", texBumpImg, scene);
+		//var texBump = Texture.fromImage("bump", texBumpImg, scene);
+
+        var bumpTex = new Texture("assets/img/rockn.png", scene);
 		
 		mat.diffuseTexture = diffTex;
-		
+        mat.bumpTexture = bumpTex;
+        	
 		// Move the sphere upward 1/2 its height
 		sphere.position.y = 1;
 		
