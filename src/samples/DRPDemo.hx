@@ -29,6 +29,8 @@ class DRPDemo {
 			//camera.setTarget(newMeshes[0]);
 		});
 		
+		//TODO2022 need to investigate what is going on here because the DefaultRenderingPipeline is crashing when bloom is enabled
+
 		var defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [ camera.id => camera ]);
 		defaultPipeline.bloomEnabled = true;
 		defaultPipeline.fxaaEnabled = true;
@@ -52,7 +54,7 @@ class DRPDemo {
 		defaultPipeline.fxaaEnabled = false;
 		defaultPipeline.imageProcessingEnabled = true;
 		defaultPipeline.imageProcessing.vignetteEnabled = true;
-		
+
 		scene.getEngine().runRenderLoop(function () {
 			scene.render();
 		});

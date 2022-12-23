@@ -26,7 +26,7 @@ class BasicElements {
 		var camera = new ArcRotateCamera("Camera", 3 * Math.PI / 2, Math.PI / 8, 50, Vector3.Zero(), scene);
 		camera.attachControl();
 		
-		scene.forceShowBoundingBoxes = true;
+		//scene.forceShowBoundingBoxes = true;
 		
 		var light = new HemisphericLight("hemi", new Vector3(0, 1, 0), scene);
 		light.diffuse = Color3.FromInt(0xf68712);
@@ -38,7 +38,7 @@ class BasicElements {
 		//(name of the box, size, scene)
 		var box = Mesh.CreateBox("box", 6.0, scene);
 		box.material = mat;
-		box.showBoundingBox = true;
+		//box.showBoundingBox = true;
 		
 		//Creation of a sphere 
 		var sphere = Mesh.CreateSphere("sphere", 10, 10, scene);

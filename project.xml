@@ -4,7 +4,7 @@
 	<meta title="BabylonHx_Lime" package="com.babylonhx" version="1.0.0" company="Krtolica Vujadin" />
 	<app main="MainLime" file="BabylonHx_Lime" path="bin_lime" />
 	
-	<window require-shaders="true" hardware="true" depth-buffer="true" stencil-buffer="true" antialiasing="0" />
+	<window require-shaders="true" hardware="true" depth-buffer="true" stencil-buffer="true" antialiasing="0" fps="60" />
 	
 	<source path="src" />
 
