@@ -78,10 +78,10 @@ class MainLime extends Application {
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
 		//new samples.BasicScene(scene); //works
 		//new samples.BasicElements(scene); //works
-		new samples.DashedLinesMesh(scene); //works
-		//new samples.RotationAndScaling(scene);
+		//new samples.DashedLinesMesh(scene); //works
+		//new samples.RotationAndScaling(scene); //works
 		//new samples.Materials(scene);
-		//new samples.Lights(scene);
+		//new samples.Lights(scene); //works
 		//new samples.BumpMap(scene);
 		//new samples.Bump2(scene);
 		//new samples.Animations(scene);
@@ -111,7 +111,7 @@ class MainLime extends Application {
 		//new samples.Lines(scene);
 		//new samples.Lines2(scene);
 		//new samples.Lines3(scene);
-		//new samples.Bones(scene);		
+		new samples.Bones(scene);		 
 		//new samples.Shadows(scene);
 		//new samples.Shadows2(scene);
 		//new samples.HeightMap(scene);

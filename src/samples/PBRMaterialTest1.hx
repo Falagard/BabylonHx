@@ -90,11 +90,11 @@ class PBRMaterialTest1 {
 		wood.environmentIntensity = 1;
 		wood.specularIntensity = 0.3;
 		
-		wood.reflectivityTexture = new Texture("assets/img/reflectivity.png", scene);
+		//wood.reflectivityTexture = new Texture("assets/img/reflectivity.png", scene);
 		wood.useMicroSurfaceFromReflectivityMapAlpha = true;
 		
 		wood.albedoColor = Color3.White();
-		wood.albedoTexture = new Texture("assets/img/albedo.png", scene);
+		//wood.albedoTexture = new Texture("assets/img/albedo.png", scene);
 		woodPlank.material = wood;
 		
 		scene.getEngine().runRenderLoop(function () {

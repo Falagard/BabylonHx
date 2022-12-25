@@ -379,6 +379,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
                                             var skeleton = Skeleton.Parse(parsedSkeleton, scene);
                                             skeletons.push(skeleton);
                                             loadedSkeletonsIds.push(parsedSkeleton.id);
+                                            scene.addSkeleton(skeleton);
                                             //log += "\n\tSkeleton " + skeleton.toString(fullDetails);
                                         }
                                     }

@@ -448,7 +448,10 @@ class RuntimeAnimation {
 		// Compute value
 		var repeatCount:Int = Std.int(ratio / range) >> 0;
 		var currentFrame:Int = Std.int(returnValue ? from + ratio % range : to);
+		
 		var currentValue:Dynamic = this._interpolate(currentFrame, repeatCount, this._animation.loopMode, offsetValue, highLimitValue);
+
+		
 		
 		// Set value
 		this.setValue(currentValue);

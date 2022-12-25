@@ -4725,6 +4725,9 @@ import openfl.display.OpenGLView;
 		else {
 			rgbaData = new UInt32Array(width * height * 4);
 		}
+
+		//var rgbaBytes = rgbaData.buffer;
+		//var rgbBytes = rgbData.buffer;
 		
 		// Convert each pixel.
 		for (x in 0...width) {
@@ -4732,8 +4735,6 @@ import openfl.display.OpenGLView;
 				var index = Std.int((y * width + x) * 3);
 				var newIndex = Std.int((y * width + x) * 4);
 
-				//TODO2022
-				
 				// Map Old Value to new value.
 				//untyped rgbaData[newIndex + 0] = rgbData[index + 0];
 				//untyped rgbaData[newIndex + 1] = rgbData[index + 1];
@@ -4743,6 +4744,8 @@ import openfl.display.OpenGLView;
 				//untyped rgbaData[newIndex + 3] = 1;
 			}
 		}
+		
+
 		return rgbaData;
 	}
 	
