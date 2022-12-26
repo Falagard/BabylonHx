@@ -486,7 +486,11 @@ import haxe.ds.Vector;
 	}
 	
 	public static function Parse(parsedSkeleton:Dynamic, scene:Scene):Skeleton {
-        var skeleton = new Skeleton(parsedSkeleton.name, parsedSkeleton.id, scene);
+		#if(lime_native)
+		var skeleton = new Skeleton(parsedSkeleton.name, Std.string(parsedSkeleton.id), scene);
+		#else
+		var skeleton = new Skeleton(parsedSkeleton.name, parsedSkeleton.id, scene);
+		#end
 		if (parsedSkeleton.dimensionsAtRest != null) {
 			skeleton.dimensionsAtRest = Vector3.FromArray(parsedSkeleton.dimensionsAtRest);
 		}

@@ -3084,7 +3084,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
 		
 		// Skeleton
 		if (parsedMesh.skeletonId > -1) {
-			mesh.skeleton = scene.getLastSkeletonByID(parsedMesh.skeletonId);
+			mesh.skeleton = scene.getLastSkeletonByID(Std.string(parsedMesh.skeletonId));
 			if (parsedMesh.numBoneInfluencers != null) {
 				mesh.numBoneInfluencers = parsedMesh.numBoneInfluencers;
 			}

@@ -297,9 +297,15 @@ class RuntimeAnimation {
 			}
 		}
 		
+		#if(lime_native)
+		if (Reflect.isFunction(this._target.markAsDirty)) {
+			this._target.markAsDirty(this._animation.targetProperty);
+		}
+		#else
 		if (this._target.markAsDirty) {
 			this._target.markAsDirty(this._animation.targetProperty);
 		}
+		#end
 	}
 
 	public function goToFrame(frame:Int) {

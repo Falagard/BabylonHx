@@ -3018,7 +3018,14 @@ import openfl.display.OpenGLView;
 		}
 		
 		if (onLoad != null) {
+			#if(lime_native)
+			//CL - hl fix, originally had a problem casting Void->Void
+			texture.onLoadedObservable.add(function(_,_) {
+				onLoad();
+			});
+			#else
 			texture.onLoadedObservable.add(cast onLoad);
+			#end
 		}
 		if (fallBack == null) {
 			this._internalTexturesCache.push(texture);

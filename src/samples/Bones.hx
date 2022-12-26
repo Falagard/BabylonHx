@@ -45,9 +45,9 @@ class Bones {
 		var skele:Skeleton = null;
 
 		SceneLoader.ImportMesh("Rabbit", "assets/models/Rabbit/", "Rabbit.babylon", scene, function(newMeshes, particleSystems, skeletons) {
-			var rabbit = newMeshes[1];
-			rabbit.scaling = new Vector3(0.4, 0.4, 0.4);
-			scene.beginAnimation(skeletons[0], 0, 100, true, 0.8);
+		 	var rabbit = newMeshes[1];
+		 	rabbit.scaling = new Vector3(0.4, 0.4, 0.4);
+		 	scene.beginAnimation(skeletons[0], 0, 100, true, 0.8);
 		});
 
 		
@@ -69,6 +69,8 @@ class Bones {
 			//scene.beginAnimation(skeletons[0], 0, 100, true, 0.8);
 			//scene.beginAnimation(rabbit2.skeleton, 73, 100, true, 0.8);
 			//scene.beginAnimation(rabbit3.skeleton, 0, 72, true, 0.8);
+
+			trace("about to import mesh");
 			
 			// Dude
 			SceneLoader.ImportMesh("", "assets/models/Dude/", "dude.babylon", scene, function (newMeshes, particleSystems, skeletons) {

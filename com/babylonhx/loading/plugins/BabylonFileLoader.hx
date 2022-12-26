@@ -264,7 +264,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
                     meshesNames = [meshesNames];
                 }
 				
-                var hierarchyIds = new Array<Int>();
+                var hierarchyIds = new Array<String>();
                 if (parsedData.meshes != null) {
                     var loadedSkeletonsIds:Array<Int> = [];
                     var loadedMaterialsIds:Array<String> = [];
@@ -277,7 +277,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
                         if (meshesNames == null || isDescendantOf(parsedMesh, meshesNames, hierarchyIds)) {
                             if (meshesNames != null) {
                                 // Remove found mesh name from list.
-                                meshesNames.splice(meshesNames.indexOf(parsedMesh.name), 1);
+                                meshesNames.splice(meshesNames.indexOf(parsedMesh.name, 0), 1);
                             }
 							
                             //Geometry?
@@ -823,7 +823,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
         return multiMaterial;
     } 
  
-    public static function isDescendantOf(mesh:Dynamic, _names:Dynamic, hierarchyIds:Array<Int>):Bool {
+    public static function isDescendantOf(mesh:Dynamic, _names:Dynamic, hierarchyIds:Array<String>):Bool {
         var names = Std.isOfType(_names, Array) ? _names : [_names];
         for (name in names) {
             if (mesh.name == name) {

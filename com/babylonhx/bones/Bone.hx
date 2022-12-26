@@ -213,7 +213,7 @@ import com.babylonhx.animations.AnimationRange;
 		this._currentRenderId++;
 		this._skeleton._markAsDirty();
 	}
-	
+
 	public function copyAnimationRange(source:Bone, rangeName:String, frameOffset:Int, rescaleAsRequired:Bool = false, skelDimensionsRatio:Vector3 = null):Bool {
 		// all animation may be coming from a library skeleton, so may need to create animation
 		if (this.animations.length == 0){
