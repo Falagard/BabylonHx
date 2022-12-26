@@ -32,7 +32,10 @@ class Polygon {
 
 	inline public function flip() {
 		this.vertices.reverse();
-		this.vertices.map(function(v) { v.flip(); } );
+		//this.vertices.map(function(v) { v.flip(); } ); //changed to for loop
+		for(v in vertices) {
+			v.flip();
+		}
 		this.plane.flip();
 	}
 	

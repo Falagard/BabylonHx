@@ -254,7 +254,7 @@ class GlowLayer extends EffectLayer {
 		});
 		
 		// Prevent autoClear.
-		this._postProcesses.map(function(pp) { pp.autoClear = false; return null; });
+		this._postProcesses.map(function(pp) { pp.autoClear = false; return null; }); 
 	}
 
 	/**

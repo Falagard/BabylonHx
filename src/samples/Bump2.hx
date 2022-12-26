@@ -22,7 +22,7 @@ class Bump2 {
 		var light = new PointLight("Omni", new Vector3(20, 100, 2), scene);
 		var sphere = Mesh.CreateSphere("Sphere", 16, 3, scene);
 		var material = new StandardMaterial("kosh", scene);
-		material.bumpTexture = new Texture("assets/img/normalMap.jpg", scene);
+		material.bumpTexture = new Texture("assets/img/rockn.jpg", scene);
 		material.bumpTexture.level = 1.0;
 		material.diffuseColor = new Color3(1, 0, 0);
 		

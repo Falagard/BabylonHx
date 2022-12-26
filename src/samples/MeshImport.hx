@@ -1,7 +1,7 @@
 package samples;
 
 import com.babylonhx.Scene;
-import com.babylonhx.Engine;
+//import com.babylonhx.Engine;
 import com.babylonhx.math.Vector3;
 import com.babylonhx.math.Color3;
 import com.babylonhx.lights.PointLight;
@@ -13,11 +13,12 @@ import com.babylonhx.mesh.AbstractMesh;
 import com.babylonhx.particles.ParticleSystem;
 import com.babylonhx.loading.SceneLoader;
 import com.babylonhx.cameras.FreeCamera;
+import com.babylonhx.cameras.ArcRotateCamera;
 import com.babylonhx.materials.textures.Texture;
 import com.babylonhx.materials.textures.CubeTexture;
 import com.babylonhx.loading.plugins.BabylonFileLoader;
-import com.babylonhx.loading.plugins.ctmfileloader.CTMFile;
-import com.babylonhx.loading.plugins.ctmfileloader.CTMFileLoader;
+//import com.babylonhx.loading.plugins.ctmfileloader.CTMFile;
+//import com.babylonhx.loading.plugins.ctmfileloader.CTMFileLoader;
 import com.babylonhx.layer.Layer;
 import com.babylonhx.mesh.VertexBuffer;
 
@@ -30,10 +31,13 @@ class MeshImport {
 	
 	public function new(scene:Scene) {
 		var light = new HemisphericLight("hemi", new Vector3(0, 1, 0), scene);
-		light.intensity = 1.8;
+		light.intensity = 1.0;
 		
 		var camera = new FreeCamera("Camera", Vector3.Zero(), scene);
-		camera.attachControl(this, false);
+		camera.attachControl(true, false);
+
+		//var camera = new ArcRotateCamera("Camera", 3 * Math.PI / 2, Math.PI / 8, 50, Vector3.Zero(), scene);
+		//camera.attachControl();
 		
 		var towerMesh:Mesh = null;
 		var platformMesh:Mesh = null;
@@ -56,16 +60,21 @@ class MeshImport {
 			//meshes[0].material = mat;
 			meshes[0].position.y = 2;
 		});*/
+
+		SceneLoader.RegisterPlugin(BabylonFileLoader.plugin);
 		
-		SceneLoader.ImportMesh("", "assets/models/Dude/", "Dude.babylon", scene, function (newMeshes:Array<AbstractMesh>, _, _) {
-			trace(newMeshes);
+		//case sensitive
+		SceneLoader.ImportMesh("", "assets/models/Dude/", "dude.babylon", scene, function (newMeshes:Array<AbstractMesh>, _, _) {
+			//trace(newMeshes);
 			//newMeshes[0].material = mat;
 			//newMeshes[0].material.alpha = 0.5;
 			
-			scene.getEngine().runRenderLoop(function () {
-				scene.render();
-			});
-		});			
+			
+		});		
+		
+		scene.getEngine().runRenderLoop(function () {
+			scene.render();
+		});
 	}
 	
 	function showNormals(mesh:Mesh, size:Float = 0.5) {

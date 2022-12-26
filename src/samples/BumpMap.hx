@@ -63,9 +63,9 @@ class BumpMap {
 		//new Layer("background", "assets/img/graygrad.jpg", scene, true);
 		
 		var material = new StandardMaterial("mat", scene);
-		material.diffuseTexture = new Texture("assets/img/DiffuseMap.jpg", scene);
+		material.diffuseTexture = new Texture("assets/img/rock.png", scene);
 		material.diffuseTexture.uScale = material.diffuseTexture.vScale = 3;
-		material.bumpTexture = new Texture("assets/img/normalMap.jpg", scene);
+		material.bumpTexture = new Texture("assets/img/rockn.png", scene);
 		material.bumpTexture.uScale = material.bumpTexture.vScale = 3;
 		
 		var box = Mesh.CreateBox("box", 4.0, scene);

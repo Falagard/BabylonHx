@@ -81,7 +81,7 @@ class Materials {
 		
 		//Creation of a repeated textured material
 		var materialPlane = new StandardMaterial("texturePlane", scene);
-		materialPlane.diffuseTexture = new Texture("assets/img/grass.jpg", scene);
+		materialPlane.diffuseTexture = new Texture("assets/img/grass.png", scene);
 		cast(materialPlane.diffuseTexture, Texture).uScale = 5.0;//Repeat 5 times on the Vertical Axes
 		cast(materialPlane.diffuseTexture, Texture).vScale = 5.0;//Repeat 5 times on the Horizontal Axes
 		materialPlane.backFaceCulling = false;//Allways show the front and the back of an element

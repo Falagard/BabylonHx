@@ -8,7 +8,7 @@ import com.babylonhx.mesh.AbstractMesh;
 import com.babylonhx.tools.Tools;
 
 import com.babylonhx.utils.Keycodes;
-
+import com.babylonhx.events.PointerEvent;
 
 /**
 * ...
@@ -50,10 +50,10 @@ import com.babylonhx.utils.Keycodes;
 	private var _localDirection:Vector3;
 	private var _transformedDirection:Vector3;
 
-	private var _onMouseDown:Dynamic;			
-	private var _onMouseUp:Dynamic;			
-	private var _onMouseOut:Dynamic;			
-	private var _onMouseMove:Dynamic;			
+	private var _onMouseDown:PointerEvent->Void;
+	private var _onMouseMove:PointerEvent->Void;
+	private var _onMouseUp:PointerEvent->Void;		
+	private var _onMouseOut:PointerEvent->Void;			
 	private var _onKeyDown:Dynamic;			
 	private var _onKeyUp:Dynamic;				
 	public var _onLostFocus:Void->Void;				
@@ -69,23 +69,23 @@ import com.babylonhx.utils.Keycodes;
 		var engine = this.getEngine();
 		
 		if (this._onMouseDown == null) {
-			this._onMouseDown = function(x:Float, y:Float, button:Int) {
+			this._onMouseDown = function(evt:PointerEvent) {
 				previousPosition = {
-					x: x,
-					y: y
+					x: evt.x,
+					y: evt.y
 				};
 			};
 			
-			this._onMouseUp = function(x:Float, y:Float, button:Int) {
+			this._onMouseUp = function(evt:PointerEvent) {
 				previousPosition = null;				
 			};
 			
-			this._onMouseOut = function() {
+			this._onMouseOut = function(evt:PointerEvent) {
 				previousPosition = null;
 				this._keys = [];				
 			};
-			
-			this._onMouseMove = function(x:Float, y:Float) {
+
+			this._onMouseMove = function(evt:PointerEvent) {
 				if (previousPosition == null && !engine.isPointerLock) {
 					return;
 				}
@@ -94,16 +94,16 @@ import com.babylonhx.utils.Keycodes;
 				var offsetY:Float = 0;
 				
 				if (!engine.isPointerLock) {
-					offsetX = x - previousPosition.x;
-					offsetY = y - previousPosition.y;
+					offsetX = evt.x - previousPosition.x;
+					offsetY = evt.y - previousPosition.y;
 				} 
 				
 				this.cameraRotation.y += offsetX / this.angularSensibility;
 				this.cameraRotation.x += offsetY / this.angularSensibility;
 				
 				previousPosition = {
-					x: x,
-					y: y
+					x: evt.x,
+					y: evt.y
 				};				
 			};
 			

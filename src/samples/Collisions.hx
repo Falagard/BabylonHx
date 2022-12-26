@@ -25,7 +25,7 @@ class Collisions {
 		
 		// Need a free camera for collisions
 		var camera = new FreeCamera("FreeCamera", new Vector3(0, -8, -20), scene);
-		camera.attachControl(this, true);
+		camera.attachControl(true, true);
 		
 		//Ground
 		var ground = Mesh.CreatePlane("ground", 20.0, scene);

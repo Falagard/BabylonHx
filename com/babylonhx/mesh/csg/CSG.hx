@@ -215,7 +215,11 @@ import lime.utils.UInt32Array;
 	}
 
 	public function inverseInPlace() {
-		this.polygons.map(function(p) { p.flip(); });
+		//this.polygons.map(function(p) { p.flip(); });
+		//CL: changed to for loop
+		for(p in this.polygons) {
+			p.flip();
+		}
 	}
 
 	// This is used to keep meshes transformations so they can be restored

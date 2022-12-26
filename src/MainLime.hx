@@ -74,26 +74,26 @@ class MainLime extends Application {
 	
 	override public function onPreloadComplete() {
 		//new samples.TestWireframe(scene); //works
-		//new samples.BScene(scene); //works
+		//new samples.BScene(scene); //html: y, hl - runs but normal mapping isn't working
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
-		//new samples.BasicScene(scene); //works
-		//new samples.BasicElements(scene); //works
-		//new samples.DashedLinesMesh(scene); //works
-		//new samples.RotationAndScaling(scene); //works
-		//new samples.Materials(scene);
-		//new samples.Lights(scene); //works
-		//new samples.BumpMap(scene);
-		//new samples.Bump2(scene);
-		//new samples.Animations(scene);
-		//new samples.Collisions(scene);
-		//new samples.Intersections(scene);
-		//new samples.EasingFunctions(scene);
-		//new samples.ProceduralTextures(scene);
-		//new samples.MeshImport(scene);
-		//new samples.LoadScene(scene);
-		//new samples.CSGDemo(scene);
-		//new samples.Fog(scene);
-		//new samples.DisplacementMap(scene);
+		//new samples.BasicScene(scene); //html: Y, hl: y
+		//new samples.BasicElements(scene); //hl: y
+		//new samples.DashedLinesMesh(scene); //hl: y
+		//new samples.RotationAndScaling(scene); //hl: y
+		new samples.Materials(scene); //runs but needs assets 
+		//new samples.Lights(scene); //hl: y
+		//new samples.BumpMap(scene); //html:y , hl: runs but textures not showing up
+		//new samples.Bump2(scene); //html: runs but not showing bump
+		//new samples.Animations(scene); //doesn't build, BabylonFrame missing
+		//new samples.Collisions(scene); //html: runs, black screen
+		//new samples.Intersections(scene); //html: y
+		//new samples.EasingFunctions(scene); //html: y
+		//new samples.ProceduralTextures(scene); //html: y
+		//new samples.MeshImport(scene); //html: y
+		//new samples.LoadScene(scene); //needs assets
+		//new samples.CSGDemo(scene); //html: y
+		//new samples.Fog(scene); html: y
+		//new samples.DisplacementMap(scene); //compile error
 		//new samples.Environment(scene);
 		//new samples.LensFlares(scene);
 		//new samples.PhysicsCannon(scene);
@@ -111,7 +111,7 @@ class MainLime extends Application {
 		//new samples.Lines(scene);
 		//new samples.Lines2(scene);
 		//new samples.Lines3(scene);
-		new samples.Bones(scene);		 
+		//new samples.Bones(scene);		 
 		//new samples.Shadows(scene);
 		//new samples.Shadows2(scene);
 		//new samples.HeightMap(scene);
