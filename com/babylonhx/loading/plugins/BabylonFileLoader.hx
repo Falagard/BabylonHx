@@ -379,7 +379,7 @@ import com.babylonhx.utils.typedarray.Int32Array;
                                             var skeleton = Skeleton.Parse(parsedSkeleton, scene);
                                             skeletons.push(skeleton);
                                             loadedSkeletonsIds.push(parsedSkeleton.id);
-                                            scene.addSkeleton(skeleton);
+                                            scene.addSkeleton(skeleton); //CL2022 - bug fix, added skeleton to scene so it can be looked up in Mesh.Parse below
                                             //log += "\n\tSkeleton " + skeleton.toString(fullDetails);
                                         }
                                     }

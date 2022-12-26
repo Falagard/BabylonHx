@@ -2659,10 +2659,11 @@ import openfl.display.OpenGLView;
 		}
 	}
 
+	//TODO2022 - 
 	inline public function setMatrices(uniform:GLUniformLocation, matrices:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
 			#if(lime_native)
-			var count:Int = Std.int(matrices.length / (4*4));
+			var count:Int = Std.int(matrices.length / 16);
 			gl.uniformMatrix4fv(uniform, count, false, matrices);
 			#else
 			gl.uniformMatrix4fv(uniform, false, matrices);

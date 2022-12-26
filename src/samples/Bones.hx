@@ -43,6 +43,13 @@ class Bones {
 		SceneLoader.RegisterPlugin(BabylonFileLoader.plugin);
 
 		var skele:Skeleton = null;
+
+		SceneLoader.ImportMesh("Rabbit", "assets/models/Rabbit/", "Rabbit.babylon", scene, function(newMeshes, particleSystems, skeletons) {
+			var rabbit = newMeshes[1];
+			rabbit.scaling = new Vector3(0.4, 0.4, 0.4);
+			scene.beginAnimation(skeletons[0], 0, 100, true, 0.8);
+		});
+
 		
 		// Meshes
 		//SceneLoader.ImportMesh("Rabbit", "assets/models/Rabbit/", "Rabbit.babylon", scene, function(newMeshes, particleSystems, skeletons) {
@@ -90,16 +97,16 @@ class Bones {
 			//shadowGenerator.getShadowMap().renderList.push(rabbit3);	
 		//});
 
-		scene.forceShowBoundingBoxes = true;
+		//scene.forceShowBoundingBoxes = true;
 
-		var rotations:Array<Vector3> = [];
-		var rotationQuats:Array<Quaternion> = [];
+		//var rotations:Array<Vector3> = [];
+		//var rotationQuats:Array<Quaternion> = [];
 
 		//get initial values for all bones
-		for(index in 0...skele.bones.length) {
-			rotations.push(skele.bones[index].rotation);
-			rotationQuats.push(skele.bones[index].rotationQuaternion);
-		}
+		//for(index in 0...skele.bones.length) {
+		//	rotations.push(skele.bones[index].rotation);
+		//	rotationQuats.push(skele.bones[index].rotationQuaternion);
+		//}
 
 		//trace("start: " + rotations[0]);
 
@@ -110,17 +117,17 @@ class Bones {
 		scene.getEngine().runRenderLoop(function () {
 			scene.render();
 
-			if(counter % 10 == 0) {
+			//if(counter % 10 == 0) {
 				//for(index in 0...skele.bones.length) {
 				//	if(skele.bones[index].rotation.equals(rotations[index]) == false) {
 				//		trace("bone: " + index + " rotation changed " + skele.bones[index].rotation);
 				//	}
 				//}
 
-				if(skele.bones[1].rotation.equals(rotations[1]) == false) {
-					trace("bone: " + 1 + " rotation changed " + skele.bones[1].rotation);
-				}
-			}
+				//if(skele.bones[1].rotation.equals(rotations[1]) == false) {
+				//	trace("bone: " + 1 + " rotation changed " + skele.bones[1].rotation);
+				//}
+			//}
 
 			//for(index in 0...skele.bones.length) {
 			//	if(skele.bones[index].rotation != rotations[index]) {
