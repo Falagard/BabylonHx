@@ -536,8 +536,12 @@ import openfl.display.OpenGLView;
 		trace(this.gl);
 		#end
 		
+		#if(lime_native)
+		this._webGLVersion = 1; //gl.version;
+		#else
 		#if !purejs
 		this._webGLVersion = #if !js 1.0 #else gl.VERSION #end ;
+		#end
 		#end
 		
 		//trace(this._webGLVersion);
@@ -587,7 +591,7 @@ import openfl.display.OpenGLView;
 		_glExtensions = gl.getSupportedExtensions();
 		
 		// for (ext in _glExtensions) {
-		// 	trace(ext);
+		//  	trace(ext);
 		// }
 		
 		Engine.HALF_FLOAT_OES = 0x140B;// 0x8D61; // Half floating-point type (16-bit).	
@@ -595,7 +599,12 @@ import openfl.display.OpenGLView;
         Engine.RGBA32F = 0x8814; // RGBA 32-bit floating-point color-renderable internal sized format.
 		
 		// first try js
+		#if(lime_native)
+		//CL - set this to true for native. Probably will be more extensions that need to be changed over to use native OpenGL
+		this._caps.standardDerivatives = true;
+		#else
 		this._caps.standardDerivatives = this._webGLVersion > 1 || (gl.getExtension('OES_standard_derivatives') != null);
+		#end
 		
 		this._caps.astc = gl.getExtension('WEBGL_compressed_texture_astc');
 		this._caps.s3tc = gl.getExtension('WEBGL_compressed_texture_s3tc');
@@ -633,7 +642,11 @@ import openfl.display.OpenGLView;
 		this._caps.textureHalfFloat = this._webGLVersion > 1 || gl.getExtension('OES_texture_half_float');
 		this._caps.textureHalfFloatLinearFiltering = this._webGLVersion > 1 || (this._caps.textureHalfFloat && gl.getExtension('OES_texture_half_float_linear'));
 		
+		//#if(lime_native)
+		//this._caps.textureHalfFloatRender = true;
+		//#else
 		this._caps.textureHalfFloatRender = this._caps.textureHalfFloat && this._canRenderToHalfFloatFramebuffer();
+		//#end
 		
 		this._caps.textureLOD = this._webGLVersion > 1 || gl.getExtension('EXT_shader_texture_lod');
 		
@@ -2659,8 +2672,7 @@ import openfl.display.OpenGLView;
 		}
 	}
 
-	//TODO2022 - removed inline for testing purposes
-	public function setMatrices(uniform:GLUniformLocation, matrices:Float32Array) {
+	inline public function setMatrices(uniform:GLUniformLocation, matrices:Float32Array) {
 		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			var count:Int = Std.int(matrices.length / 16);
@@ -2671,9 +2683,7 @@ import openfl.display.OpenGLView;
 		}
 	}
 
-	//TODO2022 - removed inline for testing purposes
-	public function setMatrix(uniform:GLUniformLocation, matrix:Matrix) {	
-		//CL - changed uniform to check for -1
+	inline public function setMatrix(uniform:GLUniformLocation, matrix:Matrix) {	
 		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			gl.uniformMatrix4fv(uniform, 1, false, matrix.m);
@@ -2684,7 +2694,6 @@ import openfl.display.OpenGLView;
 	}
 	
 	inline public function setMatrix3x3(uniform:GLUniformLocation, matrix:Float32Array) {
-		//CL - changed uniform to check for -1
 		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			var count:Int = Std.int(matrix.length / (3*3));

@@ -75,7 +75,7 @@ class MainLime extends Application {
 	override public function onPreloadComplete() {
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl - runs but normal mapping isn't working
-		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
+		new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
 		//new samples.BasicScene(scene); //html: Y, hl: y
 		//new samples.BasicElements(scene); //hl: y
 		//new samples.DashedLinesMesh(scene); //hl: y

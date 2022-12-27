@@ -3669,7 +3669,7 @@ import com.babylonhx.audio.*;
 			}
 			engine.setDepthBuffer(true);
 		}
-		
+
 		// Finalize frame
 		this.postProcessManager._finalizeFrame(camera.isIntermediate);
 		

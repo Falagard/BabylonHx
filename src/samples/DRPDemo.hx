@@ -33,7 +33,7 @@ class DRPDemo {
 
 		var defaultPipeline = new DefaultRenderingPipeline("default", true, scene, [ camera.id => camera ]);
 		defaultPipeline.bloomEnabled = true;
-		defaultPipeline.fxaaEnabled = true;
+		//defaultPipeline.fxaaEnabled = true;
 		defaultPipeline.bloomWeight = 0.5;
 		
 		var curve = new ColorCurves();
