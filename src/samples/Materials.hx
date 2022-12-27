@@ -81,10 +81,12 @@ class Materials {
 		
 		//Creation of a repeated textured material
 		var materialPlane = new StandardMaterial("texturePlane", scene);
-		materialPlane.diffuseTexture = new Texture("assets/img/grass.png", scene);
-		cast(materialPlane.diffuseTexture, Texture).uScale = 5.0;//Repeat 5 times on the Vertical Axes
-		cast(materialPlane.diffuseTexture, Texture).vScale = 5.0;//Repeat 5 times on the Horizontal Axes
+		var grassTexture = new Texture("assets/img/grass.png", scene);
+		grassTexture.uScale = 5.0;//Repeat 5 times on the Vertical Axes
+		grassTexture.vScale = 5.0;//Repeat 5 times on the Horizontal Axes	
+		materialPlane.diffuseTexture = grassTexture;
 		materialPlane.backFaceCulling = false;//Allways show the front and the back of an element
+
 		
 		//Creation of a material with wireFrame
 		var materialSphere1 = new StandardMaterial("texture1", scene);

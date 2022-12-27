@@ -2531,7 +2531,7 @@ import openfl.display.OpenGLView;
 	}
 	
 	public function setIntArray(uniform:GLUniformLocation, array:Int32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			gl.uniform1iv(uniform, array.length, array);
 			#else
@@ -2541,7 +2541,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setIntArray2(uniform:GLUniformLocation, array:Int32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 2 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 2 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 2);
 			gl.uniform2iv(uniform, count, array);
@@ -2552,7 +2552,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setIntArray3(uniform:GLUniformLocation, array:Int32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 3 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 3 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 3);
 			gl.uniform3iv(uniform, count, array);
@@ -2563,7 +2563,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setIntArray4(uniform:GLUniformLocation, array:Int32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 4 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 4 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 4);
 			gl.uniform4iv(uniform, count, array);
@@ -2574,7 +2574,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setFloatArray(uniform:GLUniformLocation, array:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			gl.uniform1fv(uniform, array.length, array);
 			#else
@@ -2584,7 +2584,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setFloatArray2(uniform:GLUniformLocation, array:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 2 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 2 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 2);
 			gl.uniform2fv(uniform, count, array);
@@ -2595,7 +2595,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setFloatArray3(uniform:GLUniformLocation, array:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 3 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 3 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 3);
 			gl.uniform3fv(uniform, count, array);
@@ -2606,7 +2606,7 @@ import openfl.display.OpenGLView;
 	}
 
 	public function setFloatArray4(uniform:GLUniformLocation, array:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 4 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 4 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 4);
 			gl.uniform4fv(uniform, count, array);
@@ -2617,7 +2617,7 @@ import openfl.display.OpenGLView;
 	}
 	
 	inline public function setArray(uniform:GLUniformLocation, array:Array<Float>) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			gl.uniform1fv(uniform, array.length, new Float32Array(array)); 
 			#else
@@ -2627,7 +2627,7 @@ import openfl.display.OpenGLView;
 	}
 	
 	inline public function setArray2(uniform:GLUniformLocation, array:Array<Float>) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 2 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 2 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 2);
 			gl.uniform2fv(uniform, count, new Float32Array(array));
@@ -2638,7 +2638,7 @@ import openfl.display.OpenGLView;
 	}
 
 	inline public function setArray3(uniform:GLUniformLocation, array:Array<Float>) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 3 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 3 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 3);
 			gl.uniform3fv(uniform, count, new Float32Array(array));
@@ -2649,7 +2649,7 @@ import openfl.display.OpenGLView;
 	}
 
 	inline public function setArray4(uniform:GLUniformLocation, array:Array<Float>) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end && array.length % 4 == 0) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end && array.length % 4 == 0) {
 			#if(lime_native)
 			var count:Int = Std.int(array.length / 4);
 			gl.uniform4fv(uniform, count, new Float32Array(array));
@@ -2659,9 +2659,9 @@ import openfl.display.OpenGLView;
 		}
 	}
 
-	//TODO2022 - 
-	inline public function setMatrices(uniform:GLUniformLocation, matrices:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+	//TODO2022 - removed inline for testing purposes
+	public function setMatrices(uniform:GLUniformLocation, matrices:Float32Array) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			var count:Int = Std.int(matrices.length / 16);
 			gl.uniformMatrix4fv(uniform, count, false, matrices);
@@ -2671,8 +2671,10 @@ import openfl.display.OpenGLView;
 		}
 	}
 
-	inline public function setMatrix(uniform:GLUniformLocation, matrix:Matrix) {	
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+	//TODO2022 - removed inline for testing purposes
+	public function setMatrix(uniform:GLUniformLocation, matrix:Matrix) {	
+		//CL - changed uniform to check for -1
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			gl.uniformMatrix4fv(uniform, 1, false, matrix.m);
 			#else
@@ -2682,7 +2684,8 @@ import openfl.display.OpenGLView;
 	}
 	
 	inline public function setMatrix3x3(uniform:GLUniformLocation, matrix:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		//CL - changed uniform to check for -1
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			var count:Int = Std.int(matrix.length / (3*3));
 			gl.uniformMatrix3fv(uniform, count, false, matrix);
@@ -2693,7 +2696,7 @@ import openfl.display.OpenGLView;
 	}
 
 	inline public function setMatrix2x2(uniform:GLUniformLocation, matrix:Float32Array) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			#if(lime_native)
 			var count:Int = Std.int(matrix.length / (2*2));
 			gl.uniformMatrix2fv(uniform, count, false, matrix);
@@ -2704,49 +2707,49 @@ import openfl.display.OpenGLView;
 	}
 	
 	inline public function setInt(uniform:GLUniformLocation, value:Int) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform1i(uniform, value);
 		}
 	}
 
 	public function setFloat(uniform:GLUniformLocation, value:Float) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform1f(uniform, value);
 		}
 	}
 
 	inline public function setFloat2(uniform:GLUniformLocation, x:Float, y:Float) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform2f(uniform, x, y);
 		}
 	}
 
 	inline public function setFloat3(uniform:GLUniformLocation, x:Float, y:Float, z:Float) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform3f(uniform, x, y, z);
 		}
 	}
 
 	inline public function setBool(uniform:GLUniformLocation, bool:Bool) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform1i(uniform, bool ? 1 : 0);
 		}
 	}
 
 	public function setFloat4(uniform:GLUniformLocation, x:Float, y:Float, z:Float, w:Float) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform4f(uniform, x, y, z, w);
 		}
 	}
 
 	inline public function setColor3(uniform:GLUniformLocation, color3:Color3) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform3f(uniform, color3.r, color3.g, color3.b);
 		}
 	}
 
 	inline public function setColor4(uniform:GLUniformLocation, color3:Color3, alpha:Float) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform4f(uniform, color3.r, color3.g, color3.b, alpha);
 		}
 	}
@@ -2757,7 +2760,7 @@ import openfl.display.OpenGLView;
 	 * @param color4 defines the value to be set
 	 */
 	inline public function setDirectColor4(uniform:GLUniformLocation, color4:Color4) {
-		if (uniform != #if (purejs || (js && html5)) null #else 0 #end) {
+		if (uniform != #if (purejs || (js && html5)) null #else -1 #end) {
 			gl.uniform4f(uniform, color4.r, color4.g, color4.b, color4.a);
 		}
 	} 
@@ -4827,7 +4830,7 @@ import openfl.display.OpenGLView;
 		for (index in 0...samplers.length) {
 			var uniform = effect.getUniform(samplers[index]);
 			
-			if ((uniform != #if (purejs || (js && html5)) null #else 0 #end)) {
+			if ((uniform != #if (purejs || (js && html5)) null #else -1 #end)) {
                 this._boundUniforms[index] = uniform;
 				this._boundUniformsStates[index] = -1;
             }
@@ -5162,7 +5165,7 @@ import openfl.display.OpenGLView;
 	}
 	
 	public function setTextureArray(channel:Int, uniform:GLUniformLocation, textures:Array<BaseTexture>) {
-		if (channel < 0 || (uniform != #if (purejs || (js && html5)) null #else 0 #end)) {
+		if (channel < 0 || (uniform != #if (purejs || (js && html5)) null #else -1 #end)) {
 			return;
 		}
 		

@@ -74,13 +74,13 @@ class MainLime extends Application {
 	
 	override public function onPreloadComplete() {
 		//new samples.TestWireframe(scene); //works
-		//new samples.BScene(scene); //html: y, hl - runs but normal mapping isn't working
+	    //new samples.BScene(scene); //html: y, hl - runs but normal mapping isn't working
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
 		//new samples.BasicScene(scene); //html: Y, hl: y
 		//new samples.BasicElements(scene); //hl: y
 		//new samples.DashedLinesMesh(scene); //hl: y
 		//new samples.RotationAndScaling(scene); //hl: y
-		new samples.Materials(scene); //runs but needs assets 
+		//Fnew samples.Materials(scene); //html: y, hl: y
 		//new samples.Lights(scene); //hl: y
 		//new samples.BumpMap(scene); //html:y , hl: runs but textures not showing up
 		//new samples.Bump2(scene); //html: runs but not showing bump
@@ -111,7 +111,7 @@ class MainLime extends Application {
 		//new samples.Lines(scene);
 		//new samples.Lines2(scene);
 		//new samples.Lines3(scene);
-		//new samples.Bones(scene);		 
+		//new samples.Bones(scene); //html: y, hl: y
 		//new samples.Shadows(scene);
 		//new samples.Shadows2(scene);
 		//new samples.HeightMap(scene);
