@@ -3375,8 +3375,9 @@ import com.babylonhx.audio.*;
 		}
 		
 		// Check each mesh
-		var mesh:Mesh = null;
-		var meshLOD:Mesh = null;
+		//CL changed from Mesh to AbstractMesh or crashes for InstancedMeshes?
+		var mesh:AbstractMesh = null;
+		var meshLOD:AbstractMesh = null;
 		for (meshIndex in 0...len) {
 			mesh = cast meshes[meshIndex];
 			
@@ -3432,7 +3433,13 @@ import com.babylonhx.audio.*;
 				}
 				
 				var emitter = particleSystem.emitter;
-				if (emitter.position == null || emitter.isEnabled()) {
+				var enabled:Bool = true; 
+				 
+				if(Std.isOfType(emitter, AbstractMesh)) {
+					enabled = emitter.isEnabled(false);
+				} 
+
+				if (emitter.position == null || enabled) {
 					this._activeParticleSystems.push(particleSystem);
 					particleSystem.animate();
 					this._renderingManager.dispatchParticles(particleSystem);

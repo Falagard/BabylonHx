@@ -37,12 +37,13 @@ class LensFlares {
 		lightSphere0.position = light0.position;
 		
 		var lensFlareSystem = new LensFlareSystem("lensFlareSystem", light0, scene);
-		var flare00 = new LensFlare(0.2, 0, new Color3(1, 1, 1), "assets/img/lens5.png", lensFlareSystem);
-		var flare01 = new LensFlare(0.5, 0.2, new Color3(0.5, 0.5, 1), "assets/img/lens4.png", lensFlareSystem);
-		var flare02 = new LensFlare(0.2, 1.0, new Color3(1, 1, 1), "assets/img/lens4.png", lensFlareSystem);
+		
+		var flare00 = new LensFlare(0.2, 0, new Color3(1, 1, 1), "assets/img/Flare2.png", lensFlareSystem);
+		var flare01 = new LensFlare(0.5, 0.2, new Color3(0.5, 0.5, 1), "assets/img/flare3.png", lensFlareSystem);
+		var flare02 = new LensFlare(0.2, 1.0, new Color3(1, 1, 1), "assets/img/flare3.png", lensFlareSystem);
 		var flare03 = new LensFlare(0.4, 0.4, new Color3(1, 0.5, 1), "assets/img/flare.png", lensFlareSystem);
-		var flare04 = new LensFlare(0.1, 0.6, new Color3(1, 1, 1), "assets/img/lens5.png", lensFlareSystem);
-		var flare05 = new LensFlare(0.3, 0.8, new Color3(1, 1, 1), "assets/img/lens4.png", lensFlareSystem);
+		var flare04 = new LensFlare(0.1, 0.6, new Color3(1, 1, 1), "assets/img/Flare2.png", lensFlareSystem);
+		var flare05 = new LensFlare(0.3, 0.8, new Color3(1, 1, 1), "assets/img/flare3.png", lensFlareSystem);
 		
 		// Skybox
 		var skybox = Mesh.CreateBox("skyBox", 100.0, scene);

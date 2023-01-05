@@ -1,6 +1,7 @@
 package samples;
 
 import com.babylonhx.cameras.FreeCamera;
+import com.babylonhx.cameras.ArcRotateCamera;
 import com.babylonhx.lights.DirectionalLight;
 import com.babylonhx.lights.shadows.ShadowGenerator;
 import com.babylonhx.loading.SceneLoader;
@@ -17,7 +18,8 @@ import com.babylonhx.mesh.AbstractMesh;
 import com.babylonhx.materials.textures.Texture;
 import com.babylonhx.bones.Skeleton;
 import com.babylonhx.Scene;
-import com.babylonhxext.loaders.obj.ObjLoader;
+//import com.babylonhxext.loaders.obj.ObjLoader;
+import com.babylonhx.loading.obj.ObjLoader;
 
 /**
  * ...
@@ -28,7 +30,9 @@ class Instances {
 	public function new(scene:Scene) {
 		var light = new DirectionalLight("dir01", new Vector3(0, -1, -0.8), scene);
 		var camera = new FreeCamera("Camera", new Vector3(0, 30, -20), scene);
-		camera.attachControl(this);
+		//var camera = new ArcRotateCamera("Camera", 0, 0, 10, Vector3.Zero(), scene);
+		//camera.setPosition(new Vector3(-10, 10, 0));
+		camera.attachControl();
 		camera.speed = 0.4;
 		
 		light.position = new Vector3(0, 10, 0);
@@ -121,8 +125,8 @@ class Instances {
 				shadowGenerator.usePoissonSampling = true;
 				
 				// Collisions
-				camera.checkCollisions = true;
-				camera.applyGravity = true;
+				//camera.checkCollisions = true; //CL this is crashing
+				//camera.applyGravity = true;
 			});
 			
 			scene.getEngine().runRenderLoop(function () {

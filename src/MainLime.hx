@@ -74,15 +74,15 @@ class MainLime extends Application {
 	
 	override public function onPreloadComplete() {
 		//new samples.TestWireframe(scene); //works
-	    //new samples.BScene(scene); //html: y, hl - runs but normal mapping isn't working
-		new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
+	    //new samples.BScene(scene); //html: y, hl: y
+		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
 		//new samples.BasicScene(scene); //html: Y, hl: y
 		//new samples.BasicElements(scene); //hl: y
 		//new samples.DashedLinesMesh(scene); //hl: y
 		//new samples.RotationAndScaling(scene); //hl: y
 		//Fnew samples.Materials(scene); //html: y, hl: y
 		//new samples.Lights(scene); //hl: y
-		//new samples.BumpMap(scene); //html:y , hl: runs but textures not showing up
+		//new samples.BumpMap(scene); //html:y , hl: y
 		//new samples.Bump2(scene); //html: runs but not showing bump
 		//new samples.Animations(scene); //doesn't build, BabylonFrame missing
 		//new samples.Collisions(scene); //html: runs, black screen
@@ -94,8 +94,8 @@ class MainLime extends Application {
 		//new samples.CSGDemo(scene); //html: y
 		//new samples.Fog(scene); html: y
 		//new samples.DisplacementMap(scene); //compile error
-		//new samples.Environment(scene);
-		//new samples.LensFlares(scene);
+		//new samples.Environment(scene); //hl: y
+		//new samples.LensFlares(scene); //hl: y
 		//new samples.PhysicsCannon(scene);
 		//new samples.Physics(scene);
 		//new samples.Physics2(scene);
@@ -103,30 +103,30 @@ class MainLime extends Application {
 		//new samples.PhysicsSimple(scene);
 		//new samples.PhysicsCar(scene);
 		//new samples.PhysicsNew(scene);
-		//new samples.PolygonMesh1(scene);
+		//new samples.PolygonMesh1(scene); //compile error
 		//new samples.PolygonMesh2(scene);
 		//new samples.PolygonMesh3(scene);
 		//new samples.ProceduralShapesTest(scene);
-		//new samples.CustomRenderTarget(scene);
+		//new samples.CustomRenderTarget(scene); //hl: y
 		//new samples.Lines(scene);
 		//new samples.Lines2(scene);
 		//new samples.Lines3(scene);
 		//new samples.Bones(scene); //html: y, hl: y
-		//new samples.Shadows(scene);
-		//new samples.Shadows2(scene);
-		//new samples.HeightMap(scene);
+		//new samples.Shadows(scene); //hl: no shadows
+		//new samples.Shadows2(scene); //missing assets
+		//new samples.HeightMap(scene); //missing assets
 		//new samples.LoadObjFile(scene);
 		//new samples.LoadStlFile(scene);
 		//new samples.LoadPlyFile(scene);
 		//new samples.LoadCtmFile(scene);
 		//new samples.LOD(scene);
-		//new samples.Instances(scene);
+		new samples.Instances(scene); //hl: y, but crashes when freecamera collisions enabled
 		//new samples.Instances2(scene);
 		//new samples.Fresnel(scene);		
 		//new samples.Fresnel2(scene);
 		//new samples.VolumetricLights(scene);
 		//new samples.CellShading(scene);
-		//new samples.Particles(scene);
+		//new samples.Particles(scene); //hl: y
 		//new samples.Particles2(scene);					// OK
 		//new samples.Particles3(scene);					// OK
 		//new samples.Particles4(scene);
@@ -139,10 +139,10 @@ class MainLime extends Application {
 		//new samples.AnimatedParticles(scene);
 		//new samples.Snow(scene);
 		//new samples.Extrusion(scene);
-		//new samples.Sprites(scene);
-		//new samples.PostprocessBloom(scene);
-		//new samples.PostprocessBloom2(scene);
-		//new samples.PostprocessRefraction(scene);
+		//new samples.Sprites(scene); //missing assets
+		//new samples.PostprocessBloom(scene); //hl: y
+		//new samples.PostprocessBloom2(scene); //compile error CTM file loader
+		//new samples.PostprocessRefraction(scene); //hl: y
 		//new samples.PostprocessConvolution(scene);
 		//new samples.GodRays(scene);
 		//new samples.GodRays2(scene);
