@@ -260,7 +260,13 @@ class SerializationHelper {
 					Reflect.setProperty(store, property, initialStore[property]);                
 				}
 			}
-			
+
+			#if(lime_native)
+			//CL -added temporarily to fix crash because parent is always null below in lime_native 
+			//I believe this is supposed to walk through the javascript object hierarchy and use a Map of strings to prototype objects but this would never work in native
+			break;
+			#end
+
             var parent:Dynamic = null;
             var done:Bool = true;
 			
@@ -268,6 +274,7 @@ class SerializationHelper {
 				#if js
                 parent = js.Syntax.code('Object.getPrototypeOf(currentTarget)');
 				#end
+				
                 if (parent.getClassName == null) {
                     done = true;
                     break;

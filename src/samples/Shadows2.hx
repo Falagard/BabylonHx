@@ -18,7 +18,7 @@ class Shadows2 {
 
 	public function new(scene:Scene) {
 		
-		SceneLoader.Load("assets/models/", "shadows.babylon", scene.getEngine(), function(s:Scene) {
+		SceneLoader.Load("assets/scenes/", "shadows.babylon", scene.getEngine(), function(s:Scene) {
 			scene = s;
 			scene.activeCamera.attachControl();
 			scene.getMeshByName("Cube").material.alpha = 1;
@@ -31,22 +31,22 @@ class Shadows2 {
 			
 			var shadowGenerator1 = new ShadowGenerator(1024, light1);
 			shadowGenerator1.getShadowMap().renderList.push(star);
-			shadowGenerator1.useBlurExponentialShadowMap = true;
-			shadowGenerator1.blurBoxOffset = 2.0;
+			//shadowGenerator1.useBlurExponentialShadowMap = true;
+			//shadowGenerator1.blurBoxOffset = 2.0;
 			
 			var light2:SpotLight = cast scene.lights[1];
 			
 			var shadowGenerator2 = new ShadowGenerator(1024, light2);
 			shadowGenerator2.getShadowMap().renderList.push(star);
-			shadowGenerator2.useBlurExponentialShadowMap = true;
-			shadowGenerator2.blurBoxOffset = 2.0;
+			//shadowGenerator2.useBlurExponentialShadowMap = true;
+			//shadowGenerator2.blurBoxOffset = 2.0;
 			
 			var light3:SpotLight = cast scene.lights[2];
 			
 			var shadowGenerator3 = new ShadowGenerator(1024, light3);
 			shadowGenerator3.getShadowMap().renderList.push(star);
-			shadowGenerator3.useBlurExponentialShadowMap = true;
-			shadowGenerator3.blurBoxOffset = 2.0;
+			//shadowGenerator3.useBlurExponentialShadowMap = true;
+			//shadowGenerator3.blurBoxOffset = 2.0;
 			
 			var alpha = 0.0;
 			scene.registerBeforeRender(function(_, _) {

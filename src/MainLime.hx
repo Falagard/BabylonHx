@@ -113,14 +113,14 @@ class MainLime extends Application {
 		//new samples.Lines3(scene);
 		//new samples.Bones(scene); //html: y, hl: y
 		//new samples.Shadows(scene); //hl: no shadows
-		//new samples.Shadows2(scene); //missing assets
+		new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
 		//new samples.HeightMap(scene); //missing assets
 		//new samples.LoadObjFile(scene);
 		//new samples.LoadStlFile(scene);
 		//new samples.LoadPlyFile(scene);
 		//new samples.LoadCtmFile(scene);
 		//new samples.LOD(scene);
-		new samples.Instances(scene); //hl: y, but crashes when freecamera collisions enabled
+		//new samples.Instances(scene); //hl: y, but minor crash when freecamera collisions enabled
 		//new samples.Instances2(scene);
 		//new samples.Fresnel(scene);		
 		//new samples.Fresnel2(scene);
@@ -235,7 +235,7 @@ class MainLime extends Application {
 		//new samples.ShaderMaterialTest(scene);
 		//new samples.TestInstancesCount(scene);
 		//new samples.HighlightLayerInstances(scene);
-		//new samples.ShadowOnlyMaterialTest(scene);
+		//new samples.ShadowOnlyMaterialTest(scene); //compile error
 		//new samples.Facets(scene);
 		//new samples.SelfShadowing(scene);
 		//new samples.DynamicTerrainTest(scene);

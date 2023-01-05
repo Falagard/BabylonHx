@@ -715,9 +715,15 @@ import haxe.Timer;
         }
 		
         if (this.useBlurExponentialShadowMap || this.useBlurCloseExponentialShadowMap) {
+			#if(lime_native)
+			if (this._blurPostProcesses != null) {
+                this._initializeBlurRTTAndPostProcesses();
+            }
+			#else
             if (this._blurPostProcesses != null || this._blurPostProcesses.length == 0) {
                 this._initializeBlurRTTAndPostProcesses();
             }
+			#end
         }
 		
         if (this._kernelBlurXPostprocess != null && !this._kernelBlurXPostprocess.isReady()) {
