@@ -41,20 +41,20 @@ class Shadows {
 		untyped lightSphere.material.emissiveColor = new Color3(1, 1, 0);
 		
 		// light2
-		//var light2 = new SpotLight("spot02", new Vector3(30, 40, 20), new Vector3(-1, -2, -1), 1.1, 16, scene);
-		//light2.intensity = 0.5;
+		var light2 = new SpotLight("spot02", new Vector3(30, 40, 20), new Vector3(-1, -2, -1), 1.1, 16, scene);
+		light2.intensity = 0.5;
 		
-		//var lightSphere2 = Mesh.CreateSphere("sphere", 10, 2, scene);
-		//lightSphere2.position = light2.position;
-		//lightSphere2.material = new StandardMaterial("light", scene);
-		//untyped lightSphere2.material.emissiveColor = new Color3(1, 1, 0);
+		var lightSphere2 = Mesh.CreateSphere("sphere", 10, 2, scene);
+		lightSphere2.position = light2.position;
+		lightSphere2.material = new StandardMaterial("light", scene);
+		untyped lightSphere2.material.emissiveColor = new Color3(1, 1, 0);
 		
 		// Ground
 		var ground = Mesh.CreateGroundFromHeightMap("ground", "assets/img/heightMap.png", 100, 100, 100, 0, 10, scene, false);
 		var groundMaterial = new StandardMaterial("ground", scene);
 		groundMaterial.diffuseTexture = new Texture("assets/img/ground.jpg", scene);
-		untyped groundMaterial.diffuseTexture.uScale = 6;
-		untyped groundMaterial.diffuseTexture.vScale = 6;
+		groundMaterial.diffuseTexture.uScale = 6;
+		groundMaterial.diffuseTexture.vScale = 6;
 		groundMaterial.specularColor = new Color3(0, 0, 0);
 		ground.position.y = -2.05;
 		ground.material = groundMaterial;
@@ -68,9 +68,9 @@ class Shadows {
 		shadowGenerator.getShadowMap().renderList.push(torus);
 		//shadowGenerator.useExponentialShadowMap = true;
 		
-		//var shadowGenerator2 = new ShadowGenerator(1024, light2);
-		//shadowGenerator2.getShadowMap().renderList.push(torus);
-		//shadowGenerator2.usePoissonSampling = true;
+		var shadowGenerator2 = new ShadowGenerator(1024, light2);
+		shadowGenerator2.getShadowMap().renderList.push(torus);
+		shadowGenerator2.usePoissonSampling = true;
 
 		//CL - testing to see if the render target is being rendered to
 		var plane = Mesh.CreatePlane("map", 10, scene);
@@ -80,7 +80,7 @@ class Shadows {
 
 		// Plane material
 		var mat = new StandardMaterial("plan mat", scene);
-		mat.emissiveTexture = shadowGenerator.getShadowMap();
+		mat.emissiveTexture = shadowGenerator2.getShadowMap();
 		mat.disableLighting = true;
 
 		plane.material = mat;
@@ -94,13 +94,13 @@ class Shadows {
 
 		scene.registerBeforeRender(function (_, _) {
 
-			var dt:Float = scene.getEngine().getDeltaTime();
+			//var dt:Float = scene.getEngine().getDeltaTime();
 
-			torus.rotation.x += 0.002 * dt;
-			torus.rotation.z += 0.004 * dt;
+			//torus.rotation.x += 0.002 * dt;
+			//torus.rotation.z += 0.004 * dt;
 			
-			torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
-			alpha += 0.002 * dt;
+			//torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
+			//alpha += 0.002 * dt;
 		});
         
         scene.getEngine().runRenderLoop(function() {

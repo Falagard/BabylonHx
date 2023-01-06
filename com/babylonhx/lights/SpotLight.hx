@@ -236,6 +236,8 @@ import com.babylonhx.mesh.AbstractMesh;
 		
 		//this._shadowAngleScale = this._shadowAngleScale || 1;
 		var angle = this._shadowAngleScale * this._angle;
+		var znear = this.getDepthMinZ(activeCamera);
+		var zfar = this.getDepthMaxZ(activeCamera);
 		
 		Matrix.PerspectiveFovLHToRef(angle, 1.0, this.getDepthMinZ(activeCamera), this.getDepthMaxZ(activeCamera), matrix);
 	}

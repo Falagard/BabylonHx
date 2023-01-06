@@ -66,7 +66,7 @@ class ShadowLight extends Light implements IShadowLight {
 		return value;
 	}
 
-	private var _shadowMinZ:Float;
+	private var _shadowMinZ:Float = Floats.MIN; //CL default to Floats.MIN
 	
 	public var shadowMinZ(get, set):Float;
 	/**
@@ -85,7 +85,7 @@ class ShadowLight extends Light implements IShadowLight {
 		return value;
 	}
 
-	private var _shadowMaxZ:Float;
+	private var _shadowMaxZ:Float = Floats.MAX; //CL default to Floats.MAX
 	
 	public var shadowMaxZ(get, set):Float;
 	/**
@@ -233,7 +233,7 @@ class ShadowLight extends Light implements IShadowLight {
 	 * @param activeCamera 
 	 */
 	public function getDepthMaxZ(activeCamera:Camera):Float {
-		return this.shadowMaxZ != Math.POSITIVE_INFINITY ? this.shadowMaxZ : activeCamera.maxZ;
+		return this.shadowMaxZ != Floats.MAX /* Math.POSITIVE_INFINITY */ ? this.shadowMaxZ : activeCamera.maxZ;
 	}
 
 	/**
