@@ -94,13 +94,13 @@ class Shadows {
 
 		scene.registerBeforeRender(function (_, _) {
 
-			//var dt:Float = scene.getEngine().getDeltaTime();
+			var dt:Float = scene.getEngine().getDeltaTime();
 
-			//torus.rotation.x += 0.002 * dt;
-			//torus.rotation.z += 0.004 * dt;
+			torus.rotation.x += 0.002 * dt;
+			torus.rotation.z += 0.004 * dt;
 			
-			//torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
-			//alpha += 0.002 * dt;
+			torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
+			alpha += 0.002 * dt;
 		});
         
         scene.getEngine().runRenderLoop(function() {

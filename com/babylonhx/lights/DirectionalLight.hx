@@ -161,16 +161,9 @@ import be.Constant;
 		var xOffset = this._orthoRight - this._orthoLeft;
 		var yOffset = this._orthoTop - this._orthoBottom;
 
-		var left:Float = this._orthoLeft - xOffset * this.shadowOrthoScale;
-		var right:Float = this._orthoRight + xOffset * this.shadowOrthoScale;
-		var bottom:Float = this._orthoBottom - yOffset * this.shadowOrthoScale;
-		var top:Float = this._orthoTop + yOffset * this.shadowOrthoScale;
-		var znear:Float = this.shadowMinZ != Floats.MIN ? this.shadowMinZ : activeCamera.minZ;
-		var zfar:Float = this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ : activeCamera.maxZ;
-
-		//trace("left: " + left);
-		//BABYLON.Matrix.OrthoOffCenterLHToRef(this._orthoLeft - xOffset * this.shadowOrthoScale, this._orthoRight + xOffset * this.shadowOrthoScale, this._orthoBottom - yOffset * this.shadowOrthoScale, this._orthoTop + yOffset * this.shadowOrthoScale, this.shadowMinZ !== undefined ? this.shadowMinZ : activeCamera.minZ, this.shadowMaxZ !== undefined ? this.shadowMaxZ : activeCamera.maxZ, matrix);
-		
+		//CL - this.shadowMinZ is undefined and returns 0 instead of 1
+		//Something is wrong with both shadowMinZ and shadowMaxZ and this causes the znear and zfar values to be incorrect
+		//Solved by making it always use the activeCamera's minZ and maxZ
 		Matrix.OrthoOffCenterLHToRef(this._orthoLeft - xOffset * this.shadowOrthoScale, this._orthoRight + xOffset * this.shadowOrthoScale,
 			this._orthoBottom - yOffset * this.shadowOrthoScale, this._orthoTop + yOffset * this.shadowOrthoScale,
 			/* this.shadowMinZ != Floats.MIN ? this.shadowMinZ : */ activeCamera.minZ, /* this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ : */ activeCamera.maxZ, matrix);
