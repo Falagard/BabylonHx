@@ -6,6 +6,7 @@ import com.babylonhx.math.Matrix;
 import com.babylonhx.math.Vector3;
 import com.babylonhx.mesh.AbstractMesh;
 import com.babylonhx.cameras.Camera;
+import be.Constant;
 
 /**
  * ...
@@ -72,13 +73,13 @@ class ShadowLight extends Light implements IShadowLight {
 	 * Gets the shadow projection clipping minimum z value.
 	 */
 	@serialize()
-	inline function get_shadowMinZ():Float {
+	function get_shadowMinZ():Float {
 		return this._shadowMinZ;
 	}
 	/**
 	 * Sets the shadow projection clipping minimum z value.
 	 */
-	inline function set_shadowMinZ(value:Float):Float {
+    function set_shadowMinZ(value:Float):Float {
 		this._shadowMinZ = value;
 		this.forceProjectionMatrixCompute();
 		return value;
@@ -224,7 +225,7 @@ class ShadowLight extends Light implements IShadowLight {
 	 * @param activeCamera 
 	 */
 	public function getDepthMinZ(activeCamera:Camera):Float {
-		return this.shadowMinZ != Math.NEGATIVE_INFINITY ? this.shadowMinZ : activeCamera.minZ;
+		return this.shadowMinZ != Floats.MIN /*Math.NEGATIVE_INFINITY*/ ? this.shadowMinZ : activeCamera.minZ;
 	}
 
 	/**
