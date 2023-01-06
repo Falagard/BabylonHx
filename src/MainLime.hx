@@ -112,8 +112,8 @@ class MainLime extends Application {
 		//new samples.Lines2(scene);
 		//new samples.Lines3(scene);
 		//new samples.Bones(scene); //html: y, hl: y
-		//new samples.Shadows(scene); //hl: no shadows
-		new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
+		new samples.Shadows(scene); //hl: no shadows
+		//new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
 		//new samples.HeightMap(scene); //missing assets
 		//new samples.LoadObjFile(scene);
 		//new samples.LoadStlFile(scene);
@@ -141,7 +141,7 @@ class MainLime extends Application {
 		//new samples.Extrusion(scene);
 		//new samples.Sprites(scene); //missing assets
 		//new samples.PostprocessBloom(scene); //hl: y
-		//new samples.PostprocessBloom2(scene); //compile error CTM file loader
+		//new samples.PostprocessBloom2(scene); //compile error CTM file loader and need example file. 
 		//new samples.PostprocessRefraction(scene); //hl: y
 		//new samples.PostprocessConvolution(scene);
 		//new samples.GodRays(scene);

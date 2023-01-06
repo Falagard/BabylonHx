@@ -5,6 +5,7 @@ import com.babylonhx.math.Matrix;
 import com.babylonhx.math.Vector3;
 import com.babylonhx.mesh.AbstractMesh;
 import com.babylonhx.cameras.Camera;
+import be.Constant;
 
 /**
  * ...
@@ -47,10 +48,10 @@ import com.babylonhx.cameras.Camera;
 	public var autoUpdateExtends:Bool = true;
 
 	// Cache
-	private var _orthoLeft = Math.POSITIVE_INFINITY;
-	private var _orthoRight = Math.NEGATIVE_INFINITY;
-	private var _orthoTop = Math.NEGATIVE_INFINITY;
-	private var _orthoBottom = Math.POSITIVE_INFINITY;
+	private var _orthoLeft = Floats.MAX;
+	private var _orthoRight = Floats.MIN;
+	private var _orthoTop = Floats.MIN;
+	private var _orthoBottom = Floats.MAX;
 	
 
 	/**
@@ -104,7 +105,7 @@ import com.babylonhx.cameras.Camera;
 		}
 		
 		Matrix.OrthoLHToRef(this.shadowFrustumSize, this.shadowFrustumSize,
-			this.shadowMinZ != Math.NEGATIVE_INFINITY ? this.shadowMinZ : activeCamera.minZ, this.shadowMaxZ != Math.POSITIVE_INFINITY ? this.shadowMaxZ : activeCamera.maxZ, matrix);
+			this.shadowMinZ != Floats.MIN ? this.shadowMinZ : activeCamera.minZ, this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ : activeCamera.maxZ, matrix);
 	}
 
 	/**
@@ -119,13 +120,13 @@ import com.babylonhx.cameras.Camera;
 		}
 		
 		// Check extends
-		if (this.autoUpdateExtends || this._orthoLeft == Math.POSITIVE_INFINITY) {
+		if (this.autoUpdateExtends || this._orthoLeft == Floats.MAX) {
 			var tempVector3 = Vector3.Zero();
 			
-			this._orthoLeft = Math.POSITIVE_INFINITY;
-			this._orthoRight = Math.NEGATIVE_INFINITY;
-			this._orthoTop = Math.NEGATIVE_INFINITY;
-			this._orthoBottom = Math.POSITIVE_INFINITY;
+			this._orthoLeft = Floats.MAX;
+			this._orthoRight = Floats.MIN;
+			this._orthoTop = Floats.MIN;
+			this._orthoBottom = Floats.MAX;
 			
 			for (meshIndex in 0...renderList.length) {
 				var mesh = renderList[meshIndex];
@@ -159,10 +160,20 @@ import com.babylonhx.cameras.Camera;
 		
 		var xOffset = this._orthoRight - this._orthoLeft;
 		var yOffset = this._orthoTop - this._orthoBottom;
+
+		var left:Float = this._orthoLeft - xOffset * this.shadowOrthoScale;
+		var right:Float = this._orthoRight + xOffset * this.shadowOrthoScale;
+		var bottom:Float = this._orthoBottom - yOffset * this.shadowOrthoScale;
+		var top:Float = this._orthoTop + yOffset * this.shadowOrthoScale;
+		var znear:Float = this.shadowMinZ != Floats.MIN ? this.shadowMinZ : activeCamera.minZ;
+		var zfar:Float = this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ : activeCamera.maxZ;
+
+		//trace("left: " + left);
+		//BABYLON.Matrix.OrthoOffCenterLHToRef(this._orthoLeft - xOffset * this.shadowOrthoScale, this._orthoRight + xOffset * this.shadowOrthoScale, this._orthoBottom - yOffset * this.shadowOrthoScale, this._orthoTop + yOffset * this.shadowOrthoScale, this.shadowMinZ !== undefined ? this.shadowMinZ : activeCamera.minZ, this.shadowMaxZ !== undefined ? this.shadowMaxZ : activeCamera.maxZ, matrix);
 		
 		Matrix.OrthoOffCenterLHToRef(this._orthoLeft - xOffset * this.shadowOrthoScale, this._orthoRight + xOffset * this.shadowOrthoScale,
 			this._orthoBottom - yOffset * this.shadowOrthoScale, this._orthoTop + yOffset * this.shadowOrthoScale,
-			this.shadowMinZ != Math.NEGATIVE_INFINITY ? this.shadowMinZ : activeCamera.minZ, this.shadowMaxZ != Math.POSITIVE_INFINITY ? this.shadowMaxZ : activeCamera.maxZ, matrix);
+			/* this.shadowMinZ != Floats.MIN ? this.shadowMinZ : */ activeCamera.minZ, /* this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ : */ activeCamera.maxZ, matrix);
 	}
 
 	override public function _buildUniformLayout() {

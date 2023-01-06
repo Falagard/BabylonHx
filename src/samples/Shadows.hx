@@ -11,6 +11,7 @@ import com.babylonhx.math.Color3;
 import com.babylonhx.math.Vector3;
 import com.babylonhx.mesh.Mesh;
 import com.babylonhx.Scene;
+import com.babylonhx.mesh.TransformNode;
 
 /**
  * ...
@@ -26,6 +27,7 @@ class Shadows {
 		camera.upperBetaLimit = (Math.PI / 2) * 0.9;
 		camera.lowerRadiusLimit = 30;
 		camera.upperRadiusLimit = 150;
+	
 		camera.attachControl();
 		
 		// light1
@@ -39,13 +41,13 @@ class Shadows {
 		untyped lightSphere.material.emissiveColor = new Color3(1, 1, 0);
 		
 		// light2
-		var light2 = new SpotLight("spot02", new Vector3(30, 40, 20), new Vector3(-1, -2, -1), 1.1, 16, scene);
-		light2.intensity = 0.5;
+		//var light2 = new SpotLight("spot02", new Vector3(30, 40, 20), new Vector3(-1, -2, -1), 1.1, 16, scene);
+		//light2.intensity = 0.5;
 		
-		var lightSphere2 = Mesh.CreateSphere("sphere", 10, 2, scene);
-		lightSphere2.position = light2.position;
-		lightSphere2.material = new StandardMaterial("light", scene);
-		untyped lightSphere2.material.emissiveColor = new Color3(1, 1, 0);
+		//var lightSphere2 = Mesh.CreateSphere("sphere", 10, 2, scene);
+		//lightSphere2.position = light2.position;
+		//lightSphere2.material = new StandardMaterial("light", scene);
+		//untyped lightSphere2.material.emissiveColor = new Color3(1, 1, 0);
 		
 		// Ground
 		var ground = Mesh.CreateGroundFromHeightMap("ground", "assets/img/heightMap.png", 100, 100, 100, 0, 10, scene, false);
@@ -61,24 +63,44 @@ class Shadows {
 		var torus = Mesh.CreateTorus("torus", 4, 2, 30, scene, false);
 		
 		// Shadows
+		//CL temporarily disable one of the shadow generators
 		var shadowGenerator = new ShadowGenerator(1024, light);
 		shadowGenerator.getShadowMap().renderList.push(torus);
-		shadowGenerator.useExponentialShadowMap = true;
+		//shadowGenerator.useExponentialShadowMap = true;
 		
-		var shadowGenerator2 = new ShadowGenerator(1024, light2);
-		shadowGenerator2.getShadowMap().renderList.push(torus);
-		shadowGenerator2.usePoissonSampling = true;
+		//var shadowGenerator2 = new ShadowGenerator(1024, light2);
+		//shadowGenerator2.getShadowMap().renderList.push(torus);
+		//shadowGenerator2.usePoissonSampling = true;
+
+		//CL - testing to see if the render target is being rendered to
+		var plane = Mesh.CreatePlane("map", 10, scene);
+		plane.billboardMode = TransformNode.BILLBOARDMODE_ALL;
+		plane.scaling.y = 1.0 / scene.getEngine().getAspectRatio(scene.activeCamera);
+		plane.position.y = 10;
+
+		// Plane material
+		var mat = new StandardMaterial("plan mat", scene);
+		mat.emissiveTexture = shadowGenerator.getShadowMap();
+		mat.disableLighting = true;
+
+		plane.material = mat;
 		
 		ground.receiveShadows = true;
-		
+
 		// Animations
 		var alpha = 0.0;
+
+		torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
+
 		scene.registerBeforeRender(function (_, _) {
-			torus.rotation.x += 0.01;
-			torus.rotation.z += 0.02;
+
+			//var dt:Float = scene.getEngine().getDeltaTime();
+
+			//torus.rotation.x += 0.002 * dt;
+			//torus.rotation.z += 0.004 * dt;
 			
-			torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
-			alpha += 0.01;
+			//torus.position = new Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
+			//alpha += 0.002 * dt;
 		});
         
         scene.getEngine().runRenderLoop(function() {
