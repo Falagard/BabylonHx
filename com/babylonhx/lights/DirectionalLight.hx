@@ -161,12 +161,10 @@ import be.Constant;
 		var xOffset = this._orthoRight - this._orthoLeft;
 		var yOffset = this._orthoTop - this._orthoBottom;
 
-		//CL - this.shadowMinZ is undefined and returns 0 instead of 1
-		//Something is wrong with both shadowMinZ and shadowMaxZ and this causes the znear and zfar values to be incorrect
-		//Solved by making it always use the activeCamera's minZ and maxZ
+		//CL - fixed problems by using Floats.MIN and Floats.MAX as well as ensuring the defaults for _shadowMinZ and _shadowMaxZ in ShadowLight where Floats.MIN and Floats.MAX
 		Matrix.OrthoOffCenterLHToRef(this._orthoLeft - xOffset * this.shadowOrthoScale, this._orthoRight + xOffset * this.shadowOrthoScale,
 			this._orthoBottom - yOffset * this.shadowOrthoScale, this._orthoTop + yOffset * this.shadowOrthoScale,
-			/* this.shadowMinZ != Floats.MIN ? this.shadowMinZ : */ activeCamera.minZ, /* this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ : */ activeCamera.maxZ, matrix);
+			this.shadowMinZ != Floats.MIN ? this.shadowMinZ : activeCamera.minZ, this.shadowMaxZ != Floats.MAX ? this.shadowMaxZ :  activeCamera.maxZ, matrix);
 	}
 
 	override public function _buildUniformLayout() {
