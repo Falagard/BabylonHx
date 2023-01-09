@@ -112,8 +112,8 @@ class MainLime extends Application {
 		//new samples.Lines2(scene);
 		//new samples.Lines3(scene);
 		//new samples.Bones(scene); //html: y, hl: y
-		new samples.Shadows(scene); //hl: no shadows
-		//new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
+		//new samples.Shadows(scene); //hl: y
+		new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
 		//new samples.HeightMap(scene); //missing assets
 		//new samples.LoadObjFile(scene);
 		//new samples.LoadStlFile(scene);

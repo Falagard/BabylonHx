@@ -3375,7 +3375,7 @@ import com.babylonhx.audio.*;
 		}
 		
 		// Check each mesh
-		//CL changed from Mesh to AbstractMesh or crashes for InstancedMeshes?
+		//CL changed from Mesh to AbstractMesh or crashes if InstancedMesh
 		var mesh:AbstractMesh = null;
 		var meshLOD:AbstractMesh = null;
 		for (meshIndex in 0...len) {
