@@ -70,7 +70,7 @@ import js.Browser;
 #end
 
 #if openfl
-import openfl.display.OpenGLView;
+//import openfl.display.OpenGLView;
 #end
 
 /**
@@ -383,7 +383,7 @@ import openfl.display.OpenGLView;
 
 	private var _workingCanvas:Image;
 	#if openfl
-	public var _workingContext:OpenGLView;
+	//public var _workingContext:OpenGLView;
 	#end
 	
 	private var _rescalePostProcess:PassPostProcess;
@@ -547,9 +547,9 @@ import openfl.display.OpenGLView;
 		//trace(this._webGLVersion);
 		
 		#if openfl
-		this._workingContext = new OpenGLView();
-		this._workingContext.render = this._renderLoop;
-		canvas.addChild(this._workingContext);
+		//this._workingContext = new OpenGLView();
+		//this._workingContext.render = this._renderLoop;
+		//canvas.addChild(this._workingContext);
 		#end		
 		
 		this._onBlur = function() {

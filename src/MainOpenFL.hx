@@ -12,7 +12,7 @@ import openfl.events.KeyboardEvent;
 import openfl.events.TouchEvent;
 import openfl.ui.Multitouch;
 import openfl.ui.MultitouchInputMode;
-import openfl.display.OpenGLView;
+//import openfl.display.OpenGLView;
 import openfl.Lib;
 import openfl.display.FPS;
 import openfl.text.Font;
@@ -66,16 +66,18 @@ class MainOpenFL extends Sprite {
 		//stage.stage3Ds[0].addEventListener (Event.CONTEXT3D_CREATE, stage3D_onContext3DCreate);
 		stage.stage3Ds[0].requestContext3D ();
 		
-		switch (stage.window.renderer.context) {			
-			case OPENGL (gl):
-				engine = new Engine(stage, gl, false);	
+		//switch (stage.window.stage.context3D) {			
+		//	case OPENGL (gl):
+		var renderContext = lime.graphics.opengl.GL.context;
+
+				engine = new Engine(stage, renderContext, false);	
 				scene = new Scene(engine);
 				
 				pointerEvent = new PointerEvent();
 				
-			default:
+		//	default:
 				//
-		}
+		//}
 		
 		engine.width = stage.stageWidth;
 		engine.height = stage.stageHeight;
@@ -89,6 +91,8 @@ class MainOpenFL extends Sprite {
 		stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		
 		/*#elseif mobile
 		Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 		stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchStart);
@@ -98,37 +102,37 @@ class MainOpenFL extends Sprite {
 		
 		createDemo();
 		
-		var spr = new Sprite();
-		var bmp = new Bitmap(Assets.getBitmapData("assets/img/cloud.png"));
-		spr.addChild(bmp);
-		stage.addChild(spr);
-		spr.addEventListener(MouseEvent.CLICK, function(_) {
-			spr.x += 5;
-		});
+		// var spr = new Sprite();
+		// var bmp = new Bitmap(Assets.getBitmapData("assets/img/cloud.png"));
+		// spr.addChild(bmp);
+		// stage.addChild(spr);
+		// spr.addEventListener(MouseEvent.CLICK, function(_) {
+		// 	spr.x += 5;
+		// });
 		
-		var fps = new openfl.display.FPS(10, 10);
-		stage.addChild(fps);
+		// var fps = new openfl.display.FPS(10, 10);
+		// stage.addChild(fps);
 		
-		var format = new TextFormat ("Katamotz Ikasi", 30, 0x7A0026);
-		var textField = new TextField ();
+		// var format = new TextFormat ("Katamotz Ikasi", 30, 0x7A0026);
+		// var textField = new TextField ();
 		
-		textField.defaultTextFormat = format;
-		textField.embedFonts = true;
-		textField.selectable = false;
+		// textField.defaultTextFormat = format;
+		// textField.embedFonts = true;
+		// textField.selectable = false;
 		
-		textField.x = 250;
-		textField.y = 250;
-		textField.width = 200;
+		// textField.x = 250;
+		// textField.y = 250;
+		// textField.width = 200;
 		
-		textField.text = "Hello World";
+		// textField.text = "Hello World";
 		
-		stage.addChild(textField);	
+		// stage.addChild(textField);	
 		
-		var gl = @:privateAccess engine.gl;
-		var pass = new PassPostProcess("openfl_pass", 1.0, scene.activeCamera);
-		pass.onAfterRenderObservable.add(function(_, _) {
-			gl.enable(gl.BLEND);
-		});
+		// var gl = @:privateAccess engine.gl;
+		// var pass = new PassPostProcess("openfl_pass", 1.0, scene.activeCamera);
+		// pass.onAfterRenderObservable.add(function(_, _) {
+		// 	gl.enable(gl.BLEND);
+		// });
 		
 		//stage._customRender = scene.render;
 	}
@@ -137,7 +141,7 @@ class MainOpenFL extends Sprite {
 		//new samples.TestWireframe(scene);
 		//new samples.BScene(scene);
 		//new samples.DRPDemo(scene);
-		//new samples.BasicScene(scene);
+		new samples.BasicScene(scene);
 		//new samples.BasicElements(scene);
 		//new samples.DashedLinesMesh(scene);
 		//new samples.RotationAndScaling(scene);
@@ -327,12 +331,16 @@ class MainOpenFL extends Sprite {
 		//new samples.PPNightVision(scene);
 		//new samples.PPVibrance(scene);
 		//new samples.PPWatercolor(scene);
-		new samples.PPOldVideo(scene);
+		//new samples.PPOldVideo(scene);
 	}
 	
 	function resize(e) {
 		engine.width = stage.stageWidth;
 		engine.height = stage.stageHeight;
+	}
+
+	function onEnterFrame(e:Event) {
+		engine._renderLoop();
 	}
 	
 	function onKeyDown(e:KeyboardEvent) {
@@ -346,7 +354,7 @@ class MainOpenFL extends Sprite {
 			f(e.charCode);
 		}
 	}	
-	
+
 	function onMouseDown(e:MouseEvent) {
 		/*for(f in engine.mouseDown) {
 			f(e.localX, e.localY, 0);

@@ -14,8 +14,8 @@
             "request": "launch",
             "type": "hl",
             "hl": "D:/Downloads/hashlink-ced5c15-win64/hashlink-ced5c15-win64/hl.exe",
-            "program": "${workspaceFolder}/bin_lime/hl/obj/ApplicationMain.hl",
-            "cwd": "${workspaceFolder}/bin_lime/hl/bin",
+            "program": "${workspaceFolder}/bin_openfl/hl/obj/ApplicationMain.hl",
+            "cwd": "${workspaceFolder}/bin_openfl/hl/bin",
             // "preLaunchTask": {
             //     "type": "haxe",
             //     "args": "active configuration"

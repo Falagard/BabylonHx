@@ -1,5 +1,8 @@
 package samples;
 
+//import haxe.ui.core.Screen;
+//import haxe.ui.Toolkit;
+
 import com.babylonhx.cameras.Camera;
 import com.babylonhx.cameras.WebVRFreeCamera;
 import com.babylonhx.cameras.FreeCamera;
@@ -46,6 +49,11 @@ import com.babylonhx.postprocess.NoisePostProcess;
 class BasicScene {
 
 	public function new(scene:Scene) {
+
+		//Toolkit.init();
+
+		//Screen.instance.addComponent(new MainView());
+
 		//var camera = new WebVRFreeCamera("camera1", new Vector3(0, 5, -10), scene);
 		var camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);
 		camera.setTarget(Vector3.Zero());
