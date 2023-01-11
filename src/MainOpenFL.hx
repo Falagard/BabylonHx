@@ -65,12 +65,18 @@ class MainOpenFL extends Sprite {
 		
 		//stage.stage3Ds[0].addEventListener (Event.CONTEXT3D_CREATE, stage3D_onContext3DCreate);
 		stage.stage3Ds[0].requestContext3D ();
+
+		var renderContext2 = @:privateAccess stage.window.stage.context3D.gl;
 		
 		//switch (stage.window.stage.context3D) {			
 		//	case OPENGL (gl):
 		var renderContext = lime.graphics.opengl.GL.context;
 
-				engine = new Engine(stage, renderContext, false);	
+		if(renderContext == renderContext2) {
+			trace("they same!");
+		}
+
+				engine = new Engine(stage, renderContext2, false);	
 				scene = new Scene(engine);
 				
 				pointerEvent = new PointerEvent();
@@ -91,7 +97,8 @@ class MainOpenFL extends Sprite {
 		stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+		stage.addEventListener(Event.ENTER_FRAME, onRender);
 		
 		/*#elseif mobile
 		Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
@@ -110,8 +117,8 @@ class MainOpenFL extends Sprite {
 		// 	spr.x += 5;
 		// });
 		
-		// var fps = new openfl.display.FPS(10, 10);
-		// stage.addChild(fps);
+		var fps = new openfl.display.FPS(10, 10);
+		stage.addChild(fps);
 		
 		// var format = new TextFormat ("Katamotz Ikasi", 30, 0x7A0026);
 		// var textField = new TextField ();
@@ -133,6 +140,8 @@ class MainOpenFL extends Sprite {
 		// pass.onAfterRenderObservable.add(function(_, _) {
 		// 	gl.enable(gl.BLEND);
 		// });
+
+		stage.color = null;
 		
 		//stage._customRender = scene.render;
 	}
@@ -339,7 +348,7 @@ class MainOpenFL extends Sprite {
 		engine.height = stage.stageHeight;
 	}
 
-	function onEnterFrame(e:Event) {
+	function onRender(e:Event) {
 		engine._renderLoop();
 	}
 	
