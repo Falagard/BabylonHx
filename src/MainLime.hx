@@ -76,7 +76,7 @@ class MainLime extends Application {
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl: y
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
-		//new samples.BasicScene(scene); //html: Y, hl: y
+		new samples.BasicScene(scene); //html: Y, hl: y
 		//new samples.BasicElements(scene); //hl: y
 		//new samples.DashedLinesMesh(scene); //hl: y
 		//new samples.RotationAndScaling(scene); //hl: y
@@ -103,8 +103,8 @@ class MainLime extends Application {
 		//new samples.PhysicsSimple(scene);
 		//new samples.PhysicsCar(scene);
 		//new samples.PhysicsNew(scene);
-		//new samples.PolygonMesh1(scene); //compile error
-		//new samples.PolygonMesh2(scene);
+		//new samples.PolygonMesh1(scene); //OpenSimplexNoiseTileable3D crash
+		new samples.PolygonMesh2(scene);
 		//new samples.PolygonMesh3(scene);
 		//new samples.ProceduralShapesTest(scene);
 		//new samples.CustomRenderTarget(scene); //hl: y
@@ -113,7 +113,7 @@ class MainLime extends Application {
 		//new samples.Lines3(scene);
 		//new samples.Bones(scene); //html: y, hl: y
 		//new samples.Shadows(scene); //hl: y
-		new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
+		//new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
 		//new samples.HeightMap(scene); //missing assets
 		//new samples.LoadObjFile(scene);
 		//new samples.LoadStlFile(scene);

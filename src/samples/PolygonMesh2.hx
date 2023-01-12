@@ -33,9 +33,11 @@ class PolygonMesh2 {
 		var shape2 = PolygonLib.Circle(80, 0, 0, 12);
 		var ground:Mesh = new PolygonMeshBuilder("ground", shape, scene).addHole(PolygonLib.Parse(monkeyData)).build();
 		
-		ground.material = new StandardMaterial("mat", scene);
+		var mat = new StandardMaterial("mat", scene);
+		mat.diffuseTexture = new Texture("assets/img/ground.jpg", scene);
+		
+		ground.material = mat; 
 		ground.material.backFaceCulling = false;
-		untyped ground.material.diffuseTexture = new Texture("assets/models/ground.jpg", scene);
 		
 		scene.getEngine().runRenderLoop(function () {
             scene.render();

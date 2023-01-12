@@ -1,5 +1,6 @@
 package com.babylonhx.mesh.polygonmesh;
 
+import com.babylonhx.mesh.polygonmesh.EarCut.Earcut;
 import com.babylonhx.math.Path2;
 import com.babylonhx.math.Vector2;
 import com.babylonhx.math.Vector3;

@@ -941,9 +941,15 @@ class TextureBuilder {
 					b = 255;
 				}
 				
+				#if(lime_native)
+				this.layers[dest][x + y * this.layerSizeX].r = Std.int(r);
+				this.layers[dest][x + y * this.layerSizeX].g = Std.int(g);
+				this.layers[dest][x + y * this.layerSizeX].b = Std.int(b);
+				#else
 				untyped this.layers[dest][x + y * this.layerSizeX].r = r;
 				untyped this.layers[dest][x + y * this.layerSizeX].g = g;
 				untyped this.layers[dest][x + y * this.layerSizeX].b = b;
+				#end
 			}
 		}
 		

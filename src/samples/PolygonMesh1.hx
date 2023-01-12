@@ -161,10 +161,11 @@ class PolygonMesh1 {
 		roundGearShape.position.set(10, 16, 0);
 		roundGearShape.scaling.set(0.2, 0.2, 0.2);
 		
-		var WIDTH:Int = 256;
+		//CL - OpenSimpleNoiseTileable3D crashes at the moment
+		/* var WIDTH:Int = 256;
 		var HEIGHT:Int = 256;
 		var FEATURE_SIZE:Float = 4;
-		var noise = new OpenSimplexNoiseTileable3D(2, 2, 2);
+		var noise:OpenSimplexNoiseTileable3D = new OpenSimplexNoiseTileable3D(2, 2, 2);
 		
 		var img:Image = new Image(null, WIDTH, HEIGHT);
 		
@@ -174,10 +175,10 @@ class PolygonMesh1 {
 				var rgb = Std.int((value + 1) * 127.5);
 				img.setPixelAt(x, y, rgb);
 			}
-		}
+		} */
 		
 		var matT = new StandardMaterial('noisetex', scene);
-		matT.diffuseTexture = Texture.fromImage("", img, scene);
+		//matT.diffuseTexture = Texture.fromImage("", img, scene);
 		roundGearShape.material = matT;
 		
 		scene.getEngine().runRenderLoop(function () {
