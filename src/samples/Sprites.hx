@@ -21,7 +21,7 @@ class Sprites {
 		
 		// Create a sprite manager to optimize GPU ressources
 		// Parameters : name, imgUrl, capacity, cellSize, scene
-		var spriteManagerTrees = new SpriteManager("treesManager", "assets/img/palm.png", 2000, { width: 512, height: 1024 }, scene);
+		var spriteManagerTrees = new SpriteManager("treesManager", "assets/sprites/palm.png", 2000, { width: 512, height: 1024 }, scene);
 		
 		//We create 2000 trees at random positions
 		for (i in 0...2000) {
@@ -38,7 +38,7 @@ class Sprites {
 		}
 		
 		//Create a manager for the player's sprite animation
-		var spriteManagerPlayer = new SpriteManager("playerManager", "assets/img/player.png", 2, 42.67, scene);
+		var spriteManagerPlayer = new SpriteManager("playerManager", "assets/sprites/player.png", 2, 42.67, scene);
 		
 		// First animated player
 		var player = new Sprite("player", spriteManagerPlayer);

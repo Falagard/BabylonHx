@@ -104,9 +104,9 @@ class MainLime extends Application {
 		//new samples.PhysicsCar(scene);
 		//new samples.PhysicsNew(scene);
 		//new samples.PolygonMesh1(scene); //OpenSimplexNoiseTileable3D crash
-		new samples.PolygonMesh2(scene);
-		//new samples.PolygonMesh3(scene);
-		//new samples.ProceduralShapesTest(scene);
+		//new samples.PolygonMesh2(scene); //hl: y
+		//new samples.PolygonMesh3(scene); //hl: y
+		//new samples.ProceduralShapesTest(scene); //hl: y
 		//new samples.CustomRenderTarget(scene); //hl: y
 		//new samples.Lines(scene);
 		//new samples.Lines2(scene);
@@ -127,10 +127,10 @@ class MainLime extends Application {
 		//new samples.VolumetricLights(scene);
 		//new samples.CellShading(scene);
 		//new samples.Particles(scene); //hl: y
-		//new samples.Particles2(scene);					// OK
-		//new samples.Particles3(scene);					// OK
+		//new samples.Particles2(scene);					
+		//new samples.Particles3(scene);					
 		//new samples.Particles4(scene);
-		//new samples.Particles5(scene);					// OK
+		//new samples.Particles5(scene);					
 		//new samples.Particles6(scene);
 		//new samples.Particles7(scene);
 		//new samples.Particles8(scene);
@@ -139,7 +139,7 @@ class MainLime extends Application {
 		//new samples.AnimatedParticles(scene);
 		//new samples.Snow(scene);
 		//new samples.Extrusion(scene);
-		//new samples.Sprites(scene); //missing assets
+		new samples.Sprites(scene); //hl:y but slow
 		//new samples.PostprocessBloom(scene); //hl: y
 		//new samples.PostprocessBloom2(scene); //compile error CTM file loader and need example file. 
 		//new samples.PostprocessRefraction(scene); //hl: y

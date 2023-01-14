@@ -38,6 +38,8 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	public var cellHeight:Int;
 	
 	public var __smartArrayFlags:Array<Int> = [];
+
+	private var _firstUpdate = true;
 	
 	/**
 	* An event triggered when the manager is disposed.
@@ -87,7 +89,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		this._spriteTexture.wrapV = Texture.CLAMP_ADDRESSMODE;
 		
 		if (cellSize != null) {
-			if (cellSize.width != null && cellSize.height != null) {
+			if(Reflect.hasField(cellSize, "width") && cellSize.width != null && cellSize.height != null) {
 				this.cellWidth = cellSize.width;
 				this.cellHeight = cellSize.height;
 			}
@@ -251,6 +253,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		var deltaTime = engine.getDeltaTime();
 		var max:Int = cast Math.min(this._capacity, this.sprites.length);
 		var rowSize:Int = cast baseSize.width / this.cellWidth;
+
 		
 		var offset:Int = 0;
 		for (index in 0...max) {
@@ -268,6 +271,10 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		}
 		
 		this._buffer.update(this._vertexData);
+		
+		//CL performance testing
+		_firstUpdate = false;
+		
 		
 		// Render
 		var effect = this._effectBase;
