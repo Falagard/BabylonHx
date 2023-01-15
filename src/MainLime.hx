@@ -73,6 +73,8 @@ class MainLime extends Application {
 	}
 	
 	override public function onPreloadComplete() {
+
+		new samples.HaxeUI1(scene);
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl: y
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation

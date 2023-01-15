@@ -1,51 +1,35 @@
 package samples;
 
-import com.babylonhx.cameras.Camera;
-import com.babylonhx.cameras.WebVRFreeCamera;
 import com.babylonhx.cameras.FreeCamera;
 import com.babylonhx.lights.HemisphericLight;
 import com.babylonhx.materials.StandardMaterial;
-import com.babylonhx.materials.textures.Texture;
-import com.babylonhx.layer.Layer;
 import com.babylonhx.math.Color3;
 import com.babylonhx.math.Vector3;
-import com.babylonhx.math.Vector2;
-import com.babylonhx.math.Space;
 import com.babylonhx.mesh.Mesh;
-import com.babylonhx.mesh.MeshBuilder;
 import com.babylonhx.Scene;
-import com.babylonhx.engine.Engine;
-import com.babylonhx.mesh.VertexBuffer;
-
-import com.babylonhx.animations.Animation;
-import com.babylonhx.actions.ActionEvent;
-import com.babylonhx.collisions.PickingInfo;
-
-import com.babylonhx.tools.EventState;
-import com.babylonhx.utils.Image;
-import com.babylonhx.materials.textures.RawTexture;
-import com.babylonhx.materials.textures.procedurals.standard.Plasma;
-import com.babylonhx.materials.textures.procedurals.standard.Spiral;
-import com.babylonhx.materials.textures.procedurals.standard.Dream;
-import com.babylonhx.materials.textures.procedurals.standard.Combustion;
-import com.babylonhx.materials.textures.procedurals.standard.Electric;
-import com.babylonhx.materials.textures.procedurals.standard.Voronoi;
-import com.babylonhx.materials.textures.procedurals.standard.LiquidMetal;
-import com.babylonhx.materials.textures.procedurals.standard.DoubleBokeh;
-
-import com.babylonhx.postprocess.NotebookDrawingsPostProcess;
-import com.babylonhx.postprocess.WatercolorPostProcess;
-import com.babylonhx.postprocess.NoisePostProcess;
-
-//import speccy.Z80;
+import haxe.ui.Toolkit;
+import haxe.ui.HaxeUIApp;
+import ui.MainView;
 
 /**
  * ...
- * @author Krtolica Vujadin
+ * @author Clay Larabie
  */
-class BasicScene {
+class HaxeUI1 {
 
 	public function new(scene:Scene) {
+
+        Toolkit.init();
+
+        var app = new HaxeUIApp();
+        app.ready(
+            function() {
+                //var main = ComponentMacros.buildComponent("assets/xml/test.xml"); // whatever your XML layout path is
+                //app.addComponent(main);
+                app.addComponent(new MainView());
+                app.start();
+            }
+        );
 		
 		var camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);
 		camera.setTarget(Vector3.Zero());
