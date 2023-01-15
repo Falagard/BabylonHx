@@ -139,7 +139,7 @@ class MainLime extends Application {
 		//new samples.AnimatedParticles(scene);
 		//new samples.Snow(scene);
 		//new samples.Extrusion(scene);
-		new samples.Sprites(scene); //hl:y but slow
+		//new samples.Sprites(scene); //hl:y but slow
 		//new samples.PostprocessBloom(scene); //hl: y
 		//new samples.PostprocessBloom2(scene); //compile error CTM file loader and need example file. 
 		//new samples.PostprocessRefraction(scene); //hl: y
