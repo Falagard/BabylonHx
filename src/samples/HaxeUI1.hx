@@ -22,6 +22,8 @@ class HaxeUI1 {
 	public function new(scene:Scene) {
 
         Toolkit.init();
+        Toolkit.scaleX = 1;
+        Toolkit.scaleY = 1;
 
         var root : UIComponent = new UIComponent();
 
