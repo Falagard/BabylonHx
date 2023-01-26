@@ -1,5 +1,6 @@
 package samples;
 
+import com.babylonhx.ui.UIComponent;
 import com.babylonhx.cameras.FreeCamera;
 import com.babylonhx.lights.HemisphericLight;
 import com.babylonhx.materials.StandardMaterial;
@@ -9,6 +10,7 @@ import com.babylonhx.mesh.Mesh;
 import com.babylonhx.Scene;
 import haxe.ui.Toolkit;
 import haxe.ui.HaxeUIApp;
+import haxe.ui.core.Screen;
 import ui.MainView;
 
 /**
@@ -21,10 +23,14 @@ class HaxeUI1 {
 
         Toolkit.init();
 
+        var root : UIComponent = new UIComponent();
+
         var app = new HaxeUIApp();
         app.ready(
             function() {
-                //var main = ComponentMacros.buildComponent("assets/xml/test.xml"); // whatever your XML layout path is
+
+                Screen.instance.root = root;
+
                 //app.addComponent(main);
                 app.addComponent(new MainView());
                 app.start();
