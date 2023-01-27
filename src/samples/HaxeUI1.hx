@@ -1,5 +1,6 @@
 package samples;
 
+import haxe.ui.core.Component;
 import com.babylonhx.ui.UIComponent;
 import com.babylonhx.cameras.FreeCamera;
 import com.babylonhx.lights.HemisphericLight;
@@ -11,7 +12,7 @@ import com.babylonhx.Scene;
 import haxe.ui.Toolkit;
 import haxe.ui.HaxeUIApp;
 import haxe.ui.core.Screen;
-import ui.MainView;
+//import ui.MainView;
 
 /**
  * ...
@@ -26,7 +27,8 @@ class HaxeUI1 {
         Toolkit.scaleY = 1;
 
         var root : UIComponent = new UIComponent();
-
+        @:privateAccess root.posChanged = true;
+        
         var app = new HaxeUIApp();
         app.ready(
             function() {
@@ -34,7 +36,9 @@ class HaxeUI1 {
                 Screen.instance.root = root;
 
                 //app.addComponent(main);
-                app.addComponent(new MainView());
+                //app.addComponent(new MainView());
+                var comp:Component = haxe.ui.ComponentBuilder.fromFile("ui/main-view.xml");
+                app.addComponent(comp);
                 app.start();
             }
         );
@@ -50,9 +54,14 @@ class HaxeUI1 {
 		sphere.material = new StandardMaterial("mat", scene);
 		untyped sphere.material.diffuseColor = new Color3(0.3, 0.34, 0.87);
 		sphere.position.y = 1;
+
+        var engine = scene.getEngine();
 		
-		scene.getEngine().runRenderLoop(function () {
+		engine.runRenderLoop(function () {
             scene.render();
+            root.sync(engine);
+            
+            root.drawRec(engine);
         });
 	}
 	

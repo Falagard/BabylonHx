@@ -1,12 +1,5 @@
 <vbox style="padding: 5px;">
-    <style>
-        .button {
-            font-size: 20px;
-        }
-    </style>
     <hbox>
         <button text="Press Me!" id="button1" style="color: red;" />
-        <button text="Press Me!" id="button2" style="color: green;" />
-        <button text="Press Me!" onclick="this.text='Thanks!'" style="color: blue;" />
     </hbox>    
 </vbox>

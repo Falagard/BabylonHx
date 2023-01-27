@@ -1,5 +1,6 @@
 package com.babylonhx.ui;
 
+import haxe.ui.core.ComponentContainer;
 import com.babylonhx.engine.Engine;
 
 class UIComponent {
@@ -283,7 +284,7 @@ class UIComponent {
 	function contentChanged( s : UIComponent ) {
 	}
 
-    function drawRec(engine: Engine) {
+    public function drawRec(engine: Engine) {
 		if( !visible ) return;
 		// fallback in case the object was added during a sync() event and we somehow didn't update it
 		if( posChanged ) {
@@ -320,6 +321,7 @@ class UIComponent {
 	function draw( engine: Engine ) {
 		//baseShader.absoluteMatrixA.set(obj.matA, obj.matC, obj.absX);
 		//baseShader.absoluteMatrixB.set(obj.matB, obj.matD, obj.absY);
+		//trace('draw -> absX ${absX} absY ${absY} matA ${matA} matB ${matB} matC ${matC} matD ${matD}');
 	}
 
 	/**
@@ -328,7 +330,6 @@ class UIComponent {
 		See `Object.syncPos` for a safe position sync method.
 		This method does not ensure that object parents also have up-to-date transform nor does it clear the `Object.posChanged` flag.
 	**/
-	@:dox(show)
 	function calcAbsPos() {
 		if( parent == null ) {
 			var cr, sr;
@@ -343,7 +344,7 @@ class UIComponent {
 				sr = Math.sin(rotation);
 				matA = scaleX * cr;
 				matB = scaleX * sr;
-				matC = scaleY * -sr;
+				matC = scaleY * -sr; 
 				matD = scaleY * cr;
 			}
 			absX = x;
@@ -370,6 +371,42 @@ class UIComponent {
 			}
 			absX = x * parent.matA + y * parent.matC + parent.absX;
 			absY = x * parent.matB + y * parent.matD + parent.absY;
+		}
+
+		//var comp:ComponentContainer = cast this;
+		trace('calcAbsPos -> absX ${absX} absY ${absY} matA ${matA} matB ${matB} matC ${matC} matD ${matD}');
+	}
+
+	/**
+		Performs a sync of data for rendering (such as absolute position recalculation).
+		While this method can be used as a substitute to an update loop, it's primary purpose it to prepare the Object to be rendered.
+
+		Do not remove the super call when overriding.
+	**/
+	public function sync(engine: Engine) {
+		var changed = posChanged;
+		if( changed ) {
+			calcAbsPos();
+			posChanged = false;
+		}
+
+		//lastFrame = ctx.frame;
+		var p = 0, len = children.length;
+		while( p < len ) {
+			var c = children[p];
+			if( c == null )
+				break;
+			//if( c.lastFrame != ctx.frame ) { //CL todo track frame changes to prevent synching multiple times per frame
+				if( changed ) c.posChanged = true;
+				c.sync(engine);
+			//}
+			// if the object was removed, let's restart again.
+			// our lastFrame ensure that no object will get synched twice
+			if( children[p] != c ) {
+				p = 0;
+				len = children.length;
+			} else
+				p++;
 		}
 	}
 
