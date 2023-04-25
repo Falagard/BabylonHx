@@ -74,7 +74,7 @@ class MainLime extends Application {
 	
 	override public function onPreloadComplete() {
 
-		new samples.HaxeUI1(scene);
+		//new samples.HaxeUI1(scene);
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl: y
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
@@ -129,10 +129,10 @@ class MainLime extends Application {
 		//new samples.VolumetricLights(scene);
 		//new samples.CellShading(scene);
 		//new samples.Particles(scene); //hl: y
-		//new samples.Particles2(scene);					
-		//new samples.Particles3(scene);					
-		//new samples.Particles4(scene);
-		//new samples.Particles5(scene);					
+		//new samples.Particles2(scene); //crashes			
+		//new samples.Particles3(scene); //hl: y					
+		//new samples.Particles4(scene); //hl: y
+		new samples.Particles5(scene);					
 		//new samples.Particles6(scene);
 		//new samples.Particles7(scene);
 		//new samples.Particles8(scene);

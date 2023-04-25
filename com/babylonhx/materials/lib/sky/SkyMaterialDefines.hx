@@ -6,7 +6,7 @@ package com.babylonhx.materials.lib.sky;
  */
 class SkyMaterialDefines extends MaterialDefines {
 	
-	public var CLIPPLANE:Bool = false;
+	//public var CLIPPLANE:Bool = false;
 	public var POINTSIZE:Bool = false;
 	public var FOG:Bool = false;
 	public var VERTEXCOLOR:Bool = false;
@@ -44,7 +44,7 @@ class SkyMaterialDefines extends MaterialDefines {
 	override public function reset() {
 		super.reset();
 		
-		this.CLIPPLANE = false;
+		this.CLIPPLANE = 0;
 		this.POINTSIZE = false;
 		this.FOG = false;
 		this.VERTEXCOLOR = false;
@@ -54,7 +54,7 @@ class SkyMaterialDefines extends MaterialDefines {
 	override public function toString():String {
 		var result = super.toString();
 		
-		if (this.CLIPPLANE) {
+		if (this.CLIPPLANE != 0) {
 			result += "#define CLIPPLANE \n";
 		}
 		if (this.POINTSIZE) {
