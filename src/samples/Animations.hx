@@ -1,7 +1,8 @@
 package samples;
 
+import com.babylonhx.animations.IAnimationKey;
 import com.babylonhx.animations.Animation;
-import com.babylonhx.animations.Animation.BabylonFrame;
+//import com.babylonhx.animations.Animation.BabylonFrame;
 import com.babylonhx.cameras.ArcRotateCamera;
 import com.babylonhx.lights.PointLight;
 import com.babylonhx.materials.StandardMaterial;
@@ -50,7 +51,7 @@ class Animations {
 		//  Keep the final value (Animation.ANIMATIONLOOPMODE_CONSTANT)
 		
 		// Animation keys
-		var keys:Array<BabylonFrame> = [];
+		var keys:Array<IAnimationKey> = [];
 		//At the animation key 0, the value of scaling is "1"
 		keys.push({
 			frame: 0,

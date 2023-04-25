@@ -84,7 +84,7 @@ class MainLime extends Application {
 		//new samples.Lights(scene); //hl: y
 		//new samples.BumpMap(scene); //html:y , hl: y
 		//new samples.Bump2(scene); //html: runs but not showing bump
-		//new samples.Animations(scene); //doesn't build, BabylonFrame missing
+		new samples.Animations(scene); //hl: y
 		//new samples.Collisions(scene); //html: runs, black screen
 		//new samples.Intersections(scene); //html: y
 		//new samples.EasingFunctions(scene); //html: y
@@ -104,7 +104,7 @@ class MainLime extends Application {
 		//new samples.PhysicsCar(scene);
 		//new samples.PhysicsNew(scene);
 		//new samples.PolygonMesh1(scene); //OpenSimplexNoiseTileable3D crash
-		new samples.PolygonMesh2(scene);
+		//new samples.PolygonMesh2(scene);
 		//new samples.PolygonMesh3(scene);
 		//new samples.ProceduralShapesTest(scene);
 		//new samples.CustomRenderTarget(scene); //hl: y
@@ -127,16 +127,16 @@ class MainLime extends Application {
 		//new samples.VolumetricLights(scene);
 		//new samples.CellShading(scene);
 		//new samples.Particles(scene); //hl: y
-		//new samples.Particles2(scene);					// OK
-		//new samples.Particles3(scene);					// OK
-		//new samples.Particles4(scene);
-		//new samples.Particles5(scene);					// OK
-		//new samples.Particles6(scene);
-		//new samples.Particles7(scene);
-		//new samples.Particles8(scene);
-		//new samples.Particles9(scene);
-		//new samples.Particles10(scene);
-		//new samples.AnimatedParticles(scene);
+		//new samples.Particles2(scene); //crashes, effect is null
+		//new samples.Particles3(scene); //hl:y
+		//new samples.Particles4(scene); //hl: y
+		//new samples.Particles5(scene); //hl: y
+		//new samples.Particles6(scene); //hl: y
+		//new samples.Particles7(scene); //hl:y
+		//new samples.Particles8(scene); //hl:y
+		//new samples.Particles9(scene); //hl:y
+		//new samples.Particles10(scene); //hl:y
+		//new samples.AnimatedParticles(scene); //hl:y
 		//new samples.Snow(scene);
 		//new samples.Extrusion(scene);
 		//new samples.Sprites(scene); //missing assets
