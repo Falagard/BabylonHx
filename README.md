@@ -16,15 +16,11 @@ Then you'll have to install runtime files for c++ backend for Haxe - HXCPP, exec
 
 `haxelib install hxcpp`
 
-After that, you can choose one of the three fantastic Haxe libraries/frameworks:
+Next we'll install Lime, which is a framework that includes tools and an libraries for building Haxe applications, including an OpenGL abstraction layer we use for rendering:
 
-Lime/Openfl http://www.openfl.org/
-NME http://nmehost.com/nme/
-Snow http://snowkit.org/
+https://lime.openfl.org/
 
-or you can install all of them. BabylonHx is compatible with all three.
-
-To start with Lime execute from cmd line:
+To install Lime execute from cmd line:
 
 `haxelib install lime`
 
