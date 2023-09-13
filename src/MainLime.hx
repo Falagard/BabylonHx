@@ -73,6 +73,8 @@ class MainLime extends Application {
 	}
 	
 	override public function onPreloadComplete() {
+		new samples.Turtle(scene);
+
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl: y
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
@@ -84,7 +86,7 @@ class MainLime extends Application {
 		//new samples.Lights(scene); //hl: y
 		//new samples.BumpMap(scene); //html:y , hl: y
 		//new samples.Bump2(scene); //html: runs but not showing bump
-		new samples.Animations(scene); //hl: y
+		//new samples.Animations(scene); //hl: y
 		//new samples.Collisions(scene); //html: runs, black screen
 		//new samples.Intersections(scene); //html: y
 		//new samples.EasingFunctions(scene); //html: y
@@ -108,9 +110,9 @@ class MainLime extends Application {
 		//new samples.PolygonMesh3(scene);
 		//new samples.ProceduralShapesTest(scene);
 		//new samples.CustomRenderTarget(scene); //hl: y
-		//new samples.Lines(scene);
-		//new samples.Lines2(scene);
-		//new samples.Lines3(scene);
+		//new samples.Lines(scene); //hl:y
+		//new samples.Lines2(scene); //hl:y
+		//new samples.Lines3(scene); //hl:y
 		//new samples.Bones(scene); //html: y, hl: y
 		//new samples.Shadows(scene); //hl: y
 		//new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
