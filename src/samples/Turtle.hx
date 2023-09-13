@@ -1,5 +1,6 @@
 package samples;
 
+import haxe.iterators.StringIterator;
 import com.babylonhx.states._AlphaState;
 import com.babylonhx.math.Space;
 import com.babylonhx.math.Angle;
@@ -45,55 +46,65 @@ class Turtle {
 		var light = new HemisphericLight("hemi", new Vector3(0, 1, 0), scene);
 		light.diffuse = Color3.FromInt(0xf68712);
 		
-		//var points:Array<Vector3> = [];
-
-        
-
-        //todo - implement forward, right, etc. and get points to push onto stack. 
-        //evaluate a string for turtle inputs
-        //figure out how to do branching, probably by pushing and popping the transform into a stack, and also creating lines from the current set of points and clearing the current set of points
+        //change logic so it's possible to change the color at any location - in which case we'll create the mesh, set the color, etc. 
+        //use a state system maybe for setting color like C=1 which can be injected into the l system and do specific things like set the color. 
+        //C=1FFF(C=2RFF(C=3RFF)LFF)LLFF
+        //evaluate a string for turtle inputs including branching
+        //attempt a simple l system using an axiom, iteration, etc. 
         //keyboard input for changing and evaluating the turtle string
         //work out the amounts for forward45 vs forward
-                                
-        _tfm = new TransformNode("tfm", scene, true);
 
-        //FFF(RFF(RFF)LFF)LLFF
-
-        var r:Float = 45;
-        var f:Float = 20;
+        //Layers - if we are defining boundaries, we may want to overlap certain things such as walls, etc. so use different colors. Each of these could be considered a different layer. 
+        //Layers could be visualized in 3D by changing the Z value slightly, and shown/hidden by color
+        //For example, when defining a house, blue could be exterior walls, red interior walls, etc.,
         
-        right(90);
+        var r:Float = 25;
+        var f:Float = 30;
+        var iterations:Int = 5;
+
+        var axiom:String = "F";
+
+        var rules:Array<String> = [];
+
+        rules.push("F:F[-F][+F]");
+
+        var system:String = axiom; //"FFF[RFF[RFF]LFF]LLFF";
+
+        for(i in 0...iterations) {
+            for(rule in rules) {
+                //parse the rule into before colon and after colon
+                var replaceStr = rule.substring(0, rule.indexOf(":"));
+                var replaceWithStr = rule.substring(rule.indexOf(":") + 1, rule.length);
+
+                system = StringTools.replace(system, replaceStr, replaceWithStr);
+            }
+        }
+
+        beginSystem();
+
+        //loop through the characters, does not validate begin and end branches yet
+        for(i in 0...system.length) {
+            var item = system.charAt(i);
+
+            if(item == "F") {
+                forward(f);
+            } else if(item == "+") {
+                right(r);
+            } else if(item == "-") {
+                left(r);
+            }
+            else if(item == "[") {
+                beginBranch();
+            }
+            else if(item == "]") {
+                endBranch();
+            }
+        }
         
-        forward(f);
-        forward(f);
-        forward(f);
-
-        beginBranch();
-        right(r);
-        forward(f);
-        forward(f);
-        beginBranch();
-        right(r);
-        forward(f);
-        forward(f);
-        endBranch();
-        left(r);
-        forward(f);
-        forward(f);
-        endBranch();
-        left(r);
-        left(r);
-        forward(f);
-        forward(f);
-
-        var mesh = Mesh.CreateLines("branch" + _branchCounter, _points, _scene, false);
-        mesh.color = Color3.Yellow();
-
-		// var lorenz = Mesh.CreateLines("whirlpool", points, scene, false);
-		// lorenz.color = Color3.Red();
+        endSystem();
 		
 		scene.registerBeforeRender(function(scene:Scene, es:Null<EventState>) {
-			//lorenz.rotation.y += 0.01 * scene.getAnimationRatio();
+			
 		});
 		
 		scene.getEngine().runRenderLoop(function () {
@@ -122,14 +133,14 @@ class Turtle {
         tempTfm.rotationQuaternion = _tfm.rotationQuaternion;        
         _tfm = tempTfm;
 
-        var color:Color3 = Color3.Red();
+        var color:Color3 = Color3.White();
 
-        if(_branchCounter % 2 == 0) {
-            color = Color3.Red();
-        }
-        else {
-            color = Color3.Blue();
-        }
+        // if(_branchCounter % 2 == 0) {
+        //     color = Color3.Red();
+        // }
+        // else {
+        //     color = Color3.Blue();
+        // }
 
         _colorsStack.push(color);
     }
@@ -140,5 +151,17 @@ class Turtle {
         _points = [];
         _tfm = _transformsStack.pop();
         _points.push(_tfm.position);
+    }
+
+    public function beginSystem() {
+        _tfm = new TransformNode("tfm", _scene, true);
+        right(90); //starts us pointing upwards
+
+        _colorsStack.push(Color3.White());
+    }
+
+    public function endSystem() {
+        var mesh = Mesh.CreateLines("branch", _points, _scene, false);
+        mesh.color = _colorsStack.pop();
     }
 }
