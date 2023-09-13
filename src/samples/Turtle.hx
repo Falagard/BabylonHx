@@ -26,7 +26,7 @@ import com.babylonhx.tools.EventState;
  */
 class Turtle {
 
-    private var _tfm: TransformNode = null;
+    private var _currentTransform: TransformNode = null;
     private var _points:Array<Vector3> = [];
     private var _transformsStack:Array<TransformNode> = [];
     private var _branchCounter:Int = 1;
@@ -73,10 +73,10 @@ class Turtle {
         for(i in 0...iterations) {
             for(rule in rules) {
                 //parse the rule into before colon and after colon
-                var replaceStr = rule.substring(0, rule.indexOf(":"));
-                var replaceWithStr = rule.substring(rule.indexOf(":") + 1, rule.length);
+                var source = rule.substring(0, rule.indexOf(":"));
+                var dest = rule.substring(rule.indexOf(":") + 1, rule.length);
 
-                system = StringTools.replace(system, replaceStr, replaceWithStr);
+                system = StringTools.replace(system, source, dest);
             }
         }
 
@@ -113,35 +113,28 @@ class Turtle {
 	}
 
     public function right(degrees:Float) {
-        _tfm.rotate(Axis.Z, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
+        _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
     }
 	
 	public function left(degrees:Float) {
-        _tfm.rotate(Axis.Z, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
+        _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
     }
 
     public function forward(amount:Float) {
-        _tfm.translate(Axis.X, amount, Space.LOCAL);
-        _points.push(_tfm.position);
+        _currentTransform.translate(Axis.X, amount, Space.LOCAL);
+        _points.push(_currentTransform.position);
     }
     
     public function beginBranch() {
         _branchCounter++;
-        _transformsStack.push(_tfm);
-        var tempTfm = new TransformNode("tfm" + _branchCounter);
-        tempTfm.position = _tfm.position;
-        tempTfm.rotationQuaternion = _tfm.rotationQuaternion;        
-        _tfm = tempTfm;
+        _transformsStack.push(_currentTransform); //push our current transform on the stack so we can revert it in endBranch
+        //create a new temp transform, copy position and rotation from current transform and set _tfm 
+        var tempTfm = new TransformNode("tfm" + _branchCounter); 
+        tempTfm.position = _currentTransform.position;
+        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion;        
+        _currentTransform = tempTfm;
 
         var color:Color3 = Color3.White();
-
-        // if(_branchCounter % 2 == 0) {
-        //     color = Color3.Red();
-        // }
-        // else {
-        //     color = Color3.Blue();
-        // }
-
         _colorsStack.push(color);
     }
 
@@ -149,15 +142,15 @@ class Turtle {
         var mesh = Mesh.CreateLines("branch", _points, _scene, false);
         mesh.color = _colorsStack.pop();
         _points = [];
-        _tfm = _transformsStack.pop();
-        _points.push(_tfm.position);
+        _currentTransform = _transformsStack.pop(); //pop the previous position back off the stack
+        _points.push(_currentTransform.position); //current position as our starting point
     }
 
     public function beginSystem() {
-        _tfm = new TransformNode("tfm", _scene, true);
+        _currentTransform = new TransformNode("tfm", _scene, true);
         right(90); //starts us pointing upwards
 
-        _colorsStack.push(Color3.White());
+        _colorsStack.push(Color3.White()); //not yet supported but this is for color changing
     }
 
     public function endSystem() {
