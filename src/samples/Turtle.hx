@@ -58,23 +58,95 @@ class Turtle {
         //Layers could be visualized in 3D by changing the Z value slightly, and shown/hidden by color
         //For example, when defining a house, blue could be exterior walls, red interior walls, etc.,
         
-        var r:Float = 25;
-        var f:Float = 30;
-        var iterations:Int = 5;
+        //koch
+        // var r:Float = 90;
+        // var f:Float = 2;
+        // var iterations:Int = 2;
 
-        var axiom:String = "F";
+        // var axiom:String = "F-F-F-F";
 
+        // var rules:Array<String> = [];
+        // rules.push("F=F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F");
+
+        //quadratic snowflake
+        // var r:Float = 90;
+        // var f:Float = 5;
+        // var iterations:Int = 4;
+
+        // var axiom:String = "-F";
+
+        // var rules:Array<String> = [];
+        // rules.push("F=F+F-F-F+F");
+
+        //koch curve a
+        // var r:Float = 90;
+        // var f:Float = 5;
+        // var iterations:Int = 4;
+
+        // var axiom:String = "F-F-F-F";
+
+        // var rules:Array<String> = [];
+        // rules.push("F=FF-F-F-F-F-F+F");
+
+        //koch curve b
+        // var r:Float = 90;
+        // var f:Float = 5;
+        // var iterations:Int = 4;
+
+        // var axiom:String = "F-F-F-F";
+
+        // var rules:Array<String> = [];
+        // rules.push("F=FF-F-F-F-FF");
+
+        //tree
+        // var r:Float = 25;
+        // var f:Float = 10;
+        // var iterations:Int = 5;
+        // var axiom:String = "F";
+        // var rules:Array<String> = [];
+        // rules.push("F=F[-F][+F]");
+
+        //tree with dummy X
+        // var r:Float = 25;
+        // var f:Float = 10;
+        // var iterations:Int = 5;
+        // var axiom:String = "X";
+        // var rules:Array<String> = [];
+        // rules.push("F=FF");
+        // rules.push("X=F[+F][---X]+F-F[++++X]-X");
+
+        //https://www.houdinikitchen.net/wp-content/uploads/2019/12/L-systems.pdf
+
+        var r:Float = 22.5;
+        var f:Float = 10;
+        var iterations:Int = 6;
+        var axiom:String = "X";
         var rules:Array<String> = [];
+        rules.push("X=F-[[X]+X]+F[+FX]-X");
+        rules.push("F=FF");
 
-        rules.push("F:F[-F][+F]");
 
-        var system:String = axiom; //"FFF[RFF[RFF]LFF]LLFF";
+        //sierpenksi triangle, doesn't currently work
+        // var r:Float = 60;
+        // var f:Float = 10;
+        // var iterations:Int = 3;
+
+        // var axiom:String = "F-G-G";
+
+        // var rules:Array<String> = [];
+        // rules.push("F=F-G+F+G-F");
+        // rules.push("G=GG");
+
+
+
+        var system:String = axiom;
 
         for(i in 0...iterations) {
             for(rule in rules) {
+                var equalsIdx = rule.indexOf("=");
                 //parse the rule into before colon and after colon
-                var source = rule.substring(0, rule.indexOf(":"));
-                var dest = rule.substring(rule.indexOf(":") + 1, rule.length);
+                var source = rule.substring(0, equalsIdx);
+                var dest = rule.substring(equalsIdx + 1, rule.length);
 
                 system = StringTools.replace(system, source, dest);
             }
@@ -98,6 +170,12 @@ class Turtle {
             }
             else if(item == "]") {
                 endBranch();
+            }
+            else if(item == "X") {
+                //no op
+            } else {
+                //everything else is interpetted as forward
+                forward(f);
             }
         }
         
@@ -126,12 +204,23 @@ class Turtle {
     }
     
     public function beginBranch() {
-        _branchCounter++;
-        _transformsStack.push(_currentTransform); //push our current transform on the stack so we can revert it in endBranch
-        //create a new temp transform, copy position and rotation from current transform and set _tfm 
+        
+        //create a copy of current transform
         var tempTfm = new TransformNode("tfm" + _branchCounter); 
-        tempTfm.position = _currentTransform.position;
-        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion;        
+        tempTfm.position = _currentTransform.position.clone();
+        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion.clone();        
+
+        _transformsStack.push(tempTfm); //push our current transform on the stack so we can revert it in endBranch
+
+        trace("beginBranch position " + tempTfm.position + " rotation " + tempTfm.rotationQuaternion);
+
+        _branchCounter++;
+
+        //create a new temp transform, copy position and rotation from current transform and set _tfm 
+        tempTfm = new TransformNode("tfm" + _branchCounter); 
+        tempTfm.position = _currentTransform.position.clone();
+        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion.clone();        
+        
         _currentTransform = tempTfm;
 
         var color:Color3 = Color3.White();
@@ -143,13 +232,16 @@ class Turtle {
         mesh.color = _colorsStack.pop();
         _points = [];
         _currentTransform = _transformsStack.pop(); //pop the previous position back off the stack
+
+        trace("endBranch position " + _currentTransform.position + " rotation " + _currentTransform.rotationQuaternion);
+
         _points.push(_currentTransform.position); //current position as our starting point
     }
 
     public function beginSystem() {
         _currentTransform = new TransformNode("tfm", _scene, true);
         right(90); //starts us pointing upwards
-
+        _points.push(_currentTransform.position);
         _colorsStack.push(Color3.White()); //not yet supported but this is for color changing
     }
 
