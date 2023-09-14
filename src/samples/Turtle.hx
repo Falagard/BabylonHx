@@ -1,5 +1,6 @@
 package samples;
 
+import com.babylonhx.cameras.FreeCamera;
 import haxe.iterators.StringIterator;
 import com.babylonhx.states._AlphaState;
 import com.babylonhx.math.Space;
@@ -38,6 +39,7 @@ class Turtle {
         _scene = scene;
 
 		var camera = new ArcRotateCamera("Camera", 0, 0, 10, new Vector3(0, 0, 0), scene);
+        //var camera = new FreeCamera("Camera", new Vector3(20, 30, -100), scene);
 		camera.setPosition(new Vector3(0, 0, 400));
 		camera.attachControl();
 		camera.maxZ = 20000;		
@@ -57,6 +59,19 @@ class Turtle {
         //Layers - if we are defining boundaries, we may want to overlap certain things such as walls, etc. so use different colors. Each of these could be considered a different layer. 
         //Layers could be visualized in 3D by changing the Z value slightly, and shown/hidden by color
         //For example, when defining a house, blue could be exterior walls, red interior walls, etc.,
+
+        //Implement more commands from the L systems document here, including probability, arc angle from root, etc. 
+        //https://www.houdinikitchen.net/wp-content/uploads/2019/12/L-systems.pdf
+
+        //diamond
+        var r:Float = 60;
+        var f:Float = 2;
+        var iterations:Int = 4;
+
+        var axiom:String = "F";
+
+        var rules:Array<String> = [];
+        rules.push("F=FF++F++F+F++F-F");
         
         //koch
         // var r:Float = 90;
@@ -115,15 +130,22 @@ class Turtle {
         // rules.push("F=FF");
         // rules.push("X=F[+F][---X]+F-F[++++X]-X");
 
-        //https://www.houdinikitchen.net/wp-content/uploads/2019/12/L-systems.pdf
-
-        var r:Float = 22.5;
-        var f:Float = 10;
-        var iterations:Int = 6;
-        var axiom:String = "X";
-        var rules:Array<String> = [];
-        rules.push("X=F-[[X]+X]+F[+FX]-X");
-        rules.push("F=FF");
+        //branching structures b
+        // var r:Float = 20;
+        // var f:Float = 10;
+        // var iterations:Int = 5;
+        // var axiom:String = "F";
+        // var rules:Array<String> = [];
+        // rules.push("F=F[+F]F[-F]F");
+        
+        // //branching structures f
+        // var r:Float = 22.5;
+        // var f:Float = 10;
+        // var iterations:Int = 4;
+        // var axiom:String = "X";
+        // var rules:Array<String> = [];
+        // rules.push("X=F-[[X]+X]+F[+FX]-X");
+        // rules.push("F=FF");
 
 
         //sierpenksi triangle, doesn't currently work
@@ -140,6 +162,7 @@ class Turtle {
 
 
         var system:String = axiom;
+        //var system:String = "FF-F";
 
         for(i in 0...iterations) {
             for(rule in rules) {
