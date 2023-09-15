@@ -34,12 +34,6 @@ When Lime is installed and configured you'll have to install dev tools for each 
 
 This will start download process of VisualStudio and it will install and setup everything for you. For every other platform the process is the same, for example android:
 
-`haxelib run lime setup android`
-
-It will download android sdk/ndk and Ant (and java sdk if you don't have it already).
-You should accept default locations that installer will offer.
-For web (js) target you don't have to install anything.
-
 Finally, you have to install "poly2trihx" library which is used by BabylonHx and "actuate" lib which is used in some examples:
 
 `haxelib install poly2trihx`
@@ -47,7 +41,9 @@ Finally, you have to install "poly2trihx" library which is used by BabylonHx and
 `haxelib install actuate`
 
 Now you should be ready to build BabylonHx.
+
 Download complete repo from https://github.com/Falagard/BabylonHx and navigate to folder where you have downloaded files.
+
 Then run from cmd line:
 
 `haxelib run lime test project.xml html5`
