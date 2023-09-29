@@ -48,11 +48,10 @@ class Turtle {
 		var light = new HemisphericLight("hemi", new Vector3(0, 1, 0), scene);
 		light.diffuse = Color3.FromInt(0xf68712);
 		
+        //todo
         //change logic so it's possible to change the color at any location - in which case we'll create the mesh, set the color, etc. 
-        //use a state system maybe for setting color like C=1 which can be injected into the l system and do specific things like set the color. 
-        //C=1FFF(C=2RFF(C=3RFF)LFF)LLFF
-        //evaluate a string for turtle inputs including branching
-        //attempt a simple l system using an axiom, iteration, etc. 
+        //use a state system maybe for setting color, where you use a different variable name for F 
+
         //keyboard input for changing and evaluating the turtle string
         //work out the amounts for forward45 vs forward
 
@@ -64,14 +63,14 @@ class Turtle {
         //https://www.houdinikitchen.net/wp-content/uploads/2019/12/L-systems.pdf
 
         //diamond
-        var r:Float = 60;
-        var f:Float = 2;
-        var iterations:Int = 4;
+        // var r:Float = 60;
+        // var f:Float = 2;
+        // var iterations:Int = 4;
 
-        var axiom:String = "F";
+        // var axiom:String = "F";
 
-        var rules:Array<String> = [];
-        rules.push("F=FF++F++F+F++F-F");
+        // var rules:Array<String> = [];
+        // rules.push("F=FF++F++F+F++F-F");
         
         //koch
         // var r:Float = 90;
@@ -93,6 +92,16 @@ class Turtle {
         // var rules:Array<String> = [];
         // rules.push("F=F+F-F-F+F");
 
+        //koch snowflake
+        // var r:Float = 60;
+        // var f:Float = 5;
+        // var iterations:Int = 3;
+
+        // var axiom:String = "F--F--F";
+        
+        // var rules:Array<String> = [];
+        // rules.push("F=F+F--F+F");
+
         //koch curve a
         // var r:Float = 90;
         // var f:Float = 5;
@@ -113,10 +122,20 @@ class Turtle {
         // var rules:Array<String> = [];
         // rules.push("F=FF-F-F-F-FF");
 
+        //Koch Curve e
+        // var r:Float = 90;
+        // var f:Float = 5;
+        // var iterations:Int = 4;
+
+        // var axiom:String = "F-F-F-F";
+
+        // var rules:Array<String> = [];
+        // rules.push("F=F-FF--F-F");
+
         //tree
         // var r:Float = 25;
         // var f:Float = 10;
-        // var iterations:Int = 5;
+        // var iterations:Int = 2;
         // var axiom:String = "F";
         // var rules:Array<String> = [];
         // rules.push("F=F[-F][+F]");
@@ -159,20 +178,48 @@ class Turtle {
         // rules.push("F=F-G+F+G-F");
         // rules.push("G=GG");
 
+        // first 3d tree with pitch and roll 
+        // var r:Float = 28;
+        // var f:Float = 5;
+        // var iterations:Int = 5;
 
+        // var axiom:String = "FFFA";
 
+        // var rules:Array<String> = [];
+        // rules.push("A=[B]////[B]////[B]");
+        // rules.push("B=&FFFA");
+
+        // //Basic test with just a string containing turtle commands
+        // var axiom:String = "F+F+F+F+F+F+F+F";
+        // var r:Float = 45;
+        // var f:Float = 10;
+        // var iterations = 0;
+        // var rules:Array<String> = [];
+
+        //Basic test with branching
+        var axiom:String = "F+[F+F]-F-F[F+F]-F-F";
+        var r:Float = 45;
+        var f:Float = 10;
+        var iterations = 0;
+        var rules:Array<String> = [];
+
+        // var axiom:String = "F+[F+F]-F-F[F+F]-F-F";
+        // var r:Float = 45;
+        // var f:Float = 10;
+        // var iterations = 0;
+        // var rules:Array<String> = [];
+                        
         var system:String = axiom;
-        //var system:String = "FF-F";
 
         for(i in 0...iterations) {
-            for(rule in rules) {
-                var equalsIdx = rule.indexOf("=");
-                //parse the rule into before colon and after colon
-                var source = rule.substring(0, equalsIdx);
-                var dest = rule.substring(equalsIdx + 1, rule.length);
+             for(rule in rules) {
+                 var equalsIdx = rule.indexOf("=");
+                 //parse the rule into before colon and after colon
+                 var source = rule.substring(0, equalsIdx);
+                 var dest = rule.substring(equalsIdx + 1, rule.length);
 
-                system = StringTools.replace(system, source, dest);
-            }
+                 system = StringTools.replace(system, source, dest);
+             }
         }
 
         beginSystem();
@@ -187,6 +234,14 @@ class Turtle {
                 right(r);
             } else if(item == "-") {
                 left(r);
+            } else if(item == "/") {
+                rollCounterClockwise(r);
+            } else if(item == "\\") {
+                rollClockwise(r);
+            } else if(item == "&") {
+                pitchUp(r);
+            } else if(item == "^") {
+                pitchDown(r);
             }
             else if(item == "[") {
                 beginBranch();
@@ -194,14 +249,14 @@ class Turtle {
             else if(item == "]") {
                 endBranch();
             }
-            else if(item == "X") {
+            else if(item == "X" || item == "A") {
                 //no op
             } else {
                 //everything else is interpetted as forward
                 forward(f);
             }
         }
-        
+
         endSystem();
 		
 		scene.registerBeforeRender(function(scene:Scene, es:Null<EventState>) {
@@ -212,6 +267,22 @@ class Turtle {
             scene.render();
         });
 	}
+
+    public function rollClockwise(degrees:Float) {
+        _currentTransform.rotate(Axis.X, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
+    }
+
+    public function rollCounterClockwise(degrees:Float) {
+        _currentTransform.rotate(Axis.X, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
+    }
+
+    public function pitchUp(degrees:Float) {
+        _currentTransform.rotate(Axis.Y, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
+    }
+
+    public function pitchDown(degrees:Float) {
+        _currentTransform.rotate(Axis.Y, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
+    }
 
     public function right(degrees:Float) {
         _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
@@ -235,7 +306,7 @@ class Turtle {
 
         _transformsStack.push(tempTfm); //push our current transform on the stack so we can revert it in endBranch
 
-        trace("beginBranch position " + tempTfm.position + " rotation " + tempTfm.rotationQuaternion);
+        //trace("beginBranch position " + tempTfm.position + " rotation " + tempTfm.rotationQuaternion);
 
         _branchCounter++;
 
@@ -256,7 +327,7 @@ class Turtle {
         _points = [];
         _currentTransform = _transformsStack.pop(); //pop the previous position back off the stack
 
-        trace("endBranch position " + _currentTransform.position + " rotation " + _currentTransform.rotationQuaternion);
+        //trace("endBranch position " + _currentTransform.position + " rotation " + _currentTransform.rotationQuaternion);
 
         _points.push(_currentTransform.position); //current position as our starting point
     }

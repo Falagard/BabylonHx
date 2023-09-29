@@ -73,7 +73,8 @@ class MainLime extends Application {
 	}
 	
 	override public function onPreloadComplete() {
-		new samples.Turtle(scene);
+		//new samples.Turtle(scene);
+		new samples.Turtle2(scene);
 
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl: y
