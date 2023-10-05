@@ -26,30 +26,16 @@ import com.babylonhx.tools.EventState;
  * ...
  * @author Clay Larabie
  */
-class LSystem {
+class LSystem extends TurtleBase {
 
-    private var _currentTransform: TransformNode = null;
-    private var _points:Array<Vector3> = [];
-    private var _transformsStack:Array<TransformNode> = [];
-    private var _branchCounter:Int = 1;
-    private var _scene:Scene = null;
-    private var _colorsStack:Array<Color3> = [];
-    
-    //meshes used and that need to be disposed when regenerating
-    var _meshes:Array<Mesh> = [];
-
-    //l-system values
-    var _turnRadius:Float = 45; 
-    var _distance:Float = 10;
+    //the number of times to iterate 
     var _iterations:Int = 0;
-    var _axiom:String = ""; //the start value of the l-system
-    var _rules:Array<String> = [];
-    var _system:String = ""; //the final l-system 
-
-    //input handling
-    var _keysDown:Map<Int, Bool> = new Map();
-    var _keysHandled:Map<Int, Bool> = new Map();
-    var _elapsedTime:Float = 0;
+    //the start value of the l-system
+    var _axiom:String = ""; 
+    //a set of rules to apply each iteration
+    //this is string replacement, where you use the syntax FIND:REPLACE 
+    //for example F:FF+FF 
+    var _rules:Array<String> = []; 
     
 	public function new(scene:Scene) {
 
@@ -115,7 +101,7 @@ class LSystem {
                     _turnRadius = 45;
                     _distance = 10;
                     _iterations = 0;
-                    _axiom = "F+[F+F]-F-F[F+F]-F-F";
+                    _axiom = "F[+F[+F]-F]-F";
                     _rules = [];
                     _keysHandled[Keycodes.key_1] = true;
                 }
@@ -262,8 +248,16 @@ class LSystem {
                     }
                 }
 
-                beginSystem();
+                //destroy meshes
+                disposeMeshes();
 
+                //begin a new mesh 
+                beginMesh();
+
+                trace("system length:  " + _system.length);
+
+                var previousTime = haxe.Timer.stamp();
+                
                 //loop through the characters, does not validate begin and end branches yet
                 for(i in 0..._system.length) {
                     var item = _system.charAt(i);
@@ -297,7 +291,14 @@ class LSystem {
                     }
                 }
 
-                endSystem();   
+                var currentTime = haxe.Timer.stamp();
+                var deltaTime: Float = Std.int((currentTime - previousTime) * 1000); //milliseconds difference
+
+                trace("generation took:  " + deltaTime + " milliseconds");
+
+
+                //actually create the mesh
+                endMesh();   
 
                 _elapsedTime = 0;
 
@@ -309,99 +310,4 @@ class LSystem {
             scene.render();
         });
 	}
-
-    public function rollClockwise(degrees:Float) {
-        _currentTransform.rotate(Axis.X, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
-    }
-
-    public function rollCounterClockwise(degrees:Float) {
-        _currentTransform.rotate(Axis.X, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
-    }
-
-    public function pitchUp(degrees:Float) {
-        _currentTransform.rotate(Axis.Y, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
-    }
-
-    public function pitchDown(degrees:Float) {
-        _currentTransform.rotate(Axis.Y, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
-    }
-
-    public function right(degrees:Float) {
-        _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
-    }
-	
-	public function left(degrees:Float) {
-        _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
-    }
-
-    public function forward(amount:Float) {
-        _currentTransform.translate(Axis.X, amount, Space.LOCAL);
-        _points.push(_currentTransform.position);
-    }
-    
-    public function beginBranch() {
-        
-        //create a copy of current transform
-        var tempTfm = new TransformNode("tfm" + _branchCounter); 
-        tempTfm.position = _currentTransform.position.clone();
-        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion.clone();        
-
-        _transformsStack.push(tempTfm); //push our current transform on the stack so we can revert it in endBranch
-
-        //trace("beginBranch position " + tempTfm.position + " rotation " + tempTfm.rotationQuaternion);
-
-        _branchCounter++;
-
-        //create a new temp transform, copy position and rotation from current transform and set _tfm 
-        tempTfm = new TransformNode("tfm" + _branchCounter); 
-        tempTfm.position = _currentTransform.position.clone();
-        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion.clone();        
-        
-        _currentTransform = tempTfm;
-
-        var color:Color3 = Color3.White();
-        _colorsStack.push(color);
-    }
-
-    public function endBranch() {
-        var mesh = Mesh.CreateLines("branch", _points, _scene, false);
-        mesh.color = _colorsStack.pop();
-        _points = [];
-        _currentTransform = _transformsStack.pop(); //pop the previous position back off the stack
-
-        //trace("endBranch position " + _currentTransform.position + " rotation " + _currentTransform.rotationQuaternion);
-
-        _points.push(_currentTransform.position); //current position as our starting point
-        _meshes.push(mesh);
-    }
-
-    public function beginSystem() {
-
-        //destroy current mesh and rebuild from scratch
-        for(mesh in _meshes) {
-            mesh.dispose();
-        }
-
-        _meshes = [];
-        _points = [];
-        _colorsStack = [];
-        _transformsStack = [];
-
-        if(_currentTransform != null) {
-            _currentTransform.dispose();
-        }
-
-        _branchCounter = 0;
-
-        _currentTransform = new TransformNode("tfm", _scene, true);
-        right(90); //starts us pointing upwards
-        _points.push(_currentTransform.position);
-        _colorsStack.push(Color3.White()); //not yet supported but this is for color changing
-    }
-
-    public function endSystem() {
-        var mesh = Mesh.CreateLines("branch", _points, _scene, false);
-        mesh.color = _colorsStack.pop();
-        _meshes.push(mesh);
-    }
 }

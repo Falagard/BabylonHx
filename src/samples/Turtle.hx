@@ -27,22 +27,7 @@ import com.babylonhx.tools.EventState;
  * ...
  * @author Clay Larabie
  */
-class Turtle {
-
-    private var _currentTransform: TransformNode = null;
-    private var _points:Array<Vector3> = [];
-    private var _transformsStack:Array<TransformNode> = [];
-    private var _branchCounter:Int = 1;
-    private var _scene:Scene = null;
-    private var _colorsStack:Array<Color3> = [];
-
-    var _keysDown:Map<Int, Bool> = new Map();
-    var _turnRadius:Float = 30;
-    var _distance:Float = 10;
-    var _system:String = "";
-    var _meshes:Array<Mesh> = [];
-    var _keysHandled:Map<Int, Bool> = new Map();
-    var _elapsedTime:Float = 0;
+class Turtle extends TurtleBase {
 
 	public function new(scene:Scene) {
 
@@ -61,11 +46,32 @@ class Turtle {
         scene.getEngine().keyDown.push(function(keyCode:Int) {
 			_keysDown[keyCode] = true;
 		});
+
 		scene.getEngine().keyUp.push(function(keyCode:Int) {
             _keysDown[keyCode] = false;
             _keysHandled[keyCode] = false;
 		});
-		
+
+        //draw a pointer mesh for the turtle direction
+        penUp();
+        beginMesh();
+        left(180);
+        forward(5);
+        right(180);
+        penDown();
+        forward(10);
+        left(120);
+        forward(10);
+        left(120);
+        forward(10);
+        left(120);
+        forward(10);
+        endMesh();
+
+        //grab the current mesh so it doesn't get disposed
+        var turtleMesh:Mesh = _meshes[0];
+        _meshes = [];
+        		
 		scene.registerBeforeRender(function(scene:Scene, es:Null<EventState>) {
             //check state of keys, update the turtle string
             var anyChanged:Bool = false;
@@ -106,9 +112,12 @@ class Turtle {
 
             if(anyChanged) {
 
+                //destroy current meshes
+                disposeMeshes();
+
                 _elapsedTime = 0;
 
-                beginSystem();
+                beginMesh();
 
                 //loop through the characters, does not validate begin and end branches yet
                 for(i in 0..._system.length) {
@@ -143,7 +152,11 @@ class Turtle {
                     }
                 }
 
-                endSystem();   
+                endMesh();   
+
+                turtleMesh.position = _currentTransform.position;
+                turtleMesh.rotationQuaternion = _currentTransform.rotationQuaternion;
+                
 
             }
         });
@@ -151,100 +164,5 @@ class Turtle {
 		scene.getEngine().runRenderLoop(function () {
             scene.render();
         });
-	}
-
-    public function rollClockwise(degrees:Float) {
-        _currentTransform.rotate(Axis.X, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
     }
-
-    public function rollCounterClockwise(degrees:Float) {
-        _currentTransform.rotate(Axis.X, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
-    }
-
-    public function pitchUp(degrees:Float) {
-        _currentTransform.rotate(Axis.Y, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
-    }
-
-    public function pitchDown(degrees:Float) {
-        _currentTransform.rotate(Axis.Y, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
-    }
-
-    public function right(degrees:Float) {
-        _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees).radians(), Space.LOCAL);
-    }
-	
-	public function left(degrees:Float) {
-        _currentTransform.rotate(Axis.Z, Angle.FromDegrees(degrees * -1).radians(), Space.LOCAL);
-    }
-
-    public function forward(amount:Float) {
-        _currentTransform.translate(Axis.X, amount, Space.LOCAL);
-        _points.push(_currentTransform.position);
-    }
-    
-    public function beginBranch() {
-        
-        //create a copy of current transform
-        var tempTfm = new TransformNode("tfm" + _branchCounter); 
-        tempTfm.position = _currentTransform.position.clone();
-        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion.clone();        
-
-        _transformsStack.push(tempTfm); //push our current transform on the stack so we can revert it in endBranch
-
-        //trace("beginBranch position " + tempTfm.position + " rotation " + tempTfm.rotationQuaternion);
-
-        _branchCounter++;
-
-        //create a new temp transform, copy position and rotation from current transform and set _tfm 
-        tempTfm = new TransformNode("tfm" + _branchCounter); 
-        tempTfm.position = _currentTransform.position.clone();
-        tempTfm.rotationQuaternion = _currentTransform.rotationQuaternion.clone();        
-        
-        _currentTransform = tempTfm;
-
-        var color:Color3 = Color3.White();
-        _colorsStack.push(color);
-    }
-
-    public function endBranch() {
-        var mesh = Mesh.CreateLines("branch", _points, _scene, false);
-        mesh.color = _colorsStack.pop();
-        _points = [];
-        _currentTransform = _transformsStack.pop(); //pop the previous position back off the stack
-
-        //trace("endBranch position " + _currentTransform.position + " rotation " + _currentTransform.rotationQuaternion);
-
-        _points.push(_currentTransform.position); //current position as our starting point
-        _meshes.push(mesh);
-    }
-
-    public function beginSystem() {
-
-        //destroy current mesh and rebuild from scratch
-        for(mesh in _meshes) {
-            mesh.dispose();
-        }
-
-        _meshes = [];
-        _points = [];
-        _colorsStack = [];
-        _transformsStack = [];
-
-        if(_currentTransform != null) {
-            _currentTransform.dispose();
-        }
-
-        _currentTransform = new TransformNode("tfm", _scene, true);
-        right(90); //starts us pointing upwards
-        _points.push(_currentTransform.position);
-        _colorsStack.push(Color3.White()); //not yet supported but this is for color changing
-    }
-
-    public function endSystem() {
-        var mesh = Mesh.CreateLines("branch", _points, _scene, false);
-        mesh.color = _colorsStack.pop();
-        _meshes.push(mesh);
-    }
-
-    
 }

@@ -162,7 +162,7 @@ package com.babylonhx.math;
 		return this;
 	}
 
-	public function toRotationMatrix(result:Matrix) {
+	inline public function toRotationMatrix(result:Matrix) {
 		var xx = this.x * this.x;
 		var yy = this.y * this.y;
 		var zz = this.z * this.z;

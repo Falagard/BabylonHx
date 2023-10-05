@@ -40,7 +40,7 @@ import com.babylonhx.math.Vector2;
 		return new Angle(radians);
 	}
 
-	static public function FromDegrees(degrees:Float):Angle {
+	inline static public function FromDegrees(degrees:Float):Angle {
 		return new Angle(degrees * Math.PI / 180);
 	}
 	
