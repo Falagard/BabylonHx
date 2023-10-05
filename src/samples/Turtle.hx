@@ -1,5 +1,7 @@
 package samples;
 
+import com.babylonhx.engine.EngineCapabilities.WEBGL_compressed_texture_s3tc;
+import com.babylonhx.utils.Keycodes;
 import com.babylonhx.cameras.FreeCamera;
 import haxe.iterators.StringIterator;
 import com.babylonhx.states._AlphaState;
@@ -23,7 +25,7 @@ import com.babylonhx.tools.EventState;
 
 /**
  * ...
- * @author Krtolica Vujadin
+ * @author Clay Larabie
  */
 class Turtle {
 
@@ -33,6 +35,14 @@ class Turtle {
     private var _branchCounter:Int = 1;
     private var _scene:Scene = null;
     private var _colorsStack:Array<Color3> = [];
+
+    var _keysDown:Map<Int, Bool> = new Map();
+    var _turnRadius:Float = 30;
+    var _distance:Float = 10;
+    var _system:String = "";
+    var _meshes:Array<Mesh> = [];
+    var _keysHandled:Map<Int, Bool> = new Map();
+    var _elapsedTime:Float = 0;
 
 	public function new(scene:Scene) {
 
@@ -47,221 +57,96 @@ class Turtle {
 		
 		var light = new HemisphericLight("hemi", new Vector3(0, 1, 0), scene);
 		light.diffuse = Color3.FromInt(0xf68712);
-		
-        //todo
-        //change logic so it's possible to change the color at any location - in which case we'll create the mesh, set the color, etc. 
-        //use a state system maybe for setting color, where you use a different variable name for F 
-
-        //keyboard input for changing and evaluating the turtle string
-        //work out the amounts for forward45 vs forward
-
-        //Layers - if we are defining boundaries, we may want to overlap certain things such as walls, etc. so use different colors. Each of these could be considered a different layer. 
-        //Layers could be visualized in 3D by changing the Z value slightly, and shown/hidden by color
-        //For example, when defining a house, blue could be exterior walls, red interior walls, etc.,
-
-        //Implement more commands from the L systems document here, including probability, arc angle from root, etc. 
-        //https://www.houdinikitchen.net/wp-content/uploads/2019/12/L-systems.pdf
-
-        //diamond
-        // var r:Float = 60;
-        // var f:Float = 2;
-        // var iterations:Int = 4;
-
-        // var axiom:String = "F";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=FF++F++F+F++F-F");
-        
-        //koch
-        // var r:Float = 90;
-        // var f:Float = 2;
-        // var iterations:Int = 2;
-
-        // var axiom:String = "F-F-F-F";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F");
-
-        //quadratic snowflake
-        // var r:Float = 90;
-        // var f:Float = 5;
-        // var iterations:Int = 4;
-
-        // var axiom:String = "-F";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=F+F-F-F+F");
-
-        //koch snowflake
-        // var r:Float = 60;
-        // var f:Float = 5;
-        // var iterations:Int = 3;
-
-        // var axiom:String = "F--F--F";
-        
-        // var rules:Array<String> = [];
-        // rules.push("F=F+F--F+F");
-
-        //koch curve a
-        // var r:Float = 90;
-        // var f:Float = 5;
-        // var iterations:Int = 4;
-
-        // var axiom:String = "F-F-F-F";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=FF-F-F-F-F-F+F");
-
-        //koch curve b
-        // var r:Float = 90;
-        // var f:Float = 5;
-        // var iterations:Int = 4;
-
-        // var axiom:String = "F-F-F-F";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=FF-F-F-F-FF");
-
-        //Koch Curve e
-        // var r:Float = 90;
-        // var f:Float = 5;
-        // var iterations:Int = 4;
-
-        // var axiom:String = "F-F-F-F";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=F-FF--F-F");
-
-        //tree
-        // var r:Float = 25;
-        // var f:Float = 10;
-        // var iterations:Int = 2;
-        // var axiom:String = "F";
-        // var rules:Array<String> = [];
-        // rules.push("F=F[-F][+F]");
-
-        //tree with dummy X
-        // var r:Float = 25;
-        // var f:Float = 10;
-        // var iterations:Int = 5;
-        // var axiom:String = "X";
-        // var rules:Array<String> = [];
-        // rules.push("F=FF");
-        // rules.push("X=F[+F][---X]+F-F[++++X]-X");
-
-        //branching structures b
-        // var r:Float = 20;
-        // var f:Float = 10;
-        // var iterations:Int = 5;
-        // var axiom:String = "F";
-        // var rules:Array<String> = [];
-        // rules.push("F=F[+F]F[-F]F");
-        
-        // //branching structures f
-        // var r:Float = 22.5;
-        // var f:Float = 10;
-        // var iterations:Int = 4;
-        // var axiom:String = "X";
-        // var rules:Array<String> = [];
-        // rules.push("X=F-[[X]+X]+F[+FX]-X");
-        // rules.push("F=FF");
-
-
-        //sierpenksi triangle, doesn't currently work
-        // var r:Float = 60;
-        // var f:Float = 10;
-        // var iterations:Int = 3;
-
-        // var axiom:String = "F-G-G";
-
-        // var rules:Array<String> = [];
-        // rules.push("F=F-G+F+G-F");
-        // rules.push("G=GG");
-
-        // first 3d tree with pitch and roll 
-        // var r:Float = 28;
-        // var f:Float = 5;
-        // var iterations:Int = 5;
-
-        // var axiom:String = "FFFA";
-
-        // var rules:Array<String> = [];
-        // rules.push("A=[B]////[B]////[B]");
-        // rules.push("B=&FFFA");
-
-        // //Basic test with just a string containing turtle commands
-        // var axiom:String = "F+F+F+F+F+F+F+F";
-        // var r:Float = 45;
-        // var f:Float = 10;
-        // var iterations = 0;
-        // var rules:Array<String> = [];
-
-        //Basic test with branching
-        var axiom:String = "F+[F+F]-F-F[F+F]-F-F";
-        var r:Float = 45;
-        var f:Float = 10;
-        var iterations = 0;
-        var rules:Array<String> = [];
-
-        // var axiom:String = "F+[F+F]-F-F[F+F]-F-F";
-        // var r:Float = 45;
-        // var f:Float = 10;
-        // var iterations = 0;
-        // var rules:Array<String> = [];
-                        
-        var system:String = axiom;
-
-        for(i in 0...iterations) {
-             for(rule in rules) {
-                 var equalsIdx = rule.indexOf("=");
-                 //parse the rule into before colon and after colon
-                 var source = rule.substring(0, equalsIdx);
-                 var dest = rule.substring(equalsIdx + 1, rule.length);
-
-                 system = StringTools.replace(system, source, dest);
-             }
-        }
-
-        beginSystem();
-
-        //loop through the characters, does not validate begin and end branches yet
-        for(i in 0...system.length) {
-            var item = system.charAt(i);
-
-            if(item == "F") {
-                forward(f);
-            } else if(item == "+") {
-                right(r);
-            } else if(item == "-") {
-                left(r);
-            } else if(item == "/") {
-                rollCounterClockwise(r);
-            } else if(item == "\\") {
-                rollClockwise(r);
-            } else if(item == "&") {
-                pitchUp(r);
-            } else if(item == "^") {
-                pitchDown(r);
-            }
-            else if(item == "[") {
-                beginBranch();
-            }
-            else if(item == "]") {
-                endBranch();
-            }
-            else if(item == "X" || item == "A") {
-                //no op
-            } else {
-                //everything else is interpetted as forward
-                forward(f);
-            }
-        }
-
-        endSystem();
+	
+        scene.getEngine().keyDown.push(function(keyCode:Int) {
+			_keysDown[keyCode] = true;
+		});
+		scene.getEngine().keyUp.push(function(keyCode:Int) {
+            _keysDown[keyCode] = false;
+            _keysHandled[keyCode] = false;
+		});
 		
 		scene.registerBeforeRender(function(scene:Scene, es:Null<EventState>) {
-			
-		});
+            //check state of keys, update the turtle string
+            var anyChanged:Bool = false;
+
+            var dt = scene.getEngine().getDeltaTime();
+            _elapsedTime += dt;
+
+            //if enough time has elapsed, set the _keysHandled to false so they'll re-trigger
+            if(_elapsedTime > 300) {
+                _keysHandled = new Map();
+            }
+
+            if(_keysDown[Keycodes.key_w] && !_keysHandled[Keycodes.key_w]) {
+                //move forward
+                _system += "F";
+                anyChanged = true;
+                _keysHandled[Keycodes.key_w] = true;
+            }
+
+            if(_keysDown[Keycodes.key_s] && !_keysHandled[Keycodes.key_s]) {
+                //erase last move;
+                _system = _system.substr(0, _system.length - 2);
+                anyChanged = true;
+                _keysHandled[Keycodes.key_s] = true;
+            }
+
+            if(_keysDown[Keycodes.key_d] && !_keysHandled[Keycodes.key_d]) {
+                _system += "+";
+                anyChanged = true;
+                _keysHandled[Keycodes.key_d] = true;
+            }
+
+            if(_keysDown[Keycodes.key_a] && !_keysHandled[Keycodes.key_a]) {
+                _system += "-";
+                anyChanged = true;
+                _keysHandled[Keycodes.key_a] = true;
+            }
+
+            if(anyChanged) {
+
+                _elapsedTime = 0;
+
+                beginSystem();
+
+                //loop through the characters, does not validate begin and end branches yet
+                for(i in 0..._system.length) {
+                    var item = _system.charAt(i);
+
+                    if(item == "F") {
+                        forward(_distance);
+                    } else if(item == "+") {
+                        right(_turnRadius);
+                    } else if(item == "-") {
+                        left(_turnRadius);
+                    } else if(item == "/") {
+                        rollCounterClockwise(_turnRadius);
+                    } else if(item == "\\") {
+                        rollClockwise(_turnRadius);
+                    } else if(item == "&") {
+                        pitchUp(_turnRadius);
+                    } else if(item == "^") {
+                        pitchDown(_turnRadius);
+                    }
+                    else if(item == "[") {
+                        beginBranch();
+                    }
+                    else if(item == "]") {
+                        endBranch();
+                    }
+                    else if(item == "X" || item == "A") {
+                        //no op
+                    } else {
+                        //everything else is interpetted as forward
+                        forward(_distance);
+                    }
+                }
+
+                endSystem();   
+
+            }
+        });
 		
 		scene.getEngine().runRenderLoop(function () {
             scene.render();
@@ -330,9 +215,25 @@ class Turtle {
         //trace("endBranch position " + _currentTransform.position + " rotation " + _currentTransform.rotationQuaternion);
 
         _points.push(_currentTransform.position); //current position as our starting point
+        _meshes.push(mesh);
     }
 
     public function beginSystem() {
+
+        //destroy current mesh and rebuild from scratch
+        for(mesh in _meshes) {
+            mesh.dispose();
+        }
+
+        _meshes = [];
+        _points = [];
+        _colorsStack = [];
+        _transformsStack = [];
+
+        if(_currentTransform != null) {
+            _currentTransform.dispose();
+        }
+
         _currentTransform = new TransformNode("tfm", _scene, true);
         right(90); //starts us pointing upwards
         _points.push(_currentTransform.position);
@@ -342,5 +243,8 @@ class Turtle {
     public function endSystem() {
         var mesh = Mesh.CreateLines("branch", _points, _scene, false);
         mesh.color = _colorsStack.pop();
+        _meshes.push(mesh);
     }
+
+    
 }
