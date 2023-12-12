@@ -128,7 +128,7 @@ class TurtleBase {
 
     public function rotate(axis:Vector3, amount:Float) {
         //this was copied out of TransformNode.rotate 
-        axis.normalize();
+        //axis.normalize(); //unnecessary since RotationAxiToRef already normalizes
         
         var tempRotationQuaternion:Quaternion = Quaternion.RotationAxisToRef(axis, amount, _rotationAxisCache);
 	    _currentTransform.rotationQuaternion.multiplyToRef(tempRotationQuaternion, _currentTransform.rotationQuaternion);
@@ -213,7 +213,7 @@ class TurtleBase {
 
     public function endMesh() {
         var mesh = Mesh.CreateLines("branch", _points, _scene, false);
-        mesh.color = _colorsStack.pop();
+        mesh.color = Color3.Red(); //_colorsStack.pop();
         _meshes.push(mesh);
     }
     
