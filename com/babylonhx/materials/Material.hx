@@ -679,7 +679,8 @@ import haxe.Timer;
 	}
 
 	public static function Parse(parsedMaterial:Dynamic, scene:Scene, rootUrl:String):Material {
-		if (parsedMaterial.customType == null) {
+		//CL - handle BABYLON.StandardMaterial which is set by exporter
+		if (parsedMaterial.customType == null || parsedMaterial.customType == "BABYLON.StandardMaterial") {
 			return StandardMaterial.Parse(parsedMaterial, scene, rootUrl);
 		}
 		
