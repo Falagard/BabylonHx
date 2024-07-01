@@ -1,5 +1,6 @@
 package com.babylonhx.collisions;
 
+import com.babylonhx.culling.Ray;
 import com.babylonhx.math.Vector2;
 import com.babylonhx.math.Vector3;
 import com.babylonhx.mesh.AbstractMesh;
@@ -21,7 +22,8 @@ import com.babylonhx.sprites.Sprite;
 	public var faceId:Int = -1;
 	public var subMeshId:Int = 0;
 	public var pickedSprite:Sprite = null;
-	
+	public var ray:Ray;
+	public var originMesh: AbstractMesh = null;
 	
 	public function new() {
 		

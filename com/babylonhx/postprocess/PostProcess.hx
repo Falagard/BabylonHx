@@ -461,10 +461,11 @@ typedef PostProcessOption = {
 		this.onActivateObservable.notifyObservers(camera);
 		
 		// Clear
+		// CL - added _allowPostProcessClearColor to scene
 		if (this.autoClear && this.alphaMode == Engine.ALPHA_DISABLE) {
-			this._engine.clear(this.clearColor != null ? this.clearColor : scene.clearColor, true, true, true);
+			this._engine.clear(this.clearColor != null ? this.clearColor : scene.clearColor, scene._allowPostProcessClearColor, true, true);
 		}
-		
+
 		if (this._reusable) {
 			this._currentRenderTextureInd = (this._currentRenderTextureInd + 1) % 2;
 		}

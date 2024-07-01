@@ -73,6 +73,8 @@ class MainLime extends Application {
 	}
 	
 	override public function onPreloadComplete() {
+		
+		new samples.Gizmos(scene);
 		//new samples.Turtle(scene);
 		//new samples.LSystem(scene);
 
@@ -84,7 +86,7 @@ class MainLime extends Application {
 		//new samples.DashedLinesMesh(scene); //hl: y
 		//new samples.RotationAndScaling(scene); //hl: y
 		//Fnew samples.Materials(scene); //html: y, hl: y
-		new samples.Lights(scene); //hl: y
+		//new samples.Lights(scene); //hl: y
 		//new samples.BumpMap(scene); //html:y , hl: y
 		//new samples.Bump2(scene); //html: runs but not showing bump
 		//new samples.Animations(scene); //hl: y

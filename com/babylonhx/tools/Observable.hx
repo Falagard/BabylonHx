@@ -17,6 +17,7 @@ package com.babylonhx.tools;
  */
 class Observable<T> {	
 	
+	private var _numObserversMarkedAsDeleted = 0;
 	private static var _pooledEventState:EventState = null;
 	private var _observers:Array<Observer<T>>;
 	
@@ -53,10 +54,14 @@ class Observable<T> {
 	 * Remove an Observer from the Observable object
 	 * @param observer the instance of the Observer to remove. If it doesn't belong to this Observable, false will be returned.
 	 */
-	public function remove(observer:Observer<T>):Bool {
+	public function remove(observer:Observer<T>, updateCounter = true):Bool {
 		var index = this._observers.indexOf(observer);
 		
 		if (index != -1) {
+			if (updateCounter) {
+                this._numObserversMarkedAsDeleted--;
+            }
+
 			this._observers.splice(index, 1);
 			
 			return true;
@@ -80,6 +85,44 @@ class Observable<T> {
 		
 		return false;
 	}
+
+	// This should only be called when not iterating over _observers to avoid callback skipping.
+	// Removes an observer from the _observer Array.
+    private function _remove(observer: Observer<T>, updateCounter = true): Bool {
+        if (observer == null) {
+            return false;
+        }
+
+        var index = this._observers.indexOf(observer);
+
+        if (index != -1) {
+            if (updateCounter) {
+                this._numObserversMarkedAsDeleted--;
+            }
+            this._observers.splice(index, 1);
+            return true;
+        }
+
+        return false;
+    }
+
+	/**
+     * Moves the observable to the top of the observer list making it get called first when notified
+     * @param observer the observer to move
+     */
+	 public function makeObserverTopPriority(observer: Observer<T>) {
+        this._remove(observer, false);
+        this._observers.unshift(observer);
+    }
+
+    /**
+     * Moves the observable to the bottom of the observer list making it get called last when notified
+     * @param observer the observer to move
+     */
+    public  function makeObserverBottomPriority(observer: Observer<T>) {
+        this._remove(observer, false);
+        this._observers.push(observer);
+    }
 
 	/**
 	 * Notify all Observers by calling their respective callback with the given data
@@ -105,7 +148,8 @@ class Observable<T> {
 	 * return true is the Observable has at least one Observer registered
 	 */
 	public function hasObservers():Bool {
-		return this._observers.length > 0;
+		return this._observers.length - this._numObserversMarkedAsDeleted > 0;
+		// return this._observers.length > 0;
 	}
 
 	/**
@@ -113,6 +157,7 @@ class Observable<T> {
 	*/
 	public function clear() {
 		this._observers = [];
+		this._numObserversMarkedAsDeleted = 0;
 	}
 	
 	/**

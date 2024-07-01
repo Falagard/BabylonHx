@@ -208,6 +208,7 @@ import openfl.display.OpenGLView;
 	// To enable/disable IDB support and avoid XHR on .manifest
 	//public var enableOfflineSupport = Database;
 	public var scenes:Array<Scene> = [];
+	public var _virtualScenes:Array<Scene> = [];
 	public var postProcesses:Array<PostProcess> = [];
 	
 	// Observables
@@ -867,6 +868,12 @@ import openfl.display.OpenGLView;
 			scene._rebuildGeometries();
 			scene._rebuildTextures();
 		}
+
+		for (scene in this._virtualScenes) {
+            scene.resetCachedMaterial();
+            scene._rebuildGeometries();
+			scene._rebuildTextures();
+        }
 		
 		// Uniforms
 		for (uniformBuffer in this._uniformBuffers) {

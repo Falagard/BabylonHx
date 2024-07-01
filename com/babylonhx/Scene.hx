@@ -98,6 +98,7 @@ import com.babylonhx.audio.*;
 /**
  * ...
  * @author Krtolica Vujadin
+ * @author Clay Larabie
  */
 
 @:expose('BABYLON.Scene') 
@@ -119,11 +120,13 @@ import com.babylonhx.audio.*;
 	public var autoClearDepthAndStencil:Bool = true;
 	public var clearColor:Color4 = new Color4(0.2, 0.2, 0.3, 1.0);
 	public var ambientColor:Color3 = new Color3(0, 0, 0);
-	
+	private var _pointerCaptures:Map<Int, Bool> = new Map();
+
 	public var _environmentBRDFTexture:BaseTexture;
 	
 	private var _environmentTexture:BaseTexture;
 	public var environmentTexture(get, set):BaseTexture;
+
 	/**
 	 * Texture used in all pbr material as the reflection texture.
 	 * As in the majority of the scene they are the same (exception for multi room and so on),
@@ -985,8 +988,17 @@ import com.babylonhx.audio.*;
 	public var offscreenRenderTarget:RenderTargetTexture = null;
 	
 
-	public function new(?engine:Engine) {
+	public function new(?engine:Engine, ?options:Dynamic) {
 		this._engine = engine != null ? engine : Engine.LastCreatedEngine;
+
+		options = options != null ? options : {};
+
+		if (options.virtual != null && options.virtual == true) {
+            engine._virtualScenes.push(this);
+        } else {
+            //EngineStore._LastCreatedScene = this;
+            engine.scenes.push(this);
+        }
 		
 		this._engine.scenes.push(this);
 		this._uid = null;
@@ -1061,18 +1073,25 @@ import com.babylonhx.audio.*;
 	 * Current on-screen X position of the pointer
 	 * @return {number} X position of the pointer
 	 */
-	public var pointerX(get, never):Float;
+	public var pointerX(get, set):Float;
 	private function get_pointerX():Float {
 		return this._pointerX;
+	}
+
+	private function set_pointerX(value: Float) {
+		return this._pointerX = Std.int(value);
 	}
 
 	/**
 	 * Current on-screen Y position of the pointer
 	 * @return {number} Y position of the pointer
 	 */
-	public var pointerY(get, never):Float;
+	public var pointerY(get, set):Float;
 	private function get_pointerY():Float {
 		return this._pointerY;
+	}
+	private function set_pointerY(value: Float) {
+		return this._pointerY = Std.int(value);
 	}
 	
 	public function getCachedMaterial():Material {
@@ -1142,6 +1161,25 @@ import com.babylonhx.audio.*;
 	private function get_activeBonesPerfCounter():PerfCounter {
 		return this._activeBones;
 	}
+
+	private function _checkPrePointerObservable(pickResult: PickingInfo, evt: PointerEvent, type: Int) {
+        var pi = new PointerInfoPre(type, evt, this._unTranslatedPointerX, this._unTranslatedPointerY);
+
+        if (pickResult != null) {
+            pi.originalPickingInfo = pickResult;
+            pi.ray = pickResult.ray;
+            if (evt.pointerType == "xr-near" && pickResult.originMesh != null) {
+                pi.nearInteractionPickingInfo = pickResult;
+            }
+        }
+
+        onPrePointerObservable.notifyObservers(pi, type);
+        if (pi.skipOnPointerObservable) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 	
     // Audio
     #if (purejs || js)
@@ -1355,6 +1393,10 @@ import com.babylonhx.audio.*;
 	 */
 	public function simulatePointerMove(pickResult:PickingInfo):Scene {
 		var evt = new PointerEvent(0, 0, -1, PointerEventTypes.POINTERMOVE);
+
+		if (this._checkPrePointerObservable(pickResult, evt, PointerEventTypes.POINTERMOVE)) {
+            return this;
+        }
 		
 		return this._processPointerMove(pickResult, evt);
 	}
@@ -1423,6 +1465,10 @@ import com.babylonhx.audio.*;
 	public function simulatePointerDown(pickResult:PickingInfo):Scene {
 		var evt = new PointerEvent(0, 0, -1, PointerEventTypes.POINTERDOWN);
 
+		if (this._checkPrePointerObservable(pickResult, evt, PointerEventTypes.POINTERMOVE)) {
+            return this;
+        }
+
 		return this._processPointerDown(pickResult, evt);
 	}        
 
@@ -1485,6 +1531,10 @@ import com.babylonhx.audio.*;
 		var evt = new PointerEvent(0, 0, -1, PointerEventTypes.POINTERUP);
 		var clickInfo = new ClickInfo();
 		clickInfo.singleClick = true;
+
+		if (this._checkPrePointerObservable(pickResult, evt, PointerEventTypes.POINTERMOVE)) {
+            return this;
+        }
 		
 		return this._processPointerUp(pickResult, evt, clickInfo);
 	}    
@@ -1549,6 +1599,15 @@ import com.babylonhx.audio.*;
 		
 		return this;
 	}
+
+	/**
+     * Gets a boolean indicating if the current pointer event is captured (meaning that the scene has already handled the pointer down)
+     * @param pointerId defines the pointer id to use in a multi-touch scenario (0 by default)
+     * @returns true if the pointer was captured
+     */
+	 public function isPointerCaptured(pointerId = 0): Bool {
+        return this._pointerCaptures[pointerId];
+    }
 
 	/**
 	* Attach events to the canvas (To handle actionManagers triggers and raise onPointerMove, onPointerDown and onPointerUp
@@ -1700,16 +1759,29 @@ import com.babylonhx.audio.*;
 		 
 		this._onPointerMove = function(evt:PointerEvent) {
 			this._updatePointerPosition(evt);
+
+			// PreObservable support
+            if (
+                this._checkPrePointerObservable(
+                    null,
+                    evt,
+					PointerEventTypes.POINTERMOVE
+					//CL - hard coded it to POINTERMOVE for now
+                    //evt.inputIndex >= PointerInput.MouseWheelX && evt.inputIndex <= PointerInput.MouseWheelZ ? PointerEventTypes.POINTERWHEEL : PointerEventTypes.POINTERMOVE
+                )
+            ) {
+                return;
+            }
 			
 			// PreObservable support
-            if (this.onPrePointerObservable.hasObservers()) {
-                var type = evt.type;
-                var pi = new PointerInfoPre(type, evt, this._unTranslatedPointerX, this._unTranslatedPointerY);
-                this.onPrePointerObservable.notifyObservers(pi, type);
-                if (pi.skipOnPointerObservable) {
-                    return;
-                }
-            }
+            // if (this.onPrePointerObservable.hasObservers()) {
+            //     var type = evt.type;
+            //     var pi = new PointerInfoPre(type, evt, this._unTranslatedPointerX, this._unTranslatedPointerY);
+            //     this.onPrePointerObservable.notifyObservers(pi, type);
+            //     if (pi.skipOnPointerObservable) {
+            //         return;
+            //     }
+            // }
 			
 			if (this.cameraToUseForPointers == null && this.activeCamera == null) {
                 return;
@@ -1796,6 +1868,8 @@ import com.babylonhx.audio.*;
 			this._startingPointerPosition.x = this._pointerX;
 			this._startingPointerPosition.y = this._pointerY;
 			this._startingPointerTime = Tools.Now();
+
+			this._pointerCaptures[evt.pointerId] = true;
 			
 			if (this.pointerDownPredicate == null) {
 				this.pointerDownPredicate = function(mesh:AbstractMesh):Bool {
@@ -3498,6 +3572,9 @@ import com.babylonhx.audio.*;
 	public function updateAlternateTransformMatrix(alternateCamera:Camera) {
 		this._setAlternateTransformMatrix(alternateCamera.getViewMatrix(), alternateCamera.getProjectionMatrix(false));
 	}
+
+	/** @internal */
+    public var _allowPostProcessClearColor = true;
 
 	private function _renderForCamera(camera:Camera, ?rigParent:Camera) {
 		if (camera != null && camera._skipRendering) {

@@ -1,5 +1,7 @@
 package com.babylonhx.events;
 
+import com.babylonhx.collisions.PickingInfo;
+import com.babylonhx.culling.Ray;
 import com.babylonhx.math.Vector2;
 
 /**
@@ -16,7 +18,9 @@ class PointerInfoPre extends PointerInfoBase {
 	
 	public var localPosition:Vector2;
 	public var skipOnPointerObservable:Bool;
-	
+	public var ray:Ray;
+	public var nearInteractionPickingInfo: PickingInfo;
+	public var originalPickingInfo: PickingInfo = null;
 	
 	public function new(type:Int, event:PointerEvent, localX:Int, localY:Int) {
 		super(type, event);

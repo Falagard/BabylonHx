@@ -14,7 +14,7 @@ class PointerEvent {
 	
 	/*pointerId:Null<Int>,
 	pointerType:Null<Int>*/
-	
+	public var pointerId:Null<Int>;
 
 	inline public function new(x:Float = 0, y:Float = 0, button:Int = -1, type:Int = PointerEventTypes.POINTERMOVE, pointerType:String = "") {
 		this.x = x;
