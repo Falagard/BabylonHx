@@ -128,7 +128,7 @@ class NodeCache {
 
 	public var _waitingParentId:Null<String>;
 
-	private var _scene:Scene;
+	public var _scene:Scene;
 	public var _cache:NodeCache;
 	
 	private var _parentNode:Node = null;
