@@ -8,6 +8,7 @@ import com.babylonhx.math.Vector3;
 import com.babylonhx.mesh.Mesh;
 import com.babylonhx.Scene;
 import com.babylonhx.rendering.UtilityLayerRenderer;
+import com.babylonhx.gizmos.GizmoManager;
 
 /**
  * ...

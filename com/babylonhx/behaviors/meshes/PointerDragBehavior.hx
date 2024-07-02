@@ -1,9 +1,61 @@
 package com.babylonhx.behaviors.meshes;
 
+import com.babylonhx.lights.Light;
+import com.babylonhx.lights.ShadowLight;
+import com.babylonhx.bones.Bone;
+import com.babylonhx.cameras.TargetCamera;
+import com.babylonhx.math.Tmp;
+import com.babylonhx.math.Vector3;
+import com.babylonhx.materials.StandardMaterial;
+import com.babylonhx.mesh.TransformNode;
+import com.babylonhx.mesh.Mesh;
+import com.babylonhx.rendering.UtilityLayerRenderer;
+import com.babylonhx.tools.Observer;
+import com.babylonhx.tools.Observable;
+import com.babylonhx.states._AlphaState;
+import com.babylonhx.events.PointerInfoPre;
+import com.babylonhx.events.PointerInfo;
+import com.babylonhx.mesh.AbstractMesh;
+import com.babylonhx.collisions.PickingInfo;
+import com.babylonhx.events.PointerEvent;
+import com.babylonhx.events.PointerEventTypes;
+import com.babylonhx.lights.HemisphericLight;
+import com.babylonhx.cameras.Camera;
+import com.babylonhx.materials.Effect;
+import com.babylonhx.mesh.SubMesh;
+import com.babylonhx.mesh.VertexBuffer;
+import com.babylonhx.mesh._InstancesBatch;
+import com.babylonhx.mesh.LinesMesh;
+import com.babylonhx.materials.Material;
+import com.babylonhx.math.Matrix;
+import com.babylonhx.math.Tools as MathTools;
+import com.babylonhx.math.Color3;
+import com.babylonhx.math.Quaternion;
+import com.babylonhx.rendering.UtilityLayerRenderer;
+
+typedef DragEventInfo = {
+    delta: Vector3,
+    dragPlanePoint: Vector3,
+    dragPlaneNormal: Vector3,
+    dragDistance: Float,
+    pointerId: Int,
+    pointerInfo: PointerInfo
+}
+
+typedef DragOptions = {
+    dragAxis: Vector3,
+    dragPlaneNormal: Vector3
+}
+
 /**
  * A behavior that when attached to a mesh will allow the mesh to be dragged around the screen based on pointer events
  */
  @:expose('BABYLON.PointerDragBehavior') class PointerDragBehavior implements Behavior<AbstractMesh> {
+ 
+    public function get_name():String {
+        throw new haxe.exceptions.NotImplementedException();
+    }
+ 
     private static var _AnyMouseId = -2;
     /**
      * Abstract mesh the behavior is set on
@@ -62,28 +114,24 @@ package com.babylonhx.behaviors.meshes;
      *
      *  (if validatedDrag is used, the position of the attached mesh might not equal dragPlanePoint)
      */
-    public var onDragObservable = new Observable<{
-        delta: Vector3,
-        dragPlanePoint: Vector3,
-        dragPlaneNormal: Vector3,
-        dragDistance: Float,
-        pointerId: Int,
-        pointerInfo: Nullable<PointerInfo>
-    }>();
+    public var onDragObservable:Observable<DragEventInfo> = new Observable<DragEventInfo>();
+    
     /**
      *  Fires each time a drag begins (eg. mouse down on mesh)
      *  * dragPlanePoint in world space where the drag intersects the drag plane
      *
      *  (if validatedDrag is used, the position of the attached mesh might not equal dragPlanePoint)
      */
-    public var onDragStartObservable = new Observable<{ dragPlanePoint: Vector3; pointerId: Int; pointerInfo: Nullable<PointerInfo> }>();
+    public var onDragStartObservable:Observable<DragEventInfo> = new Observable<DragEventInfo>();
+
     /**
      *  Fires each time a drag ends (eg. mouse release after drag)
      *  * dragPlanePoint in world space where the drag intersects the drag plane
      *
      *  (if validatedDrag is used, the position of the attached mesh might not equal dragPlanePoint)
      */
-    public var onDragEndObservable = new Observable<{ dragPlanePoint: Vector3; pointerId: Int; pointerInfo: Nullable<PointerInfo> }>();
+    
+    public var onDragEndObservable = new Observable<DragEventInfo>();
     /**
      *  Fires each time behavior enabled state changes
      */
@@ -92,50 +140,55 @@ package com.babylonhx.behaviors.meshes;
     /**
      *  If the attached mesh should be moved when dragged
      */
-    public moveAttached = true;
+    public var moveAttached = true;
 
     /**
      *  If the drag behavior will react to drag events (Default: true)
      */
-    public set enabled(value: boolean) {
+    public var enabled(get,set): Bool;
+
+    public function set_enabled(value: Bool) {
         if (value != this._enabled) {
             this.onEnabledObservable.notifyObservers(value);
         }
         this._enabled = value;
+        return value;
     }
 
-    public get enabled() {
+    public function get_enabled() : Bool {
         return this._enabled;
     }
-    private _enabled = true;
+    private var _enabled = true;
 
     /**
      * If pointer events should start and release the drag (Default: true)
      */
-    public startAndReleaseDragOnPointerEvents = true;
+    public var startAndReleaseDragOnPointerEvents = true;
     /**
      * If camera controls should be detached during the drag
      */
-    public detachCameraControls = true;
+    public var detachCameraControls = true;
 
     /**
      * If set, the drag plane/axis will be rotated based on the attached mesh's world rotation (Default: true)
      */
-    public useObjectOrientationForDragging = true;
+    public var useObjectOrientationForDragging = true;
 
-    private _options: { dragAxis?: Vector3; dragPlaneNormal?: Vector3 };
+    private var _options: DragOptions;
 
     /**
      * Gets the options used by the behavior
      */
-    public get options(): { dragAxis?: Vector3; dragPlaneNormal?: Vector3 } {
+    public var options(get,set): DragOptions;
+
+    public function get_options(): DragOptions {
         return this._options;
     }
 
     /**
      * Sets the options used by the behavior
      */
-    public set options(options: { dragAxis?: Vector3; dragPlaneNormal?: Vector3 }) {
+    public function set_options(options:DragOptions) {
         this._options = options;
     }
 
@@ -145,10 +198,10 @@ package com.babylonhx.behaviors.meshes;
      * @param options.dragAxis
      * @param options.dragPlaneNormal
      */
-    constructor(options?: { dragAxis?: Vector3; dragPlaneNormal?: Vector3 }) {
-        this._options = options ? options : {};
+    function new(options: DragOptions) {
+        this._options = options != null ? options : { dragAxis: Vector3.Up(), dragPlaneNormal: Vector3.Forward() };
 
-        let optionCount = 0;
+        var optionCount = 0;
         if (this._options.dragAxis) {
             optionCount++;
         }
@@ -168,33 +221,39 @@ package com.babylonhx.behaviors.meshes;
      * @returns boolean for whether or not it is valid to move
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public validateDrag = (target: Vector3) => {
+    public function validateDrag(target: Vector3) : Bool
+    {
         return true;
-    };
+    }
+
+    // public validateDrag = (target: Vector3) -> {
+    //     return true;
+    // };
+       
 
     /**
      *  The name of the behavior
      */
-    public get name(): string {
+    inline private function get_name(): String {
         return "PointerDrag";
     }
 
     /**
      *  Initializes the behavior
      */
-    public init() {}
+    public function init() {}
 
-    private _tmpVector = new Vector3(0, 0, 0);
-    private _alternatePickedPoint = new Vector3(0, 0, 0);
-    private _worldDragAxis = new Vector3(0, 0, 0);
-    private _targetPosition = new Vector3(0, 0, 0);
-    private _attachedToElement: boolean = false;
+    private var _tmpVector = new Vector3(0, 0, 0);
+    private var _alternatePickedPoint = new Vector3(0, 0, 0);
+    private var _worldDragAxis = new Vector3(0, 0, 0);
+    private var _targetPosition = new Vector3(0, 0, 0);
+    private var _attachedToElement: Bool = false;
     /**
      * Attaches the drag behavior the passed in mesh
      * @param ownerNode The mesh that will be dragged around once attached
      * @param predicate Predicate to use for pick filtering
      */
-    public attach(ownerNode: AbstractMesh, predicate?: (m: AbstractMesh) => boolean): void {
+    public function attach(ownerNode: AbstractMesh, ?predicate:AbstractMesh -> Bool): Void {
         this._scene = ownerNode.getScene();
         ownerNode.isNearGrabbable = true;
         this.attachedNode = ownerNode;
