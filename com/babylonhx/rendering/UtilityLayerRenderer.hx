@@ -1,5 +1,6 @@
 package com.babylonhx.rendering;
 
+import com.babylonhx.math.Color3;
 import com.babylonhx.tools.Observable;
 import com.babylonhx.states._AlphaState;
 import com.babylonhx.events.PointerInfoPre;
@@ -17,13 +18,15 @@ import com.babylonhx.mesh._InstancesBatch;
 import com.babylonhx.materials.Material;
 import com.babylonhx.math.Matrix;
 import com.babylonhx.math.Tools as MathTools;
+import com.babylonhx.math.Vector3;
+import com.babylonhx.engine.Engine;
 
 /**
  * ...
  * @author Clay Larabie
  * ported from babylonjs (https://github.com/BabylonJS/Babylon.js/blob/338d5ec3bef6101027caca160c5e6a439b10e150/packages/dev/core/src/Rendering/utilityLayerRenderer.ts#L20)
  */
-@:expose('BABYLON.OutlineRenderer') class UtilityLayerRenderer {
+@:expose('BABYLON.UtilityLayerRenderer') class UtilityLayerRenderer {
 	private var _pointerCaptures:Map<Int, Bool> = new Map();
 	private var _lastPointerEvents:Map<Null<Int>, Bool> = new Map();
 
@@ -88,7 +91,7 @@ import com.babylonhx.math.Tools as MathTools;
 			var activeCam:Camera;
 			if (this.originalScene.activeCameras != null && this.originalScene.activeCameras.length > 1) {
 				activeCam = this.originalScene.activeCameras[this.originalScene.activeCameras.length - 1];
-			} else {
+	        } else {
 				var originalSceneActiveCamera = this.originalScene.activeCamera;
 				activeCam = cast(originalSceneActiveCamera, Camera);
 			}
@@ -101,6 +104,73 @@ import com.babylonhx.math.Tools as MathTools;
 			return activeCam;
 		}
 	}
+
+    /**
+     * Sets the camera that should be used when rendering the utility layer (If set to null the last active camera will be used)
+     * @param cam the camera that should be used when rendering the utility layer
+     */
+    public function setRenderCamera(cam: Camera) {
+        this._renderCamera = cam;
+    }
+
+     /**
+     * @internal
+     * Light which used by gizmos to get light shading
+     */
+     public function _getSharedGizmoLight(): HemisphericLight {
+        if (this._sharedGizmoLight == null) {
+            this._sharedGizmoLight = new HemisphericLight("shared gizmo light", new Vector3(0, 1, 0), this.utilityLayerScene);
+            this._sharedGizmoLight.intensity = 2;
+            this._sharedGizmoLight.groundColor = Color3.Gray();
+        }
+        return this._sharedGizmoLight;
+    }
+
+    public static var DefaultUtilityLayer(get, never):UtilityLayerRenderer;
+
+    /**
+     * A shared utility layer that can be used to overlay objects into a scene (Depth map of the previous scene is cleared before drawing on top of it)
+     */
+     public static function get_DefaultUtilityLayer(): UtilityLayerRenderer {
+        if (UtilityLayerRenderer._DefaultUtilityLayer == null) {
+            return UtilityLayerRenderer._CreateDefaultUtilityLayerFromScene(Engine.LastCreatedScene);
+        }
+
+        return UtilityLayerRenderer._DefaultUtilityLayer;
+    }
+
+    /**
+     * Creates an utility layer, and set it as a default utility layer
+     * @param scene associated scene
+     * @internal
+     */
+    public static function _CreateDefaultUtilityLayerFromScene(scene: Scene): UtilityLayerRenderer {
+        UtilityLayerRenderer._DefaultUtilityLayer = new UtilityLayerRenderer(scene);
+        //CL - was originally addOnce, may need to implement addOnce
+        UtilityLayerRenderer._DefaultUtilityLayer.originalScene.onDisposeObservable.add(function(_, _) {
+            UtilityLayerRenderer._DefaultUtilityLayer = null;
+        });
+
+        return UtilityLayerRenderer._DefaultUtilityLayer;
+    }
+
+    public static var DefaultKeepDepthUtilityLayer(get, never):UtilityLayerRenderer;
+
+    /**
+     * A shared utility layer that can be used to embed objects into a scene (Depth map of the previous scene is not cleared before drawing on top of it)
+     */
+    public static function get_DefaultKeepDepthUtilityLayer(): UtilityLayerRenderer {
+        if (UtilityLayerRenderer._DefaultKeepDepthUtilityLayer == null) {
+            UtilityLayerRenderer._DefaultKeepDepthUtilityLayer = new UtilityLayerRenderer(Engine.LastCreatedScene);
+            UtilityLayerRenderer._DefaultKeepDepthUtilityLayer.utilityLayerScene.autoClearDepthAndStencil = false;
+            //CL - was originally addOnce, may need to implement addOnce
+            UtilityLayerRenderer._DefaultKeepDepthUtilityLayer.originalScene.onDisposeObservable.add(function(_, _) {
+                UtilityLayerRenderer._DefaultKeepDepthUtilityLayer = null;
+            });
+        }
+        return UtilityLayerRenderer._DefaultKeepDepthUtilityLayer;
+    }
+
 
 	/**
 	 * Instantiates a UtilityLayerRenderer

@@ -196,6 +196,12 @@ import com.babylonhx.culling.Ray;
 	override public function getClassName():String {
 		return 'Camera';
 	}
+
+	/** @internal */
+	public var isCamera(get, never):Bool;
+    public function get_isCamera() {
+        return true;
+    }
 	
 	/**
 	 * @param {boolean} fullDetails - support for multiple levels of logging within scene loading

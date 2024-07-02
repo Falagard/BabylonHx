@@ -35,6 +35,9 @@ class TransformNode extends Node {
 	private var _scaling:Vector3 = Vector3.One();
 	private var _isDirty:Bool = false;
 	private var _transformToBoneReferal:TransformNode;
+
+	//CL 
+	private var _isAbsoluteSynced = false;
 	
 	@serialize()
 	public var billboardMode:Int = TransformNode.BILLBOARDMODE_NONE;
@@ -54,9 +57,15 @@ class TransformNode extends Node {
 	public var _worldMatrix:Matrix = Matrix.Zero();
 	public var _worldMatrixDeterminant:Float = 0;
 	private var _absolutePosition:Vector3 = Vector3.Zero();
+	//CL added from latest babylonjs
+	private var _absoluteScaling = Vector3.Zero();
+	//CL
+	private var _absoluteRotationQuaternion = Quaternion.Identity();
+	
 	private var _pivotMatrix:Matrix = Matrix.Identity();
 	private var _pivotMatrixInverse:Matrix;
 	
+	private var _usePivotMatrix:Bool = false;
 	private var _postMultiplyPivotMatrix:Bool = false;        
 	
 	private var _isWorldMatrixFrozen:Bool = false;
@@ -75,6 +84,22 @@ class TransformNode extends Node {
 			this.getScene().addTransformNode(this);
 		}
 	}        
+
+	/**
+     * return true if a pivot has been set
+     * @returns true if a pivot matrix is used
+     */
+	 public function isUsingPivotMatrix(): Bool {
+		//CL todo - investigate
+        return this._usePivotMatrix;
+    }
+
+	 /**
+     * @returns true if pivot matrix must be cancelled in the world matrix. When this parameter is set to true (default), the inverse of the pivot matrix is also applied at the end to cancel the transformation effect.
+     */
+	 public function isUsingPostMultiplyPivotMatrix(): Bool {
+        return this._postMultiplyPivotMatrix;
+    }
 	
 	/**
 	 * Rotation property : a Vector3 depicting the rotation value in radians around each local axis X, Y, Z. 
@@ -231,6 +256,17 @@ class TransformNode extends Node {
 	}
 
 	/**
+     * Returns the current mesh absolute scaling.
+     * Returns a Vector3.
+     */
+	 public var absoluteScaling(get, never):Vector3;
+	 public function get_absoluteScaling(): Vector3 {
+        this._syncAbsoluteScalingAndRotation();
+        return this._absoluteScaling;
+    }
+
+
+	/**
 	 * Sets a new matrix to apply before all other transformation
 	 * @param matrix defines the transform matrix
 	 * @returns the current TransformNode
@@ -347,6 +383,16 @@ class TransformNode extends Node {
 		}
 		return this;
 	}   
+
+    /**
+     * Returns the current mesh absolute rotation.
+     * Returns a Quaternion.
+     */
+	public var absoluteRotationQuaternion(get, never): Quaternion;
+    public function get_absoluteRotationQuaternion(): Quaternion {
+        this._syncAbsoluteScalingAndRotation();
+        return this._absoluteRotationQuaternion;
+    }
 
 	/**
 	 * Sets the mesh position in its local space.  
@@ -1075,4 +1121,12 @@ class TransformNode extends Node {
 		super.dispose();
 	}
 	
+	private function _syncAbsoluteScalingAndRotation(): Void {
+		if (!this._isAbsoluteSynced) {
+			//CL - not sure if this is going to work, passing Tmp.vector3
+			//this._worldMatrix.decompose(this._absoluteScaling, this._absoluteRotationQuaternion);
+            this._worldMatrix.decompose(this._absoluteScaling, this._absoluteRotationQuaternion, Tmp.vector3[0], null);
+            this._isAbsoluteSynced = true;
+        }
+    }
 }

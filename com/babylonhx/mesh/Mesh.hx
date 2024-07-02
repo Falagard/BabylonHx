@@ -115,6 +115,12 @@ import com.babylonhx.utils.typedarray.Int32Array;
 		return value;
 	}
 
+	/** @internal */
+	public var isMesh(get, never):Bool;
+    public function get_isMesh() {
+        return true;
+    }
+
 	// Private
 	@:allow(com.babylonhx.mesh.Geometry) 
 	private var _geometry:Geometry;	

@@ -1,5 +1,6 @@
 package com.babylonhx.math;
 
+import com.babylonhx.mesh.TransformNode;
 import com.babylonhx.cameras.Camera;
 
 import com.babylonhx.utils.typedarray.Float32Array;
@@ -429,38 +430,126 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	 * - a translation vector3 passed as a reference to update.  
 	 * Returns the boolean `true`.  
 	 */
-	public function decompose(scale:Vector3, rotation:Quaternion, translation:Vector3):Bool {
-		translation.x = this.m[12];
-		translation.y = this.m[13];
-		translation.z = this.m[14];
+	//CL - updated this function based on latest from babylonjs which includes preserveScalingNode and useAbsoluteScaling
+	// public function decompose(scale:Vector3, rotation:Quaternion, translation:Vector3):Bool {
+	// 	translation.x = this.m[12];
+	// 	translation.y = this.m[13];
+	// 	translation.z = this.m[14];
 		
-		var xs = Tools.Sign(this.m[0] * this.m[1] * this.m[2] * this.m[3]) < 0 ? -1 : 1;
-		var ys = Tools.Sign(this.m[4] * this.m[5] * this.m[6] * this.m[7]) < 0 ? -1 : 1;
-		var zs = Tools.Sign(this.m[8] * this.m[9] * this.m[10] * this.m[11]) < 0 ? -1 : 1;
+	// 	var xs = Tools.Sign(this.m[0] * this.m[1] * this.m[2] * this.m[3]) < 0 ? -1 : 1;
+	// 	var ys = Tools.Sign(this.m[4] * this.m[5] * this.m[6] * this.m[7]) < 0 ? -1 : 1;
+	// 	var zs = Tools.Sign(this.m[8] * this.m[9] * this.m[10] * this.m[11]) < 0 ? -1 : 1;
 		
-		scale.x = xs * Math.sqrt(this.m[0] * this.m[0] + this.m[1] * this.m[1] + this.m[2] * this.m[2]);
-		scale.y = ys * Math.sqrt(this.m[4] * this.m[4] + this.m[5] * this.m[5] + this.m[6] * this.m[6]);
-		scale.z = zs * Math.sqrt(this.m[8] * this.m[8] + this.m[9] * this.m[9] + this.m[10] * this.m[10]);
+	// 	scale.x = xs * Math.sqrt(this.m[0] * this.m[0] + this.m[1] * this.m[1] + this.m[2] * this.m[2]);
+	// 	scale.y = ys * Math.sqrt(this.m[4] * this.m[4] + this.m[5] * this.m[5] + this.m[6] * this.m[6]);
+	// 	scale.z = zs * Math.sqrt(this.m[8] * this.m[8] + this.m[9] * this.m[9] + this.m[10] * this.m[10]);
 		
-		if (scale.x == 0 || scale.y == 0 || scale.z == 0) {
-			rotation.x = 0;
-			rotation.y = 0;
-			rotation.z = 0;
-			rotation.w = 1;
+	// 	if (scale.x == 0 || scale.y == 0 || scale.z == 0) {
+	// 		rotation.x = 0;
+	// 		rotation.y = 0;
+	// 		rotation.z = 0;
+	// 		rotation.w = 1;
 			
-			return false;
-		}
+	// 		return false;
+	// 	}
 		
-		Matrix.FromValuesToRef(
-			this.m[0] / scale.x, this.m[1] / scale.x, this.m[2] / scale.x, 0,
-			this.m[4] / scale.y, this.m[5] / scale.y, this.m[6] / scale.y, 0,
-			this.m[8] / scale.z, this.m[9] / scale.z, this.m[10] / scale.z, 0,
-			0, 0, 0, 1, Tmp.matrix[0]);
+	// 	Matrix.FromValuesToRef(
+	// 		this.m[0] / scale.x, this.m[1] / scale.x, this.m[2] / scale.x, 0,
+	// 		this.m[4] / scale.y, this.m[5] / scale.y, this.m[6] / scale.y, 0,
+	// 		this.m[8] / scale.z, this.m[9] / scale.z, this.m[10] / scale.z, 0,
+	// 		0, 0, 0, 1, Tmp.matrix[0]);
 			
-		Quaternion.FromRotationMatrixToRef(Tmp.matrix[0], rotation);
+	// 	Quaternion.FromRotationMatrixToRef(Tmp.matrix[0], rotation);
 		
-		return true;
-	}
+	// 	return true;
+	// }
+
+	/**
+     * Decomposes the current Matrix into a translation, rotation and scaling components
+     * Example Playground - https://playground.babylonjs.com/#AV9X17#12
+     * @param scale defines the scale vector3 given as a reference to update
+     * @param rotation defines the rotation quaternion given as a reference to update
+     * @param translation defines the translation vector3 given as a reference to update
+     * @param preserveScalingNode Use scaling sign coming from this node. Otherwise scaling sign might change.
+     * @param useAbsoluteScaling Use scaling sign coming from this absoluteScaling when true or scaling otherwise.
+     * @returns true if operation was successful
+     */
+	 //CL - updated this function based on latest from babylonjs which includes preserveScalingNode and useAbsoluteScaling
+	 public function decompose(scale: Vector3, rotation: Quaternion, translation: Vector3, preserveScalingNode: TransformNode = null, useAbsoluteScaling: Bool = true): Bool {
+        if (this._isIdentity) {
+            if (translation != null) {
+                translation.set(0, 0, 0);
+            }
+            if (scale != null) {
+                scale.set(1, 1, 1);
+            }
+            if (rotation != null) {
+                rotation.copyFromFloats(0, 0, 0, 1);
+            }
+            return true;
+        }
+        
+        if (translation != null) {
+            translation.copyFromFloats(m[12], m[13], m[14]);
+        }
+
+        scale = scale != null ? scale : Tmp.vector3[0];
+
+        scale.x = Math.sqrt(m[0] * m[0] + m[1] * m[1] + m[2] * m[2]);
+        scale.y = Math.sqrt(m[4] * m[4] + m[5] * m[5] + m[6] * m[6]);
+        scale.z = Math.sqrt(m[8] * m[8] + m[9] * m[9] + m[10] * m[10]);
+
+        if (preserveScalingNode != null) {
+            final signX = (useAbsoluteScaling ? preserveScalingNode.absoluteScaling.x : preserveScalingNode.scaling.x) < 0 ? -1 : 1;
+            final signY = (useAbsoluteScaling ? preserveScalingNode.absoluteScaling.y : preserveScalingNode.scaling.y) < 0 ? -1 : 1;
+            final signZ = (useAbsoluteScaling ? preserveScalingNode.absoluteScaling.z : preserveScalingNode.scaling.z) < 0 ? -1 : 1;
+
+            scale.x *= signX;
+            scale.y *= signY;
+            scale.z *= signZ;
+        } else {
+            if (this.determinant() <= 0) {
+                scale.y *= -1;
+            }
+        }
+
+		//if (scale._x === 0 || scale._y === 0 || scale._z === 0) {
+        if (scale.x == 0 || scale.y == 0 || scale.z == 0) {
+            if (rotation != null) {
+                rotation.copyFromFloats(0.0, 0.0, 0.0, 1.0);
+            }
+            return false;
+        }
+
+        if (rotation != null) {
+            final sx = 1 / scale.x,
+                sy = 1 / scale.y,
+                sz = 1 / scale.z;
+            Matrix.FromValuesToRef(
+                m[0] * sx,
+                m[1] * sx,
+                m[2] * sx,
+                0.0,
+                m[4] * sy,
+                m[5] * sy,
+                m[6] * sy,
+                0.0,
+                m[8] * sz,
+                m[9] * sz,
+                m[10] * sz,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                Tmp.matrix[0]
+            );
+
+            Quaternion.FromRotationMatrixToRef(Tmp.matrix[0], rotation);
+        }
+
+        return true;
+    }
 	
 	/**
 	 * Returns a new Matrix which is the normal matrix computed from the current one (using values from identity matrix for fourth row and column).  
