@@ -66,7 +66,7 @@ class TransformNode extends Node {
 	private var _pivotMatrixInverse:Matrix;
 	
 	private var _usePivotMatrix:Bool = false;
-	private var _postMultiplyPivotMatrix:Bool = false;        
+	public var _postMultiplyPivotMatrix:Bool = false;        
 	
 	private var _isWorldMatrixFrozen:Bool = false;
 
