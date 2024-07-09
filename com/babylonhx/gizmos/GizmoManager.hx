@@ -27,6 +27,11 @@ import com.babylonhx.rendering.UtilityLayerRenderer;
 import com.babylonhx.gizmos.PositionGizmo;
 
 /**
+* ...
+* @author Clay Larabie
+*/
+
+/**
  * Helps setup gizmos in the scene to rotate/scale/position nodes
  */
  @:expose('BABYLON.GizmoManager') class GizmoManager implements IDisposable {

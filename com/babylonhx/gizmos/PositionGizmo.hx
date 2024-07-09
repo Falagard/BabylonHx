@@ -1,6 +1,12 @@
 package com.babylonhx.gizmos;
 
 import com.babylonhx.gizmos.Gizmo;
+import com.babylonhx.gizmos.AxisDragGizmo;
+
+/**
+* ...
+* @author Clay Larabie
+*/
 
 /**
  * Interface for position gizmo
