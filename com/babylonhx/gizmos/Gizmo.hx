@@ -37,7 +37,7 @@ import com.babylonhx.behaviors.meshes.PointerDragBehavior;
 /**
  * Cache built by each axis. Used for managing state between all elements of gizmo for enhanced UI
  */
- interface GizmoAxisCache {
+interface GizmoAxisCache {
     /** Mesh used to render the Gizmo */
     var gizmoMeshes: Array<Mesh>;
     /** Mesh used to detect user interaction with Gizmo */

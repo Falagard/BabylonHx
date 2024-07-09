@@ -24,9 +24,10 @@ import com.babylonhx.math.Matrix;
 import com.babylonhx.math.Tools as MathTools;
 import com.babylonhx.math.Color3;
 import com.babylonhx.rendering.UtilityLayerRenderer;
+import com.babylonhx.gizmos.PositionGizmo;
 
 /**
- * Helps setup gizmo's in the scene to rotate/scale/position nodes
+ * Helps setup gizmos in the scene to rotate/scale/position nodes
  */
  @:expose('BABYLON.GizmoManager') class GizmoManager implements IDisposable {
 	
@@ -110,14 +111,12 @@ import com.babylonhx.rendering.UtilityLayerRenderer;
 
     public function get_isHovered() : Bool {
         var hovered = false;
-        // for (key in this.gizmos) {
-        //     //CL todo
-        //     var gizmo = cast(gizmos[key], IGizmo);
-        //     if (gizmo && gizmo.isHovered) {
-        //         hovered = true;
-        //          break;
-        //     }
-        // }
+
+        for(gizmo in [this.gizmos.positionGizmo, this.gizmos.rotationGizmo, this.gizmos.scaleGizmo, this.gizmos.boundingBoxGizmo]) {
+            if (gizmo != null && gizmo.isHovered) {
+                hovered = true;
+            }
+        }
         return hovered;
     }
 

@@ -428,6 +428,15 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	}
 
 	/**
+     * Gets the dot product of the current vector and the vector "otherVector"
+     * @param otherVector defines second vector
+     * @returns the dot product (float)
+     */
+	inline public function dot(otherVector: Vector3): Float {
+        return this.x * otherVector.x + this.y * otherVector.y;
+    }
+
+	/**
 	 * Returns a new Vector3 set to (0.0, 0.0, 0.0).
 	 */
 	inline public static function Zero():Vector3 {

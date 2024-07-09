@@ -1,5 +1,7 @@
 package com.babylonhx.behaviors.meshes;
 
+import com.babylonhx.math.Tools;
+import com.babylonhx.cameras.ArcRotateCamera;
 import com.babylonhx.lights.Light;
 import com.babylonhx.lights.ShadowLight;
 import com.babylonhx.bones.Bone;
@@ -84,7 +86,7 @@ typedef DragOptions = {
     /**
      * The id of the pointer that is currently interacting with the behavior (-1 when no pointer is active)
      */
-    public var currentDraggingPointerId = -1;
+    public var currentDraggingPointerId:Float = -1;
     /**
      * The last position where the pointer hit the drag plane in world space
      */
@@ -145,6 +147,8 @@ typedef DragOptions = {
      *  If the drag behavior will react to drag events (Default: true)
      */
     public var enabled(get,set): Bool;
+	public var name(get, never):String;
+
     
     public function set_enabled(value: Bool) {
         if (value != this._enabled) {
@@ -395,7 +399,9 @@ typedef DragOptions = {
     public function releaseDrag() {
         if (this.dragging) {
             this.dragging = false;
-            this.onDragEndObservable.notifyObservers({ dragPlanePoint: this.lastDragPosition, pointerId: this.currentDraggingPointerId, pointerInfo: this._activePointerInfo });
+            this.onDragEndObservable.notifyObservers(
+                { dragPlanePoint: this.lastDragPosition, pointerId: Std.int(this.currentDraggingPointerId), pointerInfo: this._activePointerInfo, dragPlaneNormal: null, dragDistance: 0, delta: Vector3.Zero() }
+            );
         }
 
         this.currentDraggingPointerId = -1;
@@ -404,16 +410,18 @@ typedef DragOptions = {
         this._moving = false;
 
         // Reattach camera controls
-        if (this.detachCameraControls && this._attachedToElement && this._scene.activeCamera && !this._scene.activeCamera.leftCamera) {
+        if (this.detachCameraControls && this._attachedToElement && this._scene.activeCamera != null && this._scene.activeCamera.leftCamera == null) {
             if (this._scene.activeCamera.getClassName() == "ArcRotateCamera") {
                 var arcRotateCamera = cast(this._scene.activeCamera, ArcRotateCamera);
-                arcRotateCamera.attachControl(
-                    arcRotateCamera.inputs ? arcRotateCamera.inputs.noPreventDefault : true,
-                    arcRotateCamera._useCtrlForPanning,
-                    arcRotateCamera._panningMouseButton
-                );
+                // arcRotateCamera.attachControl(
+                //     arcRotateCamera.inputs != null ? arcRotateCamera.inputs.noPreventDefault : true,
+                //     arcRotateCamera._useCtrlForPanning,
+                //     arcRotateCamera._panningMouseButton
+                // );
+                arcRotateCamera.attachControl();
             } else {
-                this._scene.activeCamera.attachControl(this._scene.activeCamera.inputs ? this._scene.activeCamera.inputs.noPreventDefault : true);
+                //this._scene.activeCamera.attachControl(this._scene.activeCamera.inputs ? this._scene.activeCamera.inputs.noPreventDefault : true);
+                this._scene.activeCamera.attachControl();
             }
             this._attachedToElement = false;
         }
@@ -429,16 +437,17 @@ typedef DragOptions = {
      * @param fromRay initial ray of the pointer to be simulated (Default: Ray from camera to attached mesh)
      * @param startPickedPoint picked point of the pointer to be simulated (Default: attached mesh position)
      */
-    public function startDrag(pointerId: Int = PointerDragBehavior._AnyMouseId, ?fromRay: Ray, ?startPickedPoint: Vector3) {
+    public function startDrag(pointerId: Int, ?fromRay: Ray, ?startPickedPoint: Vector3) {
         this._startDrag(pointerId, fromRay, startPickedPoint);
 
         var lastRay = this._lastPointerRay[pointerId];
         if (pointerId == PointerDragBehavior._AnyMouseId) {
             //lastRay = this._lastPointerRay[<any>Object.keys(this._lastPointerRay)[0]];
-            lastRay = this._lastPointerRay.get(this._lastPointerRay.keys()[0]);
+            //lastRay = this._lastPointerRay.get(this._lastPointerRay.keys()[0]);
+            lastRay = this._lastPointerRay.iterator().next();
         }
 
-        if (lastRay) {
+        if (lastRay != null) {
             // if there was a last pointer ray drag the object there
             this._moveDrag(lastRay);
         }
@@ -451,7 +460,7 @@ typedef DragOptions = {
 
         PivotTools._RemoveAndStorePivotPoint(this.attachedNode);
         // Create start ray from the camera to the object
-        if (fromRay) {
+        if (fromRay != null) {
             this._startDragRay.direction.copyFrom(fromRay.direction);
             this._startDragRay.origin.copyFrom(fromRay.origin);
         } else {
@@ -460,24 +469,25 @@ typedef DragOptions = {
             this._tmpVector.subtractToRef(this._scene.activeCamera.position, this._startDragRay.direction);
         }
 
-        this._updateDragPlanePosition(this._startDragRay, startPickedPoint ? startPickedPoint : this._tmpVector);
+        this._updateDragPlanePosition(this._startDragRay, startPickedPoint != null ? startPickedPoint : this._tmpVector);
 
         final pickedPoint = this._pickWithRayOnDragPlane(this._startDragRay);
-        if (pickedPoint) {
+        if (pickedPoint != null) {
             this.dragging = true;
             this.currentDraggingPointerId = pointerId;
             this.lastDragPosition.copyFrom(pickedPoint);
-            this.onDragStartObservable.notifyObservers({ dragPlanePoint: pickedPoint, pointerId: this.currentDraggingPointerId, pointerInfo: this._activePointerInfo });
+            this.onDragStartObservable.notifyObservers({ dragPlanePoint: pickedPoint, pointerId: Std.int(this.currentDraggingPointerId), pointerInfo: this._activePointerInfo, dragPlaneNormal: null, dragDistance: 0, delta: Vector3.Zero() });
             this._targetPosition.copyFrom(this.attachedNode.getAbsolutePosition());
 
             // Detatch camera controls
-            if (this.detachCameraControls && this._scene.activeCamera && this._scene.activeCamera.inputs && !this._scene.activeCamera.leftCamera) {
-                if (this._scene.activeCamera.inputs.attachedToElement) {
-                    this._scene.activeCamera.detachControl();
-                    this._attachedToElement = true;
-                } else {
+            if (this.detachCameraControls && this._scene.activeCamera != null && this._scene.activeCamera.inputs != null && this._scene.activeCamera.leftCamera == null) {
+                //CL This functionality didn't exist on CameraInputsManager so I commented it out here. 
+                //if (this._scene.activeCamera.inputs.attachedToElement != null) {
+                //    this._scene.activeCamera.detachControl();
+                //    this._attachedToElement = true;
+                //} else {
                     this._attachedToElement = false;
-                }
+                //}
             }
         } else {
             this.releaseDrag();
@@ -490,15 +500,15 @@ typedef DragOptions = {
         this._moving = true;
         var pickedPoint = this._pickWithRayOnDragPlane(ray);
 
-        if (pickedPoint) {
+        if (pickedPoint != null) {
             PivotTools._RemoveAndStorePivotPoint(this.attachedNode);
 
             if (this.updateDragPlane) {
                 this._updateDragPlanePosition(ray, pickedPoint);
             }
-            var dragLength = 0;
+            var dragLength:Float = 0;
             // depending on the drag mode option drag accordingly
-            if (this._options.dragAxis) {
+            if (this._options.dragAxis != null) {
                 // Convert local drag axis to world if useObjectOrientationForDragging
                 this.useObjectOrientationForDragging
                     ? Vector3.TransformCoordinatesToRef(this._options.dragAxis, this.attachedNode.getWorldMatrix().getRotationMatrix(), this._worldDragAxis)
@@ -518,7 +528,7 @@ typedef DragOptions = {
                 delta: this._dragDelta,
                 dragPlanePoint: pickedPoint,
                 dragPlaneNormal: this._dragPlane.forward,
-                pointerId: this.currentDraggingPointerId,
+                pointerId: Std.int(this.currentDraggingPointerId),
                 pointerInfo: this._activePointerInfo,
             });
             this.lastDragPosition.copyFrom(pickedPoint);
@@ -528,7 +538,7 @@ typedef DragOptions = {
     }
 
     private function _pickWithRayOnDragPlane(ray: Ray) {
-        if (!ray) {
+        if (ray == null) {
             return null;
         }
 
@@ -563,14 +573,14 @@ typedef DragOptions = {
         // use an infinite plane instead of ray picking a mesh that must be updated every frame
         final planeNormal = this._dragPlane.forward;
         final planePosition = this._dragPlane.position;
+        //Vector3.Dot()
         final dotProduct = ray.direction.dot(planeNormal);
-        if (Math.abs(dotProduct) < Epsilon) {
+        if (Math.abs(dotProduct) < Tools.Epsilon) {
             // Ray and plane are parallel, no intersection
             return null;
         }
-
-        planePosition.subtractToRef(ray.origin, TmpVectors.Vector3[0]);
-        final t = TmpVectors.Vector3[0].dot(planeNormal) / dotProduct;
+        planePosition.subtractToRef(ray.origin, Tmp.vector3[0]);
+        final t = Tmp.vector3[0].dot(planeNormal) / dotProduct;
         // Ensure the intersection point is in front of the ray (t must be positive)
         if (t < 0) {
             // Intersection point is behind the ray
@@ -578,8 +588,8 @@ typedef DragOptions = {
         }
 
         // Calculate the intersection point using the parameter t
-        ray.direction.scaleToRef(t, TmpVectors.Vector3[0]);
-        final intersectionPoint = ray.origin.add(TmpVectors.Vector3[0]);
+        ray.direction.scaleToRef(t, Tmp.vector3[0]);
+        final intersectionPoint = ray.origin.add(Tmp.vector3[0]);
         return intersectionPoint;
     }
 
@@ -591,7 +601,7 @@ typedef DragOptions = {
     // Position the drag plane based on the attached mesh position, for single axis rotate the plane along the axis to face the camera
     private function _updateDragPlanePosition(ray: Ray, dragPlanePosition: Vector3) {
         this._pointA.copyFrom(dragPlanePosition);
-        if (this._options.dragAxis) {
+        if (this._options.dragAxis != null) {
             this.useObjectOrientationForDragging
                 ? Vector3.TransformCoordinatesToRef(this._options.dragAxis, this.attachedNode.getWorldMatrix().getRotationMatrix(), this._localAxis)
                 : this._localAxis.copyFrom(this._options.dragAxis);
@@ -602,10 +612,11 @@ typedef DragOptions = {
             if (Math.abs(Vector3.Dot(this._localAxis, this._pointC)) > 0.999) {
                 // the drag axis is colinear with the (eye to position) ray. The cross product will give jittered values.
                 // A new axis vector need to be computed
-                if (Math.abs(Vector3.Dot(Vector3.UpReadOnly, this._pointC)) > 0.999) {
+                //CL - UpReadOnly? if (Math.abs(Vector3.Dot(Vector3.UpReadOnly, this._pointC)) > 0.999) {
+                if (Math.abs(Vector3.Dot(Vector3.Up(), this._pointC)) > 0.999) {
                     this._lookAt.copyFrom(Vector3.Right());
                 } else {
-                    this._lookAt.copyFrom(Vector3.UpReadOnly);
+                    this._lookAt.copyFrom(Vector3.Up());
                 }
             } else {
                 Vector3.CrossToRef(this._localAxis, this._pointC, this._lookAt);
@@ -617,7 +628,7 @@ typedef DragOptions = {
             this._dragPlane.position.copyFrom(this._pointA);
             this._pointA.addToRef(this._lookAt, this._lookAt);
             this._dragPlane.lookAt(this._lookAt);
-        } else if (this._options.dragPlaneNormal) {
+        } else if (this._options.dragPlaneNormal != null) {
             this.useObjectOrientationForDragging
                 ? Vector3.TransformCoordinatesToRef(this._options.dragPlaneNormal, this.attachedNode.getWorldMatrix().getRotationMatrix(), this._localAxis)
                 : this._localAxis.copyFrom(this._options.dragPlaneNormal);
@@ -639,17 +650,19 @@ typedef DragOptions = {
      *  Detaches the behavior from the mesh
      */
     public function detach() : Void {
-        this._lastPointerRay = {};
-        if (this.attachedNode) {
-            this.attachedNode.isNearGrabbable = false;
-        }
-        if (this._pointerObserver) {
+        this._lastPointerRay = new Map();
+
+        //CL - isNearGrabbable? 
+        //if (this.attachedNode != null) {
+        //    this.attachedNode.isNearGrabbable = false;
+        //}
+        if (this._pointerObserver != null) {
             this._scene.onPointerObservable.remove(this._pointerObserver);
         }
-        if (this._beforeRenderObserver) {
+        if (this._beforeRenderObserver != null) {
             this._scene.onBeforeRenderObservable.remove(this._beforeRenderObserver);
         }
-        if (this._dragPlane) {
+        if (this._dragPlane != null) {
             this._dragPlane.dispose();
         }
         this.releaseDrag();

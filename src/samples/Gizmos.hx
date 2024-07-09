@@ -32,7 +32,7 @@ class Gizmos {
 
         var utilityLayerRenderer = new UtilityLayerRenderer(scene, true);
 
-		var gizmoManager = new BABYLON.GizmoManager(scene);
+		var gizmoManager = new com.babylonhx.gizmos.GizmoManager(scene);
 			
 		scene.getEngine().runRenderLoop(function () {
             scene.render();

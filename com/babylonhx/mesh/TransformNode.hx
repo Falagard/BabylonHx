@@ -70,6 +70,11 @@ class TransformNode extends Node {
 	
 	private var _isWorldMatrixFrozen:Bool = false;
 
+	//CL
+	private var _forward = new Vector3(0, 0, 1);
+    private var _up = new Vector3(0, 1, 0);
+    private var _right = new Vector3(1, 0, 0);
+
 	/**
 	* An event triggered after the world matrix is updated
 	* @type {BABYLON.Observable}
@@ -143,6 +148,34 @@ class TransformNode extends Node {
 		}
 		return quaternion;
 	}
+
+	/**
+     * The forward direction of that transform in world space.
+     */
+	 public var forward(get,never): Vector3;
+
+	 public function get_forward(): Vector3 {
+        Vector3.TransformNormalFromFloatsToRef(0, 0, this.getScene().useRightHandedSystem ? -1.0 : 1.0, this.getWorldMatrix(), this._forward);
+        return this._forward.normalize();
+    }
+
+    /**
+     * The up direction of that transform in world space.
+     */
+	public var up(get,never): Vector3;
+    public function get_up(): Vector3 {
+        Vector3.TransformNormalFromFloatsToRef(0, 1, 0, this.getWorldMatrix(), this._up);
+        return this._up.normalize();
+    }
+
+    /**
+     * The right direction of that transform in world space.
+     */
+	public var right(get,never): Vector3;
+    public function get_right(): Vector3 {
+        Vector3.TransformNormalFromFloatsToRef(this.getScene().useRightHandedSystem ? -1.0 : 1.0, 0, 0, this.getWorldMatrix(), this._right);
+        return this._right.normalize();
+    }
 
 	/**
 	 * Returns the latest update of the World matrix
