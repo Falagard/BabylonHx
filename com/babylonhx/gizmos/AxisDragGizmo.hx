@@ -2,6 +2,17 @@ package com.babylonhx.gizmos;
 
 import com.babylonhx.mesh.TransformNode;
 import com.babylonhx.gizmos.Gizmo;
+import com.babylonhx.behaviors.meshes.PointerDragBehavior;
+import com.babylonhx.tools.Observable;
+import com.babylonhx.tools.Observer;
+import com.babylonhx.materials.StandardMaterial;
+import com.babylonhx.events.PointerInfo;
+import com.babylonhx.mesh.TransformNode;
+import com.babylonhx.math.Vector3;
+import com.babylonhx.math.Color3;
+import com.babylonhx.rendering.UtilityLayerRenderer;
+import com.babylonhx.mesh.Mesh;
+import com.babylonhx.mesh.AbstractMesh;
 
 /**
  * Interface for axis drag gizmo

@@ -1,6 +1,16 @@
 package com.babylonhx.gizmos;
 
 import com.babylonhx.gizmos.Gizmo;
+import com.babylonhx.behaviors.meshes.PointerDragBehavior;
+import com.babylonhx.tools.Observable;
+import com.babylonhx.tools.Observer;
+import com.babylonhx.materials.StandardMaterial;
+import com.babylonhx.events.PointerInfo;
+import com.babylonhx.mesh.TransformNode;
+import com.babylonhx.math.Vector3;
+import com.babylonhx.math.Color3;
+import com.babylonhx.rendering.UtilityLayerRenderer;
+
 
 /**
  * Interface for plane drag gizmo
@@ -29,7 +39,7 @@ interface IPlaneDragGizmo extends IGizmo {
 /**
  * Single plane drag gizmo
  */
- @:expose('BABYLON.PlaneDragGizmo') class PlaneDragGizmo extends Gizmo implements IPlaneDragGizmo {
+ class PlaneDragGizmo extends Gizmo implements IPlaneDragGizmo {
     /**
      * Drag behavior responsible for the gizmos dragging interactions
      */
@@ -46,13 +56,13 @@ interface IPlaneDragGizmo extends IGizmo {
     public var onSnapObservable = new Observable<Float>();
 
     private var _gizmoMesh: TransformNode;
-    private var  _coloredMaterial: StandardMaterial;
-    private var  _hoverMaterial: StandardMaterial;
-    private var  _disableMaterial: StandardMaterial;
+    private var _coloredMaterial: StandardMaterial;
+    private var _hoverMaterial: StandardMaterial;
+    private var _disableMaterial: StandardMaterial;
 
-    private var  _isEnabled: Bool = false;
-    private var  _parent: Nullable<PositionGizmo> = null;
-    private var  _dragging: Bool = false;
+    private var _isEnabled: Bool = false;
+    private var _parent: PositionGizmo = null;
+    private var _dragging: Bool = false;
 
     /** Default material used to render when gizmo is not disabled or hovered */
     public var coloredMaterial(get, never): StandardMaterial;
@@ -98,7 +108,7 @@ interface IPlaneDragGizmo extends IGizmo {
         dragPlaneNormal: Vector3,
         color: Color3 = Color3.Gray(),
         gizmoLayer: UtilityLayerRenderer = UtilityLayerRenderer.DefaultUtilityLayer,
-        parent: Nullable<PositionGizmo> = null,
+        parent: PositionGizmo = null,
         hoverColor: Color3 = Color3.Yellow(),
         disableColor: Color3 = Color3.Gray()
     ) {
@@ -205,7 +215,7 @@ interface IPlaneDragGizmo extends IGizmo {
         });
     }
 
-    private override function _attachedNodeChanged(value: Nullable<Node>) {
+    private override function _attachedNodeChanged(value: Node) {
         if (this.dragBehavior) {
             this.dragBehavior.enabled = value ? true : false;
         }

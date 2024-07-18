@@ -3,6 +3,14 @@ package com.babylonhx.gizmos;
 import com.babylonhx.gizmos.Gizmo;
 import com.babylonhx.gizmos.AxisDragGizmo;
 import com.babylonhx.gizmos.PlaneDragGizmo;
+import com.babylonhx.tools.Observable;
+import com.babylonhx.tools.Observer;
+import com.babylonhx.mesh.Mesh;
+import com.babylonhx.mesh.AbstractMesh;
+import com.babylonhx.events.PointerInfo;
+import com.babylonhx.mesh.TransformNode;
+import com.babylonhx.rendering.UtilityLayerRenderer;
+import com.babylonhx.math.Quaternion;
 
 /**
 * ...
@@ -95,8 +103,8 @@ interface PositionGizmoOptions {
     /**
      * protected variables
      */
-    private var _meshAttached: Nullable<AbstractMesh> = null;
-    private var _nodeAttached: Nullable<Node> = null;
+    private var _meshAttached: AbstractMesh = null;
+    private var _nodeAttached: Node = null;
     private var _snapDistance: Float;
     //private var _observables: Observer<PointerInfo>[] = [];
     private var _observeables: Array<Observer<PointerInfo>> = [];
