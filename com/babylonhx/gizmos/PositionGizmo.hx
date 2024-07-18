@@ -2,6 +2,7 @@ package com.babylonhx.gizmos;
 
 import com.babylonhx.gizmos.Gizmo;
 import com.babylonhx.gizmos.AxisDragGizmo;
+import com.babylonhx.gizmos.PlaneDragGizmo;
 
 /**
 * ...
@@ -114,7 +115,7 @@ interface PositionGizmoOptions {
      * If set_to true, planar drag is enabled
      */
     private var _planarGizmoEnabled = false;
-    public override var attachedMesh(get, set): AbstractMesh;
+    //public override var attachedMesh(get, set): AbstractMesh;
     public function get_attachedMesh() {
         return this._meshAttached;
     }
@@ -130,7 +131,7 @@ interface PositionGizmoOptions {
         };
     }
 
-    public override var attachedNode(get, set): Node;
+    //public override var attachedNode(get, set): Node;
     public function get_attachedNode(): Node {
         return this._nodeAttached;
     }
@@ -149,12 +150,12 @@ interface PositionGizmoOptions {
     /**
      * True when the mouse pointer is hovering a gizmo mesh
      */
-    public override var isHovered(get, never): Bool;
+    //public override var isHovered(get, never): Bool;
     public function get_isHovered(): Bool {
         return this.xGizmo.isHovered || this.yGizmo.isHovered || this.zGizmo.isHovered || this.xPlaneGizmo.isHovered || this.yPlaneGizmo.isHovered || this.zPlaneGizmo.isHovered;
     }
 
-    public override var isDragging(get, never): Bool;
+    //public override var isDragging(get, never): Bool;
     public function get_isDragging() {
         return (
             this.xGizmo.dragBehavior.dragging ||
@@ -166,7 +167,7 @@ interface PositionGizmoOptions {
         );
     }
 
-    public override var additionalTransformNode(get,set): TransformNode;
+    //public override var additionalTransformNode(get,set): TransformNode;
     public function get_additionalTransformNode() {
         return this._additionalTransformNode;
     }
@@ -247,7 +248,7 @@ interface PositionGizmoOptions {
      * posture that the gizmo will be display
      * When set_null, default value will be used (Quaternion(0, 0, 0, 1))
      */
-    public override var customRotationQuaternion(get,set) : Quaternion;
+    //public override var customRotationQuaternion(get,set) : Quaternion;
     public function get_customRotationQuaternion(): Quaternion {
         return this._customRotationQuaternion;
     }
@@ -265,8 +266,7 @@ interface PositionGizmoOptions {
      * If set_the gizmo's rotation will be updated to match the attached mesh each frame (Default: true)
      * NOTE: This is only possible for meshes with uniform scaling, as otherwise it's not possible to decompose the rotation
      */
-    public override var updateGizmoRotationToMatchAttachedMesh(get,set): Bool;
-
+    //public override var updateGizmoRotationToMatchAttachedMesh(get,set): Bool;
     public function set_updateGizmoRotationToMatchAttachedMesh(value: Bool) {
         this._updateGizmoRotationToMatchAttachedMesh = value;
         for(gizmo in [this.xGizmo, this.yGizmo, this.zGizmo, this.xPlaneGizmo, this.yPlaneGizmo, this.zPlaneGizmo]) {
@@ -291,7 +291,7 @@ interface PositionGizmoOptions {
         return this._updateGizmoPositionToMatchAttachedMesh;
     }
 
-    public override var anchorPoint(get,set): GizmoAnchorPoint;
+    //public override var anchorPoint(get,set): GizmoAnchorPoint;
     public function set_anchorPoint(value: GizmoAnchorPoint) {
         this._anchorPoint = value;
         for(gizmo in [this.xGizmo, this.yGizmo, this.zGizmo, this.xPlaneGizmo, this.yPlaneGizmo, this.zPlaneGizmo]) {
@@ -307,14 +307,14 @@ interface PositionGizmoOptions {
      * But it's possible for a user to tweak so its local for translation and world for rotation.
      * In that case, setting the coordinate system will change `updateGizmoRotationToMatchAttachedMesh` and `updateGizmoPositionToMatchAttachedMesh`
      */
-    public override var coordinatesMode(default, set): GizmoCoordinatesMode;
+    //public override var coordinatesMode(default, set): GizmoCoordinatesMode;
     public function set_coordinatesMode(coordinatesMode: GizmoCoordinatesMode) {
         for(gizmo in [this.xGizmo, this.yGizmo, this.zGizmo, this.xPlaneGizmo, this.yPlaneGizmo, this.zPlaneGizmo]) {
             gizmo.coordinatesMode = coordinatesMode;
         };
     }
 
-    public override var updateScale(get,set): Bool;
+    //public override var updateScale(get,set): Bool;
     public function set_updateScale(value: Bool) {
         if (this.xGizmo) {
             this.xGizmo.updateScale = value;
@@ -345,7 +345,7 @@ interface PositionGizmoOptions {
     /**
      * Ratio for the scale of the gizmo (Default: 1)
      */
-    public override var scaleRatio(get,set): Float;
+    //public override var scaleRatio(get,set): Float;
     public function set_scaleRatio(value: Float) {
         this._scaleRatio = value;
         [this.xGizmo, this.yGizmo, this.zGizmo, this.xPlaneGizmo, this.yPlaneGizmo, this.zPlaneGizmo].forEach((gizmo) => {

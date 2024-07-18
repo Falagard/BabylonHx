@@ -58,19 +58,19 @@ class AxisDragGizmo extends Gizmo implements IAxisDragGizmo {
     private var _dragging: Bool = false;
 
     /** Default material used to render when gizmo is not disabled or hovered */
-    public var coloredMateria(get, never);
+    public var coloredMaterial(get, never) : StandardMaterial;
     public function get_coloredMaterial() {
         return this._coloredMaterial;
     }
 
     /** Material used to render when gizmo is hovered with mouse*/
-    public var hoverMaterial(get, never);
+    public var hoverMaterial(get, never): StandardMaterial;
     public function get_hoverMaterial() {
         return this._hoverMaterial;
     }
 
     /** Material used to render when gizmo is disabled. typically grey.*/
-    public var disableMaterial(get, never);
+    public var disableMaterial(get, never): Bool;
     public function get_disableMaterial() {
         return this._disableMaterial;
     }
@@ -255,6 +255,8 @@ class AxisDragGizmo extends Gizmo implements IAxisDragGizmo {
         var cache: GizmoAxisCache = {
             // gizmoMeshes: cast(arrow.getChildMeshes(), Mesh[]),
             // colliderMeshes: cast(collider.getChildMeshes(), Mesh[]),
+            gizmoMeshes: gizmoMeshes,
+            colliderMeshes: colliderMeshes,
             material: this._coloredMaterial,
             hoverMaterial: this._hoverMaterial,
             disableMaterial: this._disableMaterial,
