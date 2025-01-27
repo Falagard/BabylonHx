@@ -542,7 +542,7 @@ import com.babylonhx.postprocess.PostProcessManager;
 			var particleSystem = scene.particleSystems[particleIndex];
 			
 			var emitter:Dynamic = particleSystem.emitter;
-			if (!particleSystem.isStarted() || emitter == null || emitter.position == null || !emitter.isEnabled()) {
+			if (!particleSystem.isStarted() || emitter == null || emitter.position == null || !emitter.isEnabled(true)) {
 				continue;
 			}
 			

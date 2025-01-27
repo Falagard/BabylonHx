@@ -73,20 +73,21 @@ class MainLime extends Application {
 	}
 	
 	override public function onPreloadComplete() {
+		//new samples.Turtle(scene);
+		//new samples.LSystem(scene);
 
-		//new samples.HaxeUI1(scene);
 		//new samples.TestWireframe(scene); //works
 	    //new samples.BScene(scene); //html: y, hl: y
 		//new samples.DRPDemo(scene); //default rendering pipeline crashes, needs investigation
-		//new samples.BasicScene(scene); //html: Y, hl: y
+		//new samples.BasicScene(scene); //     html: Y, hl: y
 		//new samples.BasicElements(scene); //hl: y
 		//new samples.DashedLinesMesh(scene); //hl: y
 		//new samples.RotationAndScaling(scene); //hl: y
 		//Fnew samples.Materials(scene); //html: y, hl: y
-		//new samples.Lights(scene); //hl: y
+		new samples.Lights(scene); //hl: y
 		//new samples.BumpMap(scene); //html:y , hl: y
 		//new samples.Bump2(scene); //html: runs but not showing bump
-		//new samples.Animations(scene); //doesn't build, BabylonFrame missing
+		//new samples.Animations(scene); //hl: y
 		//new samples.Collisions(scene); //html: runs, black screen
 		//new samples.Intersections(scene); //html: y
 		//new samples.EasingFunctions(scene); //html: y
@@ -106,13 +107,13 @@ class MainLime extends Application {
 		//new samples.PhysicsCar(scene);
 		//new samples.PhysicsNew(scene);
 		//new samples.PolygonMesh1(scene); //OpenSimplexNoiseTileable3D crash
-		//new samples.PolygonMesh2(scene); //hl: y
-		//new samples.PolygonMesh3(scene); //hl: y
-		//new samples.ProceduralShapesTest(scene); //hl: y
+		//new samples.PolygonMesh2(scene);
+		//new samples.PolygonMesh3(scene);
+		//new samples.ProceduralShapesTest(scene);
 		//new samples.CustomRenderTarget(scene); //hl: y
-		//new samples.Lines(scene);
-		//new samples.Lines2(scene);
-		//new samples.Lines3(scene);
+		//new samples.Lines(scene); //hl:y
+		//new samples.Lines2(scene); //hl:y
+		//new samples.Lines3(scene); //hl:y
 		//new samples.Bones(scene); //html: y, hl: y
 		//new samples.Shadows(scene); //hl: y
 		//new samples.Shadows2(scene); //hl: runs but shadows and maybe materials are missing. Crashes if you enable useBlurExponentialShadowMap
@@ -129,16 +130,16 @@ class MainLime extends Application {
 		//new samples.VolumetricLights(scene);
 		//new samples.CellShading(scene);
 		//new samples.Particles(scene); //hl: y
-		//new samples.Particles2(scene); //crashes			
-		//new samples.Particles3(scene); //hl: y					
+		//new samples.Particles2(scene); //crashes, effect is null
+		//new samples.Particles3(scene); //hl:y
 		//new samples.Particles4(scene); //hl: y
-		new samples.Particles5(scene);					
-		//new samples.Particles6(scene);
-		//new samples.Particles7(scene);
-		//new samples.Particles8(scene);
-		//new samples.Particles9(scene);
-		//new samples.Particles10(scene);
-		//new samples.AnimatedParticles(scene);
+		//new samples.Particles5(scene); //hl: y
+		//new samples.Particles6(scene); //hl: y
+		//new samples.Particles7(scene); //hl:y
+		//new samples.Particles8(scene); //hl:y
+		//new samples.Particles9(scene); //hl:y
+		//new samples.Particles10(scene); //hl:y
+		//new samples.AnimatedParticles(scene); //hl:y
 		//new samples.Snow(scene);
 		//new samples.Extrusion(scene);
 		//new samples.Sprites(scene); //hl:y but slow

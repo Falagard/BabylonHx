@@ -8,18 +8,6 @@
             "name": "Lime",
             "type": "lime",
             "request": "launch"
-        },
-        {
-            "name": "HashLink (launch)",
-            "request": "launch",
-            "type": "hl",
-            "hl": "D:/Downloads/hashlink-ced5c15-win64/hashlink-ced5c15-win64/hl.exe",
-            "program": "${workspaceFolder}/bin_lime/hl/obj/ApplicationMain.hl",
-            "cwd": "${workspaceFolder}/bin_lime/hl/bin",
-            // "preLaunchTask": {
-            //     "type": "haxe",
-            //     "args": "active configuration"
-            // }
         }
     ]
 }

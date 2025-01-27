@@ -1,6 +1,6 @@
 package com.babylonhx.materials;
 
-import samples.DepthPrePassTest;
+//import samples.DepthPrePassTest;
 import com.babylonhx.engine.Engine;
 import com.babylonhx.lights.SpotLight;
 import com.babylonhx.mesh.Mesh;

@@ -1,5 +1,6 @@
 package samples;
 
+import com.babylonhx.animations.IAnimationKey;
 import com.babylonhx.cameras.ArcRotateCamera;
 import com.babylonhx.lights.PointLight;
 import com.babylonhx.materials.textures.Texture;
@@ -13,7 +14,7 @@ import com.babylonhx.particles.ParticleSystem;
 import com.babylonhx.particles.Particle;
 import com.babylonhx.materials.StandardMaterial;
 import com.babylonhx.animations.Animation;
-import com.babylonhx.animations.Animation.BabylonFrame;
+//import com.babylonhx.animations.Animation.BabylonFrame;
 import com.babylonhx.Scene;
 
 /**
@@ -87,7 +88,7 @@ class AnimatedParticles {
 		particleSystem.start();
 		
 		// Fountain's animation
-		var keys:Array<BabylonFrame> = [];
+		var keys:Array<IAnimationKey> = [];
 		var animation = new Animation("animation", "rotation.x", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
 		// At the animation key 0, the value of scaling is "1"
 		keys.push({

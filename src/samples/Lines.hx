@@ -35,7 +35,7 @@ class Lines {
 		lorenz.color = Color3.Red();
 		
 		scene.registerBeforeRender(function(scene:Scene, es:Null<EventState>) {
-			lorenz.rotation.y += 0.01 * scene.getAnimationRatio();
+			//lorenz.rotation.y += 0.01 * scene.getAnimationRatio();
 		});
 		
 		scene.getEngine().runRenderLoop(function () {

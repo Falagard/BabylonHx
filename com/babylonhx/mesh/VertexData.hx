@@ -310,13 +310,41 @@ import com.babylonhx.utils.typedarray.UInt32Array;
 
 	public function merge(other:VertexData, tangentLength:Int = 0):VertexData {
 		if (other.indices != null) {
-			var tmpIndices:Array<Int> = [];
-			
-			var offset = Std.int(this.positions != null ? this.positions.length / 3 : 0);
-			for (index in 0...other.indices.length) {
-				tmpIndices.push(other.indices[index] + offset);
+
+			//CL - fixed
+			if (this.indices == null) {
+				this.indices = new UInt32Array();
 			}
-			this.indices = new UInt32Array(tmpIndices);
+
+			var len:Int = other.indices.length + this.indices.length;
+			var offset = Std.int(this.positions != null ? this.positions.length / 3 : 0);
+
+			var temp = new UInt32Array(len);
+			temp.set(this.indices);
+			
+			var decal = this.indices.length;
+
+			for (index in 0...other.indices.length) {
+				temp[decal + index] = other.indices[index] + offset;
+			}
+			
+			this.indices = temp;
+
+			// var tmpIndices:Array<Int> = [];
+
+			// //push all the original indices into tmpIndices
+			// for(index in 0...this.indices.length) {
+			// 	tmpIndices.push(this.indices[index]);
+			// }
+			
+			// //now add the new indices 
+			// var offset = Std.int(this.positions != null ? this.positions.length / 3 : 0);
+			// for (index in 0...other.indices.length) {
+			// 	tmpIndices.push(other.indices[index] + offset);
+			// }
+
+			// //and recreate the UInt32Array
+			// this.indices = new UInt32Array(tmpIndices);
 		}
 		
 		this.positions = this._mergeElement(this.positions, other.positions);

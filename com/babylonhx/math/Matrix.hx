@@ -325,7 +325,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	/**
 	 * Sets the Float32Array "result" from the passed index "offset" with the multiplication result of the current Matrix and the passed one.  
 	 */
-	public function multiplyToArray(other:Matrix, result:Float32Array, offset:Int) {	
+	inline public function multiplyToArray(other:Matrix, result:Float32Array, offset:Int) {	
 		var tm0 = this.m[0];
 		var tm1 = this.m[1];
 		var tm2 = this.m[2];
@@ -543,7 +543,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	/**
 	 * Sets the passed matrix "result" with the 16 passed floats.  
 	 */
-	public static function FromValuesToRef(initialM11:Float, initialM12:Float, initialM13:Float, initialM14:Float,
+	inline public static function FromValuesToRef(initialM11:Float, initialM12:Float, initialM13:Float, initialM14:Float,
 		initialM21:Float, initialM22:Float, initialM23:Float, initialM24:Float,
 		initialM31:Float, initialM32:Float, initialM33:Float, initialM34:Float,
 		initialM41:Float, initialM42:Float, initialM43:Float, initialM44:Float, result:Matrix) {

@@ -1,7 +1,7 @@
 package samples;
 
 import com.babylonhx.animations.Animation;
-import com.babylonhx.animations.Animation.BabylonFrame;
+//import com.babylonhx.animations.Animation.BabylonFrame;
 import com.babylonhx.cameras.ArcRotateCamera;
 import com.babylonhx.lights.HemisphericLight;
 import com.babylonhx.materials.StandardMaterial;

@@ -34,7 +34,7 @@ import com.babylonhx.events.PointerEvent;
 	public var upperRadiusLimit:Null<Float> = null;
 	public var angularSensibilityX:Float = 1000.0;
 	public var angularSensibilityY:Float = 1000.0;
-	public var wheelPrecision:Float = 3.0;
+	public var wheelPrecision:Float = 0.5;
 	public var pinchPrecision:Float = 2.0;
 	public var panningSensibility:Float = 50;
 	public var inertialPanningX:Float = 0;
