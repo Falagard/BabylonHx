@@ -1,6 +1,6 @@
 package com.babylonhx.ui;
 
-import haxe.ui.core.ComponentContainer;
+//import haxe.ui.core.ComponentContainer;
 import com.babylonhx.engine.Engine;
 
 class UIComponent {

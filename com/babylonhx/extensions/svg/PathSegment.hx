@@ -12,7 +12,6 @@ class PathSegment {
 	public var x:Float;
 	public var y:Float;
 	
-
 	public function new(inX:Float, inY:Float) {
 		x = inX;
 		y = inY;
