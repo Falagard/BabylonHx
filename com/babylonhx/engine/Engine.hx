@@ -1,66 +1,64 @@
 package com.babylonhx.engine;
 
+import com.babylonhx.cameras.Camera;
 import com.babylonhx.events.PointerEvent;
+import com.babylonhx.materials.Effect;
 import com.babylonhx.materials.EffectCreationOptions;
+import com.babylonhx.materials.EffectFallbacks;
+import com.babylonhx.materials.IncludesShadersStore;
 import com.babylonhx.materials.Material;
+import com.babylonhx.materials.ShadersStore;
 import com.babylonhx.materials.UniformBuffer;
+import com.babylonhx.materials.textures.BaseTexture;
 import com.babylonhx.materials.textures.DummyInternalTextureTracker;
 import com.babylonhx.materials.textures.IInternalTextureTracker;
 import com.babylonhx.materials.textures.InternalTexture;
 import com.babylonhx.materials.textures.RenderTargetCreationOptions;
-import com.babylonhx.math.Scalar;
-import com.babylonhx.mesh.AbstractMesh;
-import com.babylonhx.states._AlphaState;
-import com.babylonhx.states._DepthCullingState;
-import com.babylonhx.cameras.Camera;
-//import com.babylonhx.materials.textures.WebGLTexture;
 import com.babylonhx.materials.textures.RenderTargetTexture;
-import com.babylonhx.materials.textures.VideoTexture;
-import com.babylonhx.materials.textures.BaseTexture;
 import com.babylonhx.materials.textures.Texture;
-import com.babylonhx.materials.ShadersStore;
-import com.babylonhx.materials.IncludesShadersStore;
-import com.babylonhx.materials.Effect;
-import com.babylonhx.materials.EffectFallbacks;
+import com.babylonhx.materials.textures.VideoTexture;
+// import com.babylonhx.materials.textures.WebGLTexture;
 import com.babylonhx.math.Color3;
 import com.babylonhx.math.Color4;
 import com.babylonhx.math.Matrix;
+import com.babylonhx.math.Scalar;
 import com.babylonhx.math.Size;
-import com.babylonhx.mesh.BufferPointer;
-import com.babylonhx.mesh.WebGLBuffer;
-import com.babylonhx.mesh.VertexBuffer;
-import com.babylonhx.math.Viewport;
 import com.babylonhx.math.Tools in MathTools;
-import com.babylonhx.postprocess.PostProcess;
+import com.babylonhx.math.Viewport;
+import com.babylonhx.mesh.AbstractMesh;
+import com.babylonhx.mesh.BufferPointer;
+import com.babylonhx.mesh.VertexBuffer;
+import com.babylonhx.mesh.WebGLBuffer;
 import com.babylonhx.postprocess.PassPostProcess;
+import com.babylonhx.postprocess.PostProcess;
+import com.babylonhx.states._AlphaState;
+import com.babylonhx.states._DepthCullingState;
 import com.babylonhx.states._StencilState;
+import com.babylonhx.tools.Observable;
 import com.babylonhx.tools.PerfCounter;
 import com.babylonhx.tools.Tools;
 import com.babylonhx.tools.WebGLVertexArrayObject;
-import com.babylonhx.tools.Observable;
 import com.babylonhx.tools.dds.DDSTools;
-import com.babylonhx.utils.Image;
-
-import com.babylonhx.utils.GL.GLQuery;
-import com.babylonhx.utils.GL.GLTransformFeedback;
-import com.babylonhx.utils.GL;
-import com.babylonhx.utils.GL.GLProgram;
-import com.babylonhx.utils.GL.GLUniformLocation;
-import com.babylonhx.utils.GL.GLFramebuffer;
 import com.babylonhx.utils.GL.GLBuffer;
-import com.babylonhx.utils.GL.GLTexture;
-import com.babylonhx.utils.GL.GLVertexArrayObject;
+import com.babylonhx.utils.GL.GLFramebuffer;
+import com.babylonhx.utils.GL.GLProgram;
+import com.babylonhx.utils.GL.GLQuery;
 import com.babylonhx.utils.GL.GLRenderbuffer;
 import com.babylonhx.utils.GL.GLShader;
-import com.babylonhx.utils.typedarray.UInt16Array;
-import com.babylonhx.utils.typedarray.UInt8Array;
-import com.babylonhx.utils.typedarray.UInt32Array;
-import com.babylonhx.utils.typedarray.Float32Array;
-import com.babylonhx.utils.typedarray.Int32Array;
-import com.babylonhx.utils.typedarray.Int16Array;
-import com.babylonhx.utils.typedarray.ArrayBufferView;
+import com.babylonhx.utils.GL.GLTexture;
+import com.babylonhx.utils.GL.GLTransformFeedback;
+import com.babylonhx.utils.GL.GLUniformLocation;
+import com.babylonhx.utils.GL.GLVertexArrayObject;
+import com.babylonhx.utils.GL;
+import com.babylonhx.utils.Image;
 import com.babylonhx.utils.typedarray.ArrayBuffer;
-
+import com.babylonhx.utils.typedarray.ArrayBufferView;
+import com.babylonhx.utils.typedarray.Float32Array;
+import com.babylonhx.utils.typedarray.Int16Array;
+import com.babylonhx.utils.typedarray.Int32Array;
+import com.babylonhx.utils.typedarray.UInt16Array;
+import com.babylonhx.utils.typedarray.UInt32Array;
+import com.babylonhx.utils.typedarray.UInt8Array;
 import haxe.ds.Vector;
 
 
@@ -70,7 +68,7 @@ import js.Browser;
 #end
 
 #if openfl
-import openfl.display.OpenGLView;
+// import openfl.display.OpenGLView;
 #end
 
 /**
@@ -383,7 +381,7 @@ import openfl.display.OpenGLView;
 
 	private var _workingCanvas:Image;
 	#if openfl
-	public var _workingContext:OpenGLView;
+	//public var _workingContext:OpenGLView;
 	#end
 	
 	private var _rescalePostProcess:PassPostProcess;
@@ -547,9 +545,9 @@ import openfl.display.OpenGLView;
 		//trace(this._webGLVersion);
 		
 		#if openfl
-		this._workingContext = new OpenGLView();
-		this._workingContext.render = this._renderLoop;
-		canvas.addChild(this._workingContext);
+		//this._workingContext = new OpenGLView();
+		//this._workingContext.render = this._renderLoop;
+		//canvas.addChild(this._workingContext);
 		#end		
 		
 		this._onBlur = function() {
