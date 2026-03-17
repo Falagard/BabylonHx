@@ -33,6 +33,7 @@ class VulkanBackend implements IGraphicsBackend {
     private var _graphicsQueue:VkQueue;
     private var _presentQueue:VkQueue;
     private var _surface:VkSurfaceKHR;
+    private var _vulkanSurface:VulkanWindowSurface;
     private var _swapchain:VkSwapchainKHR;
     private var _commandPool:VkCommandPool;
     private var _commandBuffers:Array<VkCommandBuffer>;
@@ -654,5 +655,76 @@ class VulkanBackend implements IGraphicsBackend {
 
     public function getInitializationError():String {
         return _initializationError;
+    }
+
+    /**
+     * Set platform-specific window handle for surface creation
+     */
+    #if windows
+    public function setWindowHandle(hwnd:cpp.Pointer<cpp.Void>, hinstance:cpp.Pointer<cpp.Void>):Bool {
+        if (_vulkanSurface == null) {
+            _vulkanSurface = new VulkanWindowSurface(_instance, 1280, 720);
+        }
+        _vulkanSurface.setWindowHandle(hwnd, hinstance);
+        return createSurface();
+    }
+    #end
+
+    /**
+     * Set Linux X11 window for surface creation
+     */
+    #if linux
+    public function setX11Window(display:cpp.Pointer<cpp.Void>, window:cpp.UInt64):Bool {
+        if (_vulkanSurface == null) {
+            _vulkanSurface = new VulkanWindowSurface(_instance, 1280, 720);
+        }
+        _vulkanSurface.setX11Display(display, window);
+        return createSurface();
+    }
+    #end
+
+    /**
+     * Set macOS window for surface creation
+     */
+    #if mac
+    public function setMacOSWindow(nsWindow:cpp.Pointer<cpp.Void>, nsView:cpp.Pointer<cpp.Void>):Bool {
+        if (_vulkanSurface == null) {
+            _vulkanSurface = new VulkanWindowSurface(_instance, 1280, 720);
+        }
+        _vulkanSurface.setMacOSWindow(nsWindow, nsView);
+        return createSurface();
+    }
+    #end
+
+    /**
+     * Create Vulkan surface from window
+     */
+    private function createSurface():Bool {
+        if (_vulkanSurface == null) {
+            trace("Window surface not configured");
+            return false;
+        }
+
+        if (!_vulkanSurface.create()) {
+            _initializationError = "Failed to create Vulkan surface";
+            return false;
+        }
+
+        _surface = _vulkanSurface.getSurface();
+        return true;
+    }
+
+    /**
+     * Get the Vulkan window surface
+     */
+    public function getVulkanSurface():VulkanWindowSurface {
+        return _vulkanSurface;
+    }
+
+    /**
+     * Get the Vulkan surface handle
+     */
+    public function getSurface():VkSurfaceKHR {
+        return _surface;
     }
 }

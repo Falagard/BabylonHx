@@ -632,6 +632,45 @@ extern class Vulkan {
         pPresentModeCount:cpp.Pointer<Int>,
         pPresentModes:cpp.Pointer<Int>
     ):VkResult;
+
+    // Platform-specific surface creation (KHR/EXT extensions)
+    #if windows
+    @:native("vkCreateWin32SurfaceKHR")
+    static function createWin32SurfaceKHR(
+        instance:VkInstance,
+        pCreateInfo:cpp.Pointer<Void>,
+        pAllocator:cpp.Pointer<Void>,
+        pSurface:cpp.Pointer<VkSurfaceKHR>
+    ):VkResult;
+    #end
+
+    #if linux
+    @:native("vkCreateXcbSurfaceKHR")
+    static function createXcbSurfaceKHR(
+        instance:VkInstance,
+        pCreateInfo:cpp.Pointer<Void>,
+        pAllocator:cpp.Pointer<Void>,
+        pSurface:cpp.Pointer<VkSurfaceKHR>
+    ):VkResult;
+
+    @:native("vkCreateWaylandSurfaceKHR")
+    static function createWaylandSurfaceKHR(
+        instance:VkInstance,
+        pCreateInfo:cpp.Pointer<Void>,
+        pAllocator:cpp.Pointer<Void>,
+        pSurface:cpp.Pointer<VkSurfaceKHR>
+    ):VkResult;
+    #end
+
+    #if mac
+    @:native("vkCreateMetalSurfaceEXT")
+    static function createMetalSurfaceEXT(
+        instance:VkInstance,
+        pCreateInfo:cpp.Pointer<Void>,
+        pAllocator:cpp.Pointer<Void>,
+        pSurface:cpp.Pointer<VkSurfaceKHR>
+    ):VkResult;
+    #end
 }
 
 // Additional KHR extension structures needed for Vulkan bindings
