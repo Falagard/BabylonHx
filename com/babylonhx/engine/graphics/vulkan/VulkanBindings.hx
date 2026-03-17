@@ -211,6 +211,13 @@ extern class Vulkan {
         pAllocator:cpp.Pointer<Void>
     ):Void;
 
+    @:native("vkResetCommandPool")
+    static function resetCommandPool(
+        device:VkDevice,
+        commandPool:VkCommandPool,
+        flags:Int
+    ):VkResult;
+
     @:native("vkAllocateCommandBuffers")
     static function allocateCommandBuffers(
         device:VkDevice,
