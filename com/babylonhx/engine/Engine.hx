@@ -63,6 +63,7 @@ import com.babylonhx.utils.typedarray.ArrayBuffer;
 
 import com.babylonhx.engine.graphics.IGraphicsBackend;
 import com.babylonhx.engine.GraphicsBackendFactory;
+import com.babylonhx.materials.shaders.ShaderCompilationManager;
 
 import haxe.ds.Vector;
 
@@ -288,6 +289,17 @@ import openfl.display.OpenGLView;
 	public var graphicsBackend(get, null):com.babylonhx.engine.graphics.IGraphicsBackend;
 	private function get_graphicsBackend():com.babylonhx.engine.graphics.IGraphicsBackend {
 		return this._graphicsBackend;
+	}
+	
+	// Shader Compilation - Abstraction Layer for Multi-Backend Support
+	private var _shaderCompilationManager:com.babylonhx.materials.shaders.ShaderCompilationManager;
+	
+	public var shaderCompilationManager(get, null):com.babylonhx.materials.shaders.ShaderCompilationManager;
+	private function get_shaderCompilationManager():com.babylonhx.materials.shaders.ShaderCompilationManager {
+		if (this._shaderCompilationManager == null) {
+			this._shaderCompilationManager = new com.babylonhx.materials.shaders.ShaderCompilationManager(this);
+		}
+		return this._shaderCompilationManager;
 	}
 	
 	public var webGLVersion(get, never):Float;
@@ -2479,11 +2491,25 @@ import openfl.display.OpenGLView;
 	public function createShaderProgram(vertexCode:String, fragmentCode:String, defines:String, transformFeedbackVaryings:Array<String> = null):GLProgram {
 		this.onBeforeShaderCompilationObservable.notifyObservers(this);
 		
-		var shaderVersion = (this._webGLVersion > 1) ? "#version 300 es\n" : "";
-		var vertexShader = compileShader(gl, vertexCode, "vertex", defines, shaderVersion);
-		var fragmentShader = compileShader(gl, fragmentCode, "fragment", defines, shaderVersion);
+		var program:GLProgram = null;
 		
-		var program = this._createShaderProgram(vertexShader, fragmentShader, transformFeedbackVaryings);
+		try {
+			// Try to use the new shader compilation manager if available
+			var shaderVersion = (this._webGLVersion > 1) ? "#version 300 es\n" : "";
+			var fullVertexCode = shaderVersion + (defines != null ? defines + "\n" : "") + vertexCode;
+			var fullFragmentCode = shaderVersion + (defines != null ? defines + "\n" : "") + fragmentCode;
+			
+			// Use shader compilation manager for better abstraction
+			var manager = this.shaderCompilationManager;
+			program = cast manager.compileProgram(vertexCode, fragmentCode, defines);
+		} catch (e:Dynamic) {
+			// Fallback to direct compilation if manager fails
+			trace("[Engine] Shader compilation via manager failed, using fallback: " + e);
+			var shaderVersion = (this._webGLVersion > 1) ? "#version 300 es\n" : "";
+			var vertexShader = compileShader(gl, vertexCode, "vertex", defines, shaderVersion);
+			var fragmentShader = compileShader(gl, fragmentCode, "fragment", defines, shaderVersion);
+			program = this._createShaderProgram(vertexShader, fragmentShader, transformFeedbackVaryings);
+		}
 		
 		this.onAfterShaderCompilationObservable.notifyObservers(this);
 		
