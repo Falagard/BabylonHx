@@ -516,9 +516,257 @@ if (DLSSPhase2Test.runAllPhase2Tests()) {
 }
 ```
 
+## Phase 3: Optimization & Advanced Features (Weeks 6-8)
+
+Advanced features and optimization components for maximum performance and visual quality.
+
+### 11. DLSSFrameGenerator.hx
+**DLSS 3.0+ Frame Generation**
+
+```haxe
+// Create frame generator (if supported)
+var frameGen = new DLSSFrameGenerator(isSupported);
+
+if (frameGen.isSupported()) {
+    frameGen.setEnabled(true);
+    frameGen.setMaxGeneratedFramesPerFrame(2);
+    
+    // Frame generation happens automatically during rendering
+    // Can provide up to 3x FPS improvement
+    var fpsMultiplier = frameGen.getEffectiveMultiplier(60.0);
+}
+```
+
+**Key Features**:
+- DLSS 3.0+ mid-frame generation support
+- Hardware capability detection
+- Generated frames tracking
+- Performance estimation
+- Graceful degradation on unsupported hardware
+
+**Status**: ✅ Complete
+
 ---
 
-**Phase 1 Status**: ✅ **COMPLETE**
-**Phase 2 Status**: ✅ **COMPLETE**
-**Implementation Date**: March 2026
-**Next Phase**: Phase 3 - Optimization & Advanced Features
+### 12. DLSSDebugVisualizer.hx
+**Debug Visualization Modes**
+
+```haxe
+// Create visualizer
+var debug = new DLSSDebugVisualizer(scene);
+
+// Set debug mode
+debug.setDebugMode(DLSSDebugMode.ShowInputResolution);
+
+// Access visualization functions for different debug modes
+debug.visualizeInputResolution(outputRT, 960, 540, 1920, 1080);
+debug.visualizeMotionVectors(motionVectorRT);
+debug.visualizeReconstructionMask(maskRT);
+debug.visualizeTemporalAccumulation(confidenceRT);
+```
+
+**Debug Modes**:
+- `Disabled` - Normal rendering
+- `ShowInputResolution` - Checkerboard showing upscaling regions
+- `ShowMotionVectors` - Pseudo-color motion visualization
+- `ShowReconstructionMask` - Areas DLSS reconstructed
+- `ShowTemporalAccumulation` - Temporal stability/confidence
+
+**Status**: ✅ Complete
+
+---
+
+### 13. DLSSReprojection.hx
+**Temporal Reprojection**
+
+```haxe
+// Create reprojection manager
+var reproj = new DLSSReprojection();
+
+// Configure temporal parameters
+reproj.setTemporalBlendFactor(0.875);  // 87.5% previous frame weight
+reproj.setMaxReprojectionDistance(100.0);
+reproj.setVarianceClipping(true);  // Reduce ghosting
+
+// Reproject previous frame data using motion vectors
+reproj.updateMatrices(currentProj, currentView, prevProj, prevView);
+reproj.reprojectPreviousFrame(motionVectorRT, depthRT, prevDepthRT);
+```
+
+**Key Features**:
+- Previous frame reprojection using motion vectors
+- Disocclusion detection (depth-based)
+- Variance clipping to prevent ghosting
+- Configurable temporal blend factor
+- Success rate tracking
+- Pixel-level reprojection for debugging
+
+**Status**: ✅ Complete
+
+---
+
+### 14. DLSSPostProcessIntegration.hx
+**Post-Processing Pipeline Coordination**
+
+```haxe
+// Create integration manager
+var ppInt = new DLSSPostProcessIntegration();
+
+// Configure TAA/DLSS interaction
+ppInt.configureTAADLSSInteraction(dlssEnabled, taaEnabled);
+
+// Get recommended settings
+var config = ppInt.getRecommendedSettings();
+// → Automatically disables TAA, enables Bloom, etc.
+
+// or optimize for specific quality level
+var optimized = ppInt.optimizePipeline(true, DLSSQualityLevel.Balanced);
+
+// Check if effect should be active
+if (ppInt.isEffectEnabledWithDLSS(PostProcessEffect.Bloom)) {
+    // Apply bloom effect
+}
+```
+
+**Integration Modes**:
+- `ReplaceTAA` (recommended) - DLSS replaces temporal effects
+- `CombinedMode` - Both DLSS and TAA active (not recommended)
+- `UserChoice` - User selects one or the other
+
+**Pipeline Order**:
+1. Scene rendering (low-res if DLSS)
+2. Motion vectors
+3. DLSS upscaling
+4. Post-processing (Bloom, Color Grading, Motion Blur)
+5. UI overlay
+
+**Status**: ✅ Complete
+
+---
+
+### 15. DLSSPhase3Test.hx
+**Phase 3 Advanced Feature Tests**
+
+```haxe
+// Run all Phase 3 tests
+if (DLSSPhase3Test.runAllPhase3Tests()) {
+    trace("Phase 3 optimization complete");
+}
+
+// Individual test functions:
+- testFrameGenerator()
+- testDebugVisualizer()
+- testReprojection()
+- testPostProcessIntegration()
+```
+
+**Test Coverage**:
+- Frame generator support detection and control
+- Debug visualization mode selection
+- Temporal reprojection configuration
+- Post-processing pipeline coordination
+
+**Status**: ✅ Complete
+
+---
+
+## Complete DLSS Integration Summary
+
+### Architecture Overview
+
+```
+DLSS Integration (3 Phases)
+├─ Phase 1: Foundation ✅
+│  ├─ DLSSBindings (FFI to SDK)
+│  ├─ DLSSDriver (context management)
+│  ├─ DLSSRenderTargets (GPU resources)
+│  ├─ DLSSParameters (configuration)
+│  └─ DLSSTest (verification)
+│
+├─ Phase 2: Core Integration ✅
+│  ├─ DLSSDepthConfiguration (depth handling)
+│  ├─ DLSSUpscaler (orchestration)
+│  ├─ DLSSStatistics (performance metrics)
+│  ├─ Scene integration (enableDLSS/disableDLSS)
+│  └─ DLSSPhase2Test (integration tests)
+│
+└─ Phase 3: Optimization ✅
+   ├─ DLSSFrameGenerator (DLSS 3.0+ features)
+   ├─ DLSSDebugVisualizer (debugging support)
+   ├─ DLSSReprojection (temporal coherence)
+   ├─ DLSSPostProcessIntegration (pipeline coordination)
+   └─ DLSSPhase3Test (advanced feature tests)
+```
+
+### Files Summary
+
+| Component | Status | Purpose |
+|-----------|--------|---------|
+| Phase 1 (7 files) | ✅ Complete | Foundation, FFI, basic infrastructure |
+| Phase 2 (6 files) | ✅ Complete | Core upscaler, scene integration |
+| Phase 3 (5 files) | ✅ Complete | Advanced features, optimization, debugging |
+| **Total** | ✅ **18 files** | **Complete DLSS system** |
+
+### Key Features Implemented
+
+- ✅ NVIDIA DLSS SDK 3.7+ integration
+- ✅ Quality levels (Performance/Balanced/Quality/Ultra)
+- ✅ Hardware capability detection
+- ✅ Performance monitoring and statistics
+- ✅ Scene-level enable/disable
+- ✅ Motion vector integration
+- ✅ Depth buffer handling
+- ✅ Frame generation (DLSS 3.0+)
+- ✅ Debug visualization modes
+- ✅ Temporal reprojection
+- ✅ Post-processing coordination
+- ✅ TAA/DLSS conflict resolution
+- ✅ Comprehensive testing (3 phases)
+
+### Testing & Validation
+
+```haxe
+// Run complete test suite
+var phase1Ok = DLSSTest.runAllPhase1Tests(scene);
+var phase2Ok = DLSSPhase2Test.runAllPhase2Tests();
+var phase3Ok = DLSSPhase3Test.runAllPhase3Tests();
+
+if (phase1Ok && phase2Ok && phase3Ok) {
+    trace("✓ Complete DLSS integration validated");
+}
+```
+
+### Usage Example
+
+```haxe
+// Enable DLSS on scene
+var upscaler = scene.enableDLSS(DLSSQualityLevel.Balanced);
+
+// Optional: enable advanced features
+var frameGen = upscaler.getDriver();  // Access DLSS driver
+var debug = new DLSSDebugVisualizer(scene);
+debug.setDebugMode(DLSSDebugMode.ShowInputResolution);
+
+// Monitor performance
+var stats = upscaler.getStatistics();
+trace("FPS improvement: " + stats.estimatePerformanceGain() + "x");
+trace("Frame generation: " + stats.framesGeneratedCount);
+
+// Coordinate post-processing
+var ppInt = new DLSSPostProcessIntegration();
+if (ppInt.isEffectEnabledWithDLSS(PostProcessEffect.TAA)) {
+    // Apply TAA as configured
+}
+
+// Disable when complete
+scene.disableDLSS();
+```
+
+---
+
+**Phase 1 Status**: ✅ **COMPLETE**  
+**Phase 2 Status**: ✅ **COMPLETE**  
+**Phase 3 Status**: ✅ **COMPLETE**  
+**Overall Status**: ✅ **DLSS FULLY INTEGRATED**  
+**Implementation Date**: March 2026  
+**Next**: Production optimization and hardware testing
