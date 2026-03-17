@@ -61,6 +61,9 @@ import com.babylonhx.utils.typedarray.Int16Array;
 import com.babylonhx.utils.typedarray.ArrayBufferView;
 import com.babylonhx.utils.typedarray.ArrayBuffer;
 
+import com.babylonhx.engine.graphics.IGraphicsBackend;
+import com.babylonhx.engine.GraphicsBackendFactory;
+
 import haxe.ds.Vector;
 
 
@@ -278,6 +281,14 @@ import openfl.display.OpenGLView;
 	private var _renderingCanvas:Dynamic;
 	private var _windowIsBackground:Bool = false;
 	private var _webGLVersion:Float = 1.0;
+	
+	// Graphics Backend - Abstraction Layer for Multi-Backend Support
+	private var _graphicsBackend:com.babylonhx.engine.graphics.IGraphicsBackend;
+	
+	public var graphicsBackend(get, null):com.babylonhx.engine.graphics.IGraphicsBackend;
+	private function get_graphicsBackend():com.babylonhx.engine.graphics.IGraphicsBackend {
+		return this._graphicsBackend;
+	}
 	
 	public var webGLVersion(get, never):Float;
 	private function get_webGLVersion():Float {
@@ -566,6 +577,9 @@ import openfl.display.OpenGLView;
 		};
 		#end
 		
+		// Initialize Graphics Backend (Multi-backend support)
+		this._initializeGraphicsBackend(canvas, options);
+		
 		// Viewport
 		this._hardwareScalingLevel = 1;
 		this.resize();
@@ -841,6 +855,21 @@ import openfl.display.OpenGLView;
 		var msg:String = "BabylonHx - Cross-Platform 3D Engine | " + Date.now().getFullYear() + " | www.babylonhx.com";
 		msg +=  " | GL version: " + gl.getParameter(GL.VERSION) + " | GL vendor: " + _glVendor + " | GL renderer: " + _glVendor; 
 		trace(msg);
+	}
+	
+	/**
+	 * Initialize the graphics backend (WebGL, Vulkan, etc.)
+	 * @private
+	 */
+	private function _initializeGraphicsBackend(canvas:Dynamic, options:Dynamic):Void {
+		try {
+			this._graphicsBackend = GraphicsBackendFactory.createBackend(canvas, options);
+			trace("[Engine] Graphics backend initialized successfully");
+		} catch (e:Dynamic) {
+			trace("[Engine] Failed to initialize graphics backend: " + e);
+			// Graphics backend is optional for now - Engine continues to work with direct GL calls
+			this._graphicsBackend = null;
+		}
 	}
 	
 	private function _rebuildInternalTextures() {
