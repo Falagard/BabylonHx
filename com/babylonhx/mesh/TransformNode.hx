@@ -60,6 +60,10 @@ class TransformNode extends Node {
 	private var _postMultiplyPivotMatrix:Bool = false;        
 	
 	private var _isWorldMatrixFrozen:Bool = false;
+	
+	// Motion vector tracking - stores the world matrix from the previous frame
+	public var _previousWorldMatrix:Matrix = Matrix.Zero();
+	public var _hasPreviousWorldMatrix:Bool = false;
 
 	/**
 	* An event triggered after the world matrix is updated
@@ -128,6 +132,26 @@ class TransformNode extends Node {
 			this.computeWorldMatrix();
 		}
 		return this._worldMatrix;
+	}
+	
+	/**
+	 * Stores the current world matrix as the previous world matrix for motion vector calculations.
+	 * This should be called once per frame after all transformations are finalized.
+	 */
+	public function updatePreviousWorldMatrix():Void {
+		this._previousWorldMatrix.copyFrom(this._worldMatrix);
+		this._hasPreviousWorldMatrix = true;
+	}
+	
+	/**
+	 * Returns the world matrix from the previous frame (used for motion vectors).
+	 * Returns Matrix.Zero() if no previous matrix is available.
+	 */
+	public function getPreviousWorldMatrix():Matrix {
+		if (this._hasPreviousWorldMatrix) {
+			return this._previousWorldMatrix;
+		}
+		return Matrix.Zero();
 	}
 	
 	/**
@@ -865,6 +889,10 @@ class TransformNode extends Node {
 		if (this._postMultiplyPivotMatrix) {
 			this._worldMatrix.multiplyToRef(this._pivotMatrixInverse, this._worldMatrix);
 		}
+		
+		// Store current world matrix as previous for motion vector calculations
+		// This is called here so the previous matrix reflects the state BEFORE this frame's animations
+		this.updatePreviousWorldMatrix();
 		
 		// Normal matrix
 		if (this.scaling.isNonUniform) {

@@ -302,6 +302,9 @@ typedef DepthSortedFacet = {
 	public var isBlocker:Bool = false;
 	public var enablePointerMoveEvents:Bool = false;
 	
+	// Motion vector rendering: set to false to exclude this mesh from motion vector pass
+	public var renderMotionVectors:Bool = true;
+	
 	// BHX
 	private var _renderingGroupId:Int = 0;
 	public var renderingGroupId(get, set):Int;

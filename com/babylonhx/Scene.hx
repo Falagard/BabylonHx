@@ -77,6 +77,7 @@ import com.babylonhx.rendering.GeometryBufferRenderer;
 import com.babylonhx.rendering.OutlineRenderer;
 import com.babylonhx.rendering.EdgesRenderer;
 import com.babylonhx.rendering.RenderingManager;
+import com.babylonhx.rendering.MotionVectorRenderer;
 import com.babylonhx.sprites.SpriteManager;
 import com.babylonhx.sprites.Sprite;
 import com.babylonhx.tools.SmartArray;
@@ -958,6 +959,7 @@ import com.babylonhx.audio.*;
 	
 	private var _depthRenderer:Map<String, DepthRenderer> = new Map();
 	private var _geometryBufferRenderer:GeometryBufferRenderer;
+	private var _motionVectorRenderer:MotionVectorRenderer;
 	
 	public var geometryBufferRenderer(get, set):GeometryBufferRenderer;
 	/**
@@ -3940,6 +3942,11 @@ import com.babylonhx.audio.*;
 			this._renderTargets.push(this._geometryBufferRenderer.getGBuffer());
 		}
 		
+		// Motion Vector Renderer
+		if (this._motionVectorRenderer != null) {
+			this._motionVectorRenderer.render();
+		}
+		
 		// RenderPipeline
 		if (this._postProcessRenderPipelineManager != null) {
 			this._postProcessRenderPipelineManager.update();
@@ -4050,6 +4057,38 @@ import com.babylonhx.audio.*;
 		this._geometryBufferRenderer = null;
 	}
 	
+	/**
+	 * Enable motion vector rendering for the scene
+	 * Motion vectors are used for temporal effects like motion blur and temporal anti-aliasing
+	 */
+	public function enableMotionVectorRenderer():MotionVectorRenderer {
+		if (this._motionVectorRenderer != null) {
+			return this._motionVectorRenderer;
+		}
+		
+		this._motionVectorRenderer = new MotionVectorRenderer(this);
+		return this._motionVectorRenderer;
+	}
+	
+	/**
+	 * Disable motion vector rendering
+	 */
+	public function disableMotionVectorRenderer() {
+		if (this._motionVectorRenderer == null) {
+			return;
+		}
+		
+		this._motionVectorRenderer.dispose();
+		this._motionVectorRenderer = null;
+	}
+	
+	/**
+	 * Get the current motion vector renderer (or null if not enabled)
+	 */
+	public function getMotionVectorRenderer():MotionVectorRenderer {
+		return this._motionVectorRenderer;
+	}
+	
 	public function freezeMaterials() {
 		for (i in 0...this.materials.length) {
 			this.materials[i].freeze();
@@ -4075,6 +4114,10 @@ import com.babylonhx.audio.*;
 		
 		for (key in this._depthRenderer.keys()) {
 			this._depthRenderer[key].dispose();
+		}
+		
+		if (this._motionVectorRenderer != null) {
+			this._motionVectorRenderer.dispose();
 		}
 		
 		// Smart arrays            
