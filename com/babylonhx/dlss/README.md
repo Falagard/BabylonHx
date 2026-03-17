@@ -6,6 +6,23 @@ This directory contains the complete DLSS integration for BabylonHx. The impleme
 - **Phase 2**: Core Integration (upscaler, scene integration, depth handling) ✅ Complete
 - **Phase 3**: Optimization (advanced features, debugging) - Planned
 
+### Demo
+
+A complete interactive demo is available in [samples/DLSSDemo.hx](../../src/samples/DLSSDemo.hx).
+
+**Features**:
+- Real-time quality level switching (Performance/Balanced/Quality/Ultra)
+- Performance statistics display
+- Debug visualization modes (input resolution, motion vectors, reconstruction mask, etc.)
+- Dynamic scene with multiple animated objects for temporal coherence testing
+- Smooth camera movement for motion vector validation
+
+**Controls**:
+- `1-4`: Switch quality modes
+- `5`: Toggle DLSS on/off
+- `D`: Cycle debug visualization modes
+- Arrow keys + Mouse: Move camera
+
 ### Quick Start
 
 ```haxe
