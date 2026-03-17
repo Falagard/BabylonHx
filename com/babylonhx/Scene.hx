@@ -78,6 +78,7 @@ import com.babylonhx.rendering.OutlineRenderer;
 import com.babylonhx.rendering.EdgesRenderer;
 import com.babylonhx.rendering.RenderingManager;
 import com.babylonhx.rendering.MotionVectorRenderer;
+import com.babylonhx.postprocess.DLSSUpscaler;
 import com.babylonhx.sprites.SpriteManager;
 import com.babylonhx.sprites.Sprite;
 import com.babylonhx.tools.SmartArray;
@@ -960,6 +961,8 @@ import com.babylonhx.audio.*;
 	private var _depthRenderer:Map<String, DepthRenderer> = new Map();
 	private var _geometryBufferRenderer:GeometryBufferRenderer;
 	private var _motionVectorRenderer:MotionVectorRenderer;
+	private var _dlssUpscaler:DLSSUpscaler;
+	private var _dlssEnabled:Bool = false;
 	
 	public var geometryBufferRenderer(get, set):GeometryBufferRenderer;
 	/**
@@ -4068,6 +4071,53 @@ import com.babylonhx.audio.*;
 		
 		this._motionVectorRenderer = new MotionVectorRenderer(this);
 		return this._motionVectorRenderer;
+	}
+	
+	/**
+	 * Enable DLSS upscaling for the scene
+	 * DLSS provides AI-powered super resolution with temporal coherence
+	 * @param qualityLevel DLSS quality level (Performance/Balanced/Quality/Ultra)
+	 * @return The DLSS upscaler instance
+	 */
+	public function enableDLSS(qualityLevel:DLSSQualityLevel = null):DLSSUpscaler {
+		if (this._dlssUpscaler != null) {
+			if (qualityLevel != null) {
+				this._dlssUpscaler.setQualityLevel(qualityLevel);
+			}
+			return this._dlssUpscaler;
+		}
+		
+		// Create DLSS upscaler with current viewport resolution
+		var viewportWidth = this._engine.getRenderWidth();
+		var viewportHeight = this._engine.getRenderHeight();
+		var targetResolution = new Vector2(viewportWidth, viewportHeight);
+		
+		this._dlssUpscaler = new DLSSUpscaler(this, targetResolution);
+		if (qualityLevel != null) {
+			this._dlssUpscaler.setQualityLevel(qualityLevel);
+		}
+		
+		this._dlssEnabled = true;
+		return this._dlssUpscaler;
+	}
+	
+	/**
+	 * Disable DLSS upscaling
+	 */
+	public function disableDLSS():Void {
+		if (this._dlssUpscaler != null) {
+			this._dlssUpscaler.dispose();
+			this._dlssUpscaler = null;
+		}
+		this._dlssEnabled = false;
+	}
+	
+	/**
+	 * Get the DLSS upscaler instance
+	 * @return The upscaler, or null if DLSS is not enabled
+	 */
+	public function getDLSSUpscaler():DLSSUpscaler {
+		return this._dlssUpscaler;
 	}
 	
 	/**
