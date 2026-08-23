@@ -69,7 +69,7 @@ import com.babylonhx.audio.AudioEngine;
 import js.Browser;
 #end
 
-#if openfl
+#if (openfl && openfl_legacy)
 import openfl.display.OpenGLView;
 #end
 
@@ -382,7 +382,7 @@ import openfl.display.OpenGLView;
 	public var _canvasClientRect:Dynamic = { x: 0, y: 0, width: 960, height: 640 };
 
 	private var _workingCanvas:Image;
-	#if openfl
+	#if (openfl && openfl_legacy)
 	public var _workingContext:OpenGLView;
 	#end
 	
@@ -546,7 +546,7 @@ import openfl.display.OpenGLView;
 		
 		//trace(this._webGLVersion);
 		
-		#if openfl
+		#if (openfl && openfl_legacy)
 		this._workingContext = new OpenGLView();
 		this._workingContext.render = this._renderLoop;
 		canvas.addChild(this._workingContext);

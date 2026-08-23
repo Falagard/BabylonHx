@@ -2,10 +2,8 @@ package com.babylonhx.states;
 
 import com.babylonhx.utils.GL;
 
-#if (lime_webgl)
-typedef WebGL2Context = lime.graphics.WebGL2RenderContext
-#elseif(lime_opengles)
-typedef WebGL2Context = lime.graphics.OpenGLES3RenderContext
+#if (lime_webgl || lime_opengl || lime_opengles)
+typedef WebGL2Context = lime.graphics.WebGL2RenderContext;
 #elseif (js || purejs)
 typedef WebGL2Context = js.html.webgl.RenderingContext;
 #end
