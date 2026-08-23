@@ -1229,17 +1229,6 @@ package com.babylonhx.utils;
 	typedef GLVertexArrayObject = lime.graphics.opengl.GLVertexArrayObject;
 	typedef GLQuery				= lime.graphics.opengl.GLQuery;
 	
-#elseif openfl
-
-    typedef GL                  = openfl.gl.GL;
-    typedef GLBuffer            = openfl.gl.GLBuffer;
-    typedef GLFramebuffer       = openfl.gl.GLFramebuffer;
-    typedef GLProgram           = openfl.gl.GLProgram;
-    typedef GLRenderbuffer      = openfl.gl.GLRenderbuffer;
-    typedef GLShader            = openfl.gl.GLShader;
-    typedef GLTexture           = openfl.gl.GLTexture;
-    typedef GLUniformLocation   = openfl.gl.GLUniformLocation;	
-	
 #elseif nme
 
     typedef GL                  = nme.gl.GL;

@@ -1,136 +1,99 @@
 package;
 
-import openfl.display.BitmapData;
-import openfl.geom.Rectangle;
-import openfl.display.Bitmap;
-import openfl.Assets;
-import openfl.display.Stage;
+import lime.ui.KeyCode;
+import lime.ui.KeyModifier;
+
+import openfl.display.OpenGLRenderer;
 import openfl.display.Sprite;
+import openfl.display3D.Context3D;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
-import openfl.events.KeyboardEvent;
+import openfl.events.RenderEvent;
 import openfl.events.TouchEvent;
 import openfl.ui.Multitouch;
 import openfl.ui.MultitouchInputMode;
-import openfl.display.OpenGLView;
-import openfl.Lib;
-import openfl.display.FPS;
-import openfl.text.Font;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
 
 import com.babylonhx.engine.Engine;
-import com.babylonhx.Scene;
-import com.babylonhx.math.Vector3;
-import com.babylonhx.utils.Keycodes;
 import com.babylonhx.events.PointerEvent;
 import com.babylonhx.events.PointerEventTypes;
-import com.babylonhx.cameras.FreeCamera;
-import com.babylonhx.cameras.Camera;
-import com.babylonhx.bones.Skeleton;
-import com.babylonhx.materials.StandardMaterial;
-import com.babylonhx.materials.textures.Texture;
-import com.babylonhx.mesh.Mesh;
-import com.babylonhx.mesh.AbstractMesh;
-import com.babylonhx.math.Color3;
-import com.babylonhx.utils.Image;
-import com.babylonhx.particles.ParticleSystem;
-import com.babylonhx.loading.SceneLoader;
-import com.babylonhx.loading.plugins.BabylonFileLoader;
-import com.babylonhx.postprocess.PassPostProcess;
-
-//import com.babylonhx.materials.textures.procedurals.TextureBuilder;
-
-import com.babylonhx.postprocess.renderpipeline.pipelines.StandardRenderingPipeline;
-import com.babylonhx.postprocess.renderpipeline.pipelines.DefaultRenderingPipeline;
-import com.babylonhx.postprocess.renderpipeline.pipelines.LensRenderingPipeline;
-import com.babylonhx.postprocess.renderpipeline.pipelines.SSAO2RenderingPipeline;
-import com.babylonhx.postprocess.renderpipeline.pipelines.SSAORenderingPipeline;
+import com.babylonhx.Scene;
 
 /**
  * ...
  * @author Krtolica Vujadin
  */
 
+// __flushGL is private, but it is the only way to tell OpenFL that the GL state
+// it has cached no longer matches the driver after BabylonHx has drawn.
+@:access(openfl.display3D.Context3D)
 class MainOpenFL extends Sprite {
 	
 	var scene:Scene;
 	var engine:Engine;
 	
+	var context3D:Context3D;
 	var pointerEvent:PointerEvent;
 	
 	
 	public function new() {
 		super();
 		
-		//stage.stage3Ds[0].addEventListener (Event.CONTEXT3D_CREATE, stage3D_onContext3DCreate);
-		stage.stage3Ds[0].requestContext3D ();
+		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+	}
+	
+	function onAddedToStage(_) {
+		removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		
-		switch (stage.window.renderer.context) {			
-			case OPENGL (gl):
-				engine = new Engine(stage, gl, false);	
-				scene = new Scene(engine);
-				
-				pointerEvent = new PointerEvent();
-				
-			default:
-				//
-		}
+		pointerEvent = new PointerEvent();
 		
-		engine.width = stage.stageWidth;
-		engine.height = stage.stageHeight;
+		// openfl.display.OpenGLView was removed in OpenFL 6. Listening for
+		// RENDER_OPENGL is the supported way to issue raw GL calls in the middle
+		// of OpenFL's frame, and it keeps BabylonHx ordered in the display list.
+		addEventListener(RenderEvent.RENDER_OPENGL, onRenderOpenGL);
 		
-		stage.addEventListener(Event.RESIZE, resize);
+		stage.addEventListener(Event.RESIZE, onResize);
 		
-		//#if desktop
 		stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
-		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-		/*#elseif mobile
+		
+		// Key events come from the Lime window instead of KeyboardEvent because
+		// BabylonHx compares against com.babylonhx.utils.Keycodes, which uses SDL
+		// values. KeyboardEvent.keyCode has already been mapped to Flash codes.
+		stage.window.onKeyDown.add(onKeyDown);
+		stage.window.onKeyUp.add(onKeyUp);
+		
+		#if mobile
 		Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 		stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchStart);
 		stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
 		stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
-		#end*/
+		#end
+	}
+	
+	function onRenderOpenGL(e:RenderEvent) {
+		if (engine == null) {
+			var renderer:OpenGLRenderer = cast e.renderer;
+			
+			context3D = stage.context3D;
+			
+			engine = new Engine(stage, renderer.gl, true);
+			engine.width = stage.stageWidth;
+			engine.height = stage.stageHeight;
+			
+			scene = new Scene(engine);
+			
+			createDemo();
+		}
 		
-		createDemo();
+		engine._renderLoop();
 		
-		var spr = new Sprite();
-		var bmp = new Bitmap(Assets.getBitmapData("assets/img/cloud.png"));
-		spr.addChild(bmp);
-		stage.addChild(spr);
-		spr.addEventListener(MouseEvent.CLICK, function(_) {
-			spr.x += 5;
-		});
-		
-		var fps = new openfl.display.FPS(10, 10);
-		stage.addChild(fps);
-		
-		var format = new TextFormat ("Katamotz Ikasi", 30, 0x7A0026);
-		var textField = new TextField ();
-		
-		textField.defaultTextFormat = format;
-		textField.embedFonts = true;
-		textField.selectable = false;
-		
-		textField.x = 250;
-		textField.y = 250;
-		textField.width = 200;
-		
-		textField.text = "Hello World";
-		
-		stage.addChild(textField);	
-		
-		var gl = @:privateAccess engine.gl;
-		var pass = new PassPostProcess("openfl_pass", 1.0, scene.activeCamera);
-		pass.onAfterRenderObservable.add(function(_, _) {
-			gl.enable(gl.BLEND);
-		});
-		
-		//stage._customRender = scene.render;
+		// OpenFL flushes its GL state before dispatching this event but only
+		// restores the viewport afterwards, so hand it back a state it can trust.
+		// Build with -D openfl_disable_context_cache or these calls are skipped as
+		// redundant and the 2D display list renders with BabylonHx's state.
+		context3D.__flushGL();
 	}
 	
 	function createDemo() {
@@ -142,7 +105,7 @@ class MainOpenFL extends Sprite {
 		//new samples.DashedLinesMesh(scene);
 		//new samples.RotationAndScaling(scene);
 		//new samples.Materials(scene);
-		//new samples.Lights(scene);
+		new samples.Lights(scene);
 		//new samples.BumpMap(scene);
 		//new samples.Bump2(scene);
 		//new samples.Animations(scene);
@@ -290,7 +253,6 @@ class MainOpenFL extends Sprite {
 		//new samples.MouseFollow(scene);
 		//new samples.BoneLookControllerDemo(scene);
 		//new samples.BoneIKControllerDemo(scene);
-		//new samples.proceduralcity.City(scene);
 		//new samples.Minimap(scene);
 		//new samples.RayRender(scene);
 		//new samples.ShaderMaterialTest(scene);
@@ -327,60 +289,67 @@ class MainOpenFL extends Sprite {
 		//new samples.PPNightVision(scene);
 		//new samples.PPVibrance(scene);
 		//new samples.PPWatercolor(scene);
-		new samples.PPOldVideo(scene);
+		//new samples.PPOldVideo(scene);
 	}
 	
-	function resize(e) {
+	function onResize(_) {
+		if (engine == null) {
+			return;
+		}
+		
 		engine.width = stage.stageWidth;
 		engine.height = stage.stageHeight;
+		
+		for (f in engine.onResize) {
+			f();
+		}
+		
+		engine.resize();
 	}
 	
-	function onKeyDown(e:KeyboardEvent) {
-		for(f in engine.keyDown) {
-			f(e.charCode);
-		}		
-	}	
-	
-	function onKeyUp(e:KeyboardEvent) {
-		for(f in engine.keyUp) {
-			f(e.charCode);
+	function onKeyDown(keyCode:KeyCode, modifier:KeyModifier) {
+		if (engine == null) {
+			return;
 		}
-	}	
+		
+		for (f in engine.keyDown) {
+			f(keyCode);
+		}
+	}
+	
+	function onKeyUp(keyCode:KeyCode, modifier:KeyModifier) {
+		if (engine == null) {
+			return;
+		}
+		
+		for (f in engine.keyUp) {
+			f(keyCode);
+		}
+	}
 	
 	function onMouseDown(e:MouseEvent) {
-		/*for(f in engine.mouseDown) {
-			f(e.localX, e.localY, 0);
-		}*/
+		if (engine == null) {
+			return;
+		}
+		
 		for (f in engine.mouseDown) {
-			pointerEvent.x = e.localX;
-			pointerEvent.y = e.localY;
+			pointerEvent.x = e.stageX;
+			pointerEvent.y = e.stageY;
 			pointerEvent.button = 0;
 			pointerEvent.type = PointerEventTypes.POINTERDOWN;
 			pointerEvent.pointerType = "mouse";
 			f(pointerEvent);
 		}
-	}	
-	
-	function onMouseMove(e:MouseEvent) {
-		/*for(f in engine.mouseMove) {
-			f(e.localX, e.localY);
-		}*/
-		for(f in engine.mouseMove) {
-			pointerEvent.x = e.localX;
-			pointerEvent.y = e.localY;
-			pointerEvent.type = PointerEventTypes.POINTERMOVE;
-			pointerEvent.pointerType = "mouse";
-			f(pointerEvent);
-		}
-	}	
+	}
 	
 	function onMouseUp(e:MouseEvent) {
-		/*for(f in engine.mouseUp) {
-			f(e.localX, e.localY, 0);
-		}*/
-		for(f in engine.mouseUp) {
-			pointerEvent.x = e.localX;
-			pointerEvent.y = e.localY;
+		if (engine == null) {
+			return;
+		}
+		
+		for (f in engine.mouseUp) {
+			pointerEvent.x = e.stageX;
+			pointerEvent.y = e.stageY;
 			pointerEvent.button = 0;
 			pointerEvent.type = PointerEventTypes.POINTERUP;
 			pointerEvent.pointerType = "mouse";
@@ -388,28 +357,73 @@ class MainOpenFL extends Sprite {
 		}
 	}
 	
+	function onMouseMove(e:MouseEvent) {
+		if (engine == null) {
+			return;
+		}
+		
+		for (f in engine.mouseMove) {
+			pointerEvent.x = e.stageX;
+			pointerEvent.y = e.stageY;
+			pointerEvent.type = PointerEventTypes.POINTERMOVE;
+			pointerEvent.pointerType = "mouse";
+			f(pointerEvent);
+		}
+	}
+	
 	function onMouseWheel(e:MouseEvent) {
+		if (engine == null) {
+			return;
+		}
+		
 		for (f in engine.mouseWheel) {
 			f(e.delta);
 		}
 	}
 	
 	function onTouchStart(e:TouchEvent) {
-		/*for(f in engine.touchDown) {
-			f(e.localX, e.localY, e.touchPointID);
-		}*/
+		if (engine == null) {
+			return;
+		}
+		
+		for (f in engine.touchDown) {
+			pointerEvent.x = e.stageX;
+			pointerEvent.y = e.stageY;
+			pointerEvent.button = e.touchPointID;
+			pointerEvent.type = PointerEventTypes.POINTERDOWN;
+			pointerEvent.pointerType = "touch";
+			f(pointerEvent);
+		}
 	}
 	
-	function onTouchEnd(e:TouchEvent) {		
-		/*for(f in engine.touchUp) {
-			f(e.localX, e.localY, e.touchPointID);
-		}*/
-	}	
+	function onTouchEnd(e:TouchEvent) {
+		if (engine == null) {
+			return;
+		}
+		
+		for (f in engine.touchUp) {
+			pointerEvent.x = e.stageX;
+			pointerEvent.y = e.stageY;
+			pointerEvent.button = e.touchPointID;
+			pointerEvent.type = PointerEventTypes.POINTERUP;
+			pointerEvent.pointerType = "touch";
+			f(pointerEvent);
+		}
+	}
 	
 	function onTouchMove(e:TouchEvent) {
-		/*for(f in engine.touchMove) {
-			f(e.localX, e.localY);
-		}*/		
+		if (engine == null) {
+			return;
+		}
+		
+		for (f in engine.touchMove) {
+			pointerEvent.x = e.stageX;
+			pointerEvent.y = e.stageY;
+			pointerEvent.button = e.touchPointID;
+			pointerEvent.type = PointerEventTypes.POINTERMOVE;
+			pointerEvent.pointerType = "touch";
+			f(pointerEvent);
+		}
 	}
 	
 }

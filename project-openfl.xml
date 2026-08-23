@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="BabylonHx_OpenFL" package="com.babylonhx" version="1.0.0" company="Krtolica Vujadin" />
+	<app main="MainOpenFL" file="BabylonHx_OpenFL" path="bin_openfl" />
+	
+	<window require-shaders="true" hardware="true" depth-buffer="true" stencil-buffer="true" antialiasing="0" fps="60" />
+	
+	<source path="src" />
+
+	<haxelib name="openfl" />
+	<!-- <haxelib name="actuate" /> -->
+
+	<!-- BabylonHx issues GL calls directly, so the state OpenFL has cached is stale
+	     by the time the display list is drawn. This makes Context3D re-apply its
+	     state instead of skipping it as redundant, at some cost to 2D throughput. -->
+	<haxedef name="openfl_disable_context_cache" />
+			
+	<assets path="assets" exclude="*.svg" />
+	<icon path="assets/lime.svg" />
+	
+</project>
