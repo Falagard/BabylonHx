@@ -57,6 +57,36 @@ You can build for windows/android by changing build target:
 `haxelib run lime test project.xml windows`
 `haxelib run lime test project.xml android`
 
+# Building with OpenFL
+
+BabylonHx can also run inside an OpenFL display list, which gives you OpenFL's 2D
+API - sprites, TextField, embedded fonts, UI eventing - on top of the 3D scene.
+OpenFL is built on Lime, so there is nothing extra to install beyond:
+
+`haxelib install openfl`
+
+`haxelib run openfl setup`
+
+Then build with the OpenFL project file:
+
+`haxelib run openfl test project-openfl.xml html5`
+
+`haxelib run openfl test project-openfl.xml windows`
+
+Scenes are selected in the MainOpenFL.hx createDemo function, the same way
+MainLime.hx does it.
+
+MainOpenFL draws from a RenderEvent.RENDER_OPENGL listener, so BabylonHx is
+ordered in the display list like any other DisplayObject and anything added to
+the stage after it is drawn on top. Because BabylonHx issues GL calls directly,
+project-openfl.xml sets `openfl_disable_context_cache` - without it OpenFL skips
+state changes it believes are already applied and the 2D content renders with
+whatever state BabylonHx left behind.
+
+Note that BabylonHx clears the framebuffer by default, so anything drawn *below*
+it in the display list will be erased. Set `scene.autoClear = false` if you want
+to render OpenFL content behind the 3D scene.
+
 If you wish, you can also instal NME and Snow:
 `haxelib install nme`
 `haxelib git snow https://github.com/underscorediscovery/snow.git`
