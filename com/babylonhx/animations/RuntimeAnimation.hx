@@ -297,7 +297,7 @@ class RuntimeAnimation {
 			}
 		}
 		
-		#if(lime_native)
+		#if(babylonhx_legacy_lime_native)
 		if (Reflect.isFunction(this._target.markAsDirty)) {
 			this._target.markAsDirty(this._animation.targetProperty);
 		}

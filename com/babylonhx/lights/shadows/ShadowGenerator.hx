@@ -715,7 +715,7 @@ import haxe.Timer;
         }
 		
         if (this.useBlurExponentialShadowMap || this.useBlurCloseExponentialShadowMap) {
-			#if(lime_native)
+			#if(babylonhx_legacy_lime_native)
 			if (this._blurPostProcesses != null) {
                 this._initializeBlurRTTAndPostProcesses();
             }

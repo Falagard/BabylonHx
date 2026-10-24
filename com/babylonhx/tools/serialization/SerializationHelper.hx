@@ -261,8 +261,8 @@ class SerializationHelper {
 				}
 			}
 
-			#if(lime_native)
-			//CL -added temporarily to fix crash because parent is always null below in lime_native 
+			#if(babylonhx_legacy_lime_native)
+			//CL -added temporarily to fix crash because parent is always null below in babylonhx_legacy_lime_native 
 			//I believe this is supposed to walk through the javascript object hierarchy and use a Map of strings to prototype objects but this would never work in native
 			break;
 			#end

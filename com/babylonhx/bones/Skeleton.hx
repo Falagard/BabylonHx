@@ -486,7 +486,7 @@ import haxe.ds.Vector;
 	}
 	
 	public static function Parse(parsedSkeleton:Dynamic, scene:Scene):Skeleton {
-		#if(lime_native)
+		#if(babylonhx_legacy_lime_native)
 		var skeleton = new Skeleton(parsedSkeleton.name, Std.string(parsedSkeleton.id), scene);
 		#else
 		var skeleton = new Skeleton(parsedSkeleton.name, parsedSkeleton.id, scene);

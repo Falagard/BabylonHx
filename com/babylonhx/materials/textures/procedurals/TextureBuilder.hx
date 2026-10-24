@@ -941,7 +941,7 @@ class TextureBuilder {
 					b = 255;
 				}
 				
-				#if(lime_native)
+				#if(babylonhx_legacy_lime_native)
 				this.layers[dest][x + y * this.layerSizeX].r = Std.int(r);
 				this.layers[dest][x + y * this.layerSizeX].g = Std.int(g);
 				this.layers[dest][x + y * this.layerSizeX].b = Std.int(b);

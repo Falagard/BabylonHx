@@ -360,7 +360,7 @@ typedef PostProcessOption = {
 		var requiredWidth = sourceTexture != null ? sourceTexture.width : this._engine.getRenderWidth();
 		var requiredHeight = sourceTexture != null ? sourceTexture.height : this._engine.getRenderHeight();
 		
-		#if(lime_native)
+		#if(babylonhx_legacy_lime_native)
 		var desiredWidth = Reflect.hasField(this._options,"width") && this._options.width > 0 ? this._options.width : requiredWidth;
 		var desiredHeight = Reflect.hasField(this._options,"height") && this._options.height > 0 ? this._options.height : requiredHeight;
 		#else
@@ -379,7 +379,7 @@ typedef PostProcessOption = {
 			}
 				
 			if (this.renderTargetSamplingMode == Texture.TRILINEAR_SAMPLINGMODE || this.alwaysForcePOT) {
-				#if(lime_native)
+				#if(babylonhx_legacy_lime_native)
 				if (Reflect.hasField(this._options, "width") && this._options.width == 0) {
 				#else
 				if (this._options.width == null) {
@@ -387,7 +387,7 @@ typedef PostProcessOption = {
 					desiredWidth = this._engine.needPOTTextures ? com.babylonhx.math.Tools.GetExponentOfTwo(desiredWidth, maxSize, this.scaleMode) : desiredWidth;
 				}
 				
-				#if(lime_native)
+				#if(babylonhx_legacy_lime_native)
 				if (Reflect.hasField(this._options, "height") && this._options.height == 0) {
 				#else
 				if (this._options.height == null) {

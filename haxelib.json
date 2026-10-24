@@ -1,0 +1,10 @@
+{
+  "name": "babylonhx",
+  "url": "https://github.com/Falagard/BabylonHx",
+  "license": "Apache",
+  "description": "BabylonHx (Falagard fork) for FootNote",
+  "version": "3.2.0-footnote.1",
+  "classPath": ".",
+  "releasenote": "lime_native retired, HL JIT colorMask workaround, desktop GLSL 1.20",
+  "contributors": ["Falagard"]
+}
