@@ -278,6 +278,20 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	public var textureMask:Color4 = new Color4(1.0, 1.0, 1.0, 1.0);
 	
 	/**
+	 * FootNote fork extension (not in Babylon.js): multiplies every particle's colour as its vertices are
+	 * written (animate()), on top of the per-particle colour the update computes. Lets an app fade or dim a
+	 * whole system without touching per-particle colour state (which the default update integrates through
+	 * colorStep). (1, 1, 1, 1) leaves the vertex data bit-identical. Takes effect at the next animate().
+	 */
+	public var colorMultiplier:Color4 = new Color4(1.0, 1.0, 1.0, 1.0);
+	
+	/**
+	 * FootNote fork extension (not in Babylon.js): multiplies every particle's size as its vertices are
+	 * written (animate()). 1 leaves the vertex data bit-identical. Takes effect at the next animate().
+	 */
+	public var sizeMultiplier:Float = 1.0;
+	
+	/**
 	 * The particle emitter type defines the emitter used by the particle system.
 	 * It can be for example box, sphere, or cone...
 	 */
@@ -565,12 +579,13 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		this._vertexData[offset] = particle.position.x;
 		this._vertexData[offset + 1] = particle.position.y;
 		this._vertexData[offset + 2] = particle.position.z;
-		this._vertexData[offset + 3] = particle.color.r;
-		this._vertexData[offset + 4] = particle.color.g;
-		this._vertexData[offset + 5] = particle.color.b;
-		this._vertexData[offset + 6] = particle.color.a;
+		var cm = this.colorMultiplier;
+		this._vertexData[offset + 3] = particle.color.r * cm.r;
+		this._vertexData[offset + 4] = particle.color.g * cm.g;
+		this._vertexData[offset + 5] = particle.color.b * cm.b;
+		this._vertexData[offset + 6] = particle.color.a * cm.a;
 		this._vertexData[offset + 7] = particle.angle;
-		this._vertexData[offset + 8] = particle.size;
+		this._vertexData[offset + 8] = particle.size * this.sizeMultiplier;
 		this._vertexData[offset + 9] = offsetX;
 		this._vertexData[offset + 10] = offsetY;
 	}
@@ -597,12 +612,13 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		this._vertexData[offset] = particle.position.x;
 		this._vertexData[offset + 1] = particle.position.y;
 		this._vertexData[offset + 2] = particle.position.z;
-		this._vertexData[offset + 3] = particle.color.r;
-		this._vertexData[offset + 4] = particle.color.g;
-		this._vertexData[offset + 5] = particle.color.b;
-		this._vertexData[offset + 6] = particle.color.a;
+		var cm = this.colorMultiplier;
+		this._vertexData[offset + 3] = particle.color.r * cm.r;
+		this._vertexData[offset + 4] = particle.color.g * cm.g;
+		this._vertexData[offset + 5] = particle.color.b * cm.b;
+		this._vertexData[offset + 6] = particle.color.a * cm.a;
 		this._vertexData[offset + 7] = particle.angle;
-		this._vertexData[offset + 8] = particle.size;
+		this._vertexData[offset + 8] = particle.size * this.sizeMultiplier;
 		this._vertexData[offset + 9] = offsetX;
 		this._vertexData[offset + 10] = offsetY;
 		this._vertexData[offset + 11] = particle.cellIndex;
