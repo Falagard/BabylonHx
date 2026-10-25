@@ -365,7 +365,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	private var _alive:Bool = true;
 	private var _started:Bool = false;
 	private var _stopped:Bool = false;
-	private var _actualFrame:Int = 0;
+	private var _actualFrame:Float = 0;
 	public var _scaledUpdateSpeed:Float;
 	private var _vertexBufferSize:Int = 11;
 	
@@ -757,7 +757,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		this._alive = false;
 		
 		if (!this._stopped) {
-			this._actualFrame += cast this._scaledUpdateSpeed;
+			this._actualFrame += this._scaledUpdateSpeed;
 			
 			if (this.targetStopDuration != 0 && this._actualFrame >= this.targetStopDuration) {
 				this.stop();
