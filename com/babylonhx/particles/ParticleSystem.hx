@@ -442,13 +442,15 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		
 		this.updateFunction = function(particles:Array<Particle>) {
 			var index:Int = 0;
-			while (index < particles.length && index >= 0) {
+			while (index < particles.length) {
 				var particle = particles[index];
 				particle.age += this._scaledUpdateSpeed;
 				
 				if (particle.age >= particle.lifeTime) { // Recycle by swapping with last particle
 					this.recycleParticle(particle);
-					index--;
+					// Babylon.js runs `index--; continue;` in a for loop, whose `index++` cancels it: the particle
+					// swapped into this slot is processed next, at the same index. This while loop has no
+					// increment on `continue`, so the index must stay as it is.
 					continue;
 				}
 				else {
