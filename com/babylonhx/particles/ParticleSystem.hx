@@ -349,7 +349,7 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	private var _capacity:Int;
 	private var _scene:Scene;
 	private var _stockParticles:Array<Particle> = [];
-	private var _newPartsExcess:Int = 0;
+	private var _newPartsExcess:Float = 0;
 	private var _vertexData:Float32Array;
 	private var _vertexBuffer:Buffer;
 	private var _vertexBuffers:Map<String, VertexBuffer> = new Map();
@@ -745,12 +745,13 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		} 
 		else {
 			newParticles = Std.int(this.emitRate * this._scaledUpdateSpeed);
-			this._newPartsExcess += Std.int(this.emitRate * this._scaledUpdateSpeed) - newParticles;
+			this._newPartsExcess += this.emitRate * this._scaledUpdateSpeed - newParticles;
 		}
 		
 		if (this._newPartsExcess > 1.0) {
-			newParticles += this._newPartsExcess;
-			this._newPartsExcess -= this._newPartsExcess;
+			var whole = Std.int(this._newPartsExcess);
+			newParticles += whole;
+			this._newPartsExcess -= whole;
 		}
 		
 		this._alive = false;
