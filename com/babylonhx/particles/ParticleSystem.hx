@@ -505,8 +505,8 @@ import com.babylonhx.utils.typedarray.Float32Array;
 		
 		if (lastParticle != particle) {
 			lastParticle.copyTo(particle);
-			this._stockParticles.push(lastParticle);
 		}
+		this._stockParticles.push(lastParticle);
 	}
 
 	/**
