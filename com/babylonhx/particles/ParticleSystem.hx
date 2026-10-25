@@ -834,38 +834,40 @@ import com.babylonhx.utils.typedarray.Float32Array;
 	 * Renders the particle system in its current state.
 	 * @returns the current number of particles.
 	 */
-	public function render():Int {		
+	public function render():Int {
+		var effect = this._getEffect();
+		
 		// Check
-		if (this.emitter == null || !this._effect.isReady() || this.particleTexture == null || !this.particleTexture.isReady() || this._particles.length == 0) {
+		if (this.emitter == null || effect == null || !effect.isReady() || this.particleTexture == null || !this.particleTexture.isReady() || this._particles.length == 0) {
 			return 0;
 		}
 		
 		// Render
-		this._engine.enableEffect(this._effect);
+		this._engine.enableEffect(effect);
 		this._engine.setState(false);
 		
 		var viewMatrix = this._scene.getViewMatrix();
-		this._effect.setTexture("diffuseSampler", this.particleTexture);
-		this._effect.setMatrix("view", viewMatrix);
-		this._effect.setMatrix("projection", this._scene.getProjectionMatrix());
+		effect.setTexture("diffuseSampler", this.particleTexture);
+		effect.setMatrix("view", viewMatrix);
+		effect.setMatrix("projection", this._scene.getProjectionMatrix());
 		
 		if (this._isAnimationSheetEnabled) {
 			var baseSize = this.particleTexture.getBaseSize();
-			this._effect.setFloat3("particlesInfos", this.spriteCellWidth / baseSize.width, this.spriteCellHeight / baseSize.height, baseSize.width / this.spriteCellWidth);
+			effect.setFloat3("particlesInfos", this.spriteCellWidth / baseSize.width, this.spriteCellHeight / baseSize.height, baseSize.width / this.spriteCellWidth);
 		}
 		
-		this._effect.setFloat4("textureMask", this.textureMask.r, this.textureMask.g, this.textureMask.b, this.textureMask.a);
+		effect.setFloat4("textureMask", this.textureMask.r, this.textureMask.g, this.textureMask.b, this.textureMask.a);
 		
 		if (this._scene.clipPlane != null) {
 			var clipPlane = this._scene.clipPlane;
 			var invView = viewMatrix.clone();
 			invView.invert();
-			this._effect.setMatrix("invView", invView);
-			this._effect.setFloat4("vClipPlane", clipPlane.normal.x, clipPlane.normal.y, clipPlane.normal.z, clipPlane.d);
+			effect.setMatrix("invView", invView);
+			effect.setFloat4("vClipPlane", clipPlane.normal.x, clipPlane.normal.y, clipPlane.normal.z, clipPlane.d);
 		}
 		
 		// VBOs
-		this._engine.bindBuffers(this._vertexBuffers, this._indexBuffer, this._effect);
+		this._engine.bindBuffers(this._vertexBuffers, this._indexBuffer, effect);
 		
 		// Draw order
 		if (this.blendMode == ParticleSystem.BLENDMODE_ONEONE) {
