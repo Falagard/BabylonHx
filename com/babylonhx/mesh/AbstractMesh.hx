@@ -618,7 +618,9 @@ typedef DepthSortedFacet = {
 	}
 
 	public function _resyncLightSources() {
-		this._lightSources.splice(0, this._lightSources.length - 1);
+		// Clear the whole list (upstream Babylon.js). `length - 1` kept the last entry, so a light added after this mesh
+		// existed ended up in the list twice and survived a later includedOnlyMeshes filter (fork fix B1).
+		this._lightSources.splice(0, this._lightSources.length);
 		
 		for (light in this.getScene().lights) {
 			if (!light.isEnabled()) {

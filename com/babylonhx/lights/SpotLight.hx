@@ -72,6 +72,27 @@ import com.babylonhx.mesh.AbstractMesh;
 	 */
 	@serialize()
 	public var exponent:Float;
+
+	private var _softEdge:Bool = false;
+	/**
+	 * Fork extension (B2). When true, StandardMaterial lights this spot with a soft cone edge (a smoothstep over the
+	 * outer quarter of the cone, in cosine) and a windowed inverse-square range falloff
+	 * (clamp(1 - (d/range)^4)^2 / (1 + d^2), so it still reaches zero at `range`), instead of the stock hard cone
+	 * edge and linear `1 - d/range` falloff. False (the default) compiles exactly the stock shader path.
+	 * PBR materials ignore it.
+	 */
+	public var softEdge(get, set):Bool;
+	inline private function get_softEdge():Bool {
+		return this._softEdge;
+	}
+	private function set_softEdge(value:Bool):Bool {
+		if (this._softEdge == value) {
+			return value;
+		}
+		this._softEdge = value;
+		this._markMeshesAsLightDirty();
+		return value;
+	}
 	
 	private var _projectionTextureMatrix:Matrix = Matrix.Zero();
 	

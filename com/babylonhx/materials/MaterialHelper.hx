@@ -316,6 +316,7 @@ class MaterialHelper {
 				
 				defines.lights[lightIndex] = true;				
 				defines.spotlights[lightIndex] = false;
+				defines.spotlightssoft[lightIndex] = false;
 				defines.hemilights[lightIndex] = false;
 				defines.pointlights[lightIndex] = false;
 				defines.dirlights[lightIndex] = false;
@@ -324,6 +325,7 @@ class MaterialHelper {
 					case Light.LIGHTTYPEID_SPOTLIGHT:
 						defines.spotlights[lightIndex] = true;
 						var spotLight:SpotLight = cast light;
+						defines.spotlightssoft[lightIndex] = spotLight.softEdge;
 						defines.PROJECTEDLIGHTTEXTURE[lightIndex] = spotLight.projectionTexture != null ? spotLight.projectionTexture.isReady() : false;
 						
 					case Light.LIGHTTYPEID_HEMISPHERICLIGHT:
@@ -384,6 +386,7 @@ class MaterialHelper {
 				defines.pointlights[index] = false;
 				defines.dirlights[index] = false;
 				defines.spotlights[index] = false;
+				defines.spotlightssoft[index] = false;
 				defines.shadows[index] = false;
 			}
 		}

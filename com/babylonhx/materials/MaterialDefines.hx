@@ -41,6 +41,8 @@ class MaterialDefines {
 	public var dirlights:Array<Bool> = [];
 	public var hemilights:Array<Bool> = [];
 	public var spotlights:Array<Bool> = [];
+	/** Fork extension (B2): SpotLight.softEdge per light index. */
+	public var spotlightssoft:Array<Bool> = [];
 	public var shadows:Array<Bool> = [];
 	public var shadowpcf:Array<Bool> = [];
 	public var shadowesm:Array<Bool> = [];
@@ -194,6 +196,12 @@ class MaterialDefines {
 			}
 		}
 		
+		for (i in 0...this.spotlightssoft.length) {
+			if (this.spotlightssoft[i] != other.spotlightssoft[i]) {
+				return false;
+			}
+		}
+		
 		for (i in 0...this.shadows.length) {
 			if (this.shadows[i] != other.shadows[i]) {
 				return false;
@@ -243,6 +251,7 @@ class MaterialDefines {
 		other.dirlights = this.dirlights.copy();
 		other.hemilights = this.hemilights.copy();
 		other.spotlights = this.spotlights.copy();
+		other.spotlightssoft = this.spotlightssoft.copy();
 		other.shadows = this.shadows.copy();
 		other.shadowesm = this.shadowesm.copy();
 		other.shadowcube = this.shadowcube.copy();
@@ -260,6 +269,7 @@ class MaterialDefines {
 		dirlights = [];
 		hemilights = [];
 		spotlights = [];
+		spotlightssoft = [];
 		shadows = [];
 		shadowesm = [];
 		shadowcube = [];
@@ -304,6 +314,12 @@ class MaterialDefines {
 		for (i in 0...this.spotlights.length) {
 			if (this.spotlights[i] == true) {
 				sb.add("#define SPOTLIGHT" + i + "\n");
+			}
+		}
+		
+		for (i in 0...this.spotlightssoft.length) {
+			if (this.spotlightssoft[i] == true) {
+				sb.add("#define SPOTLIGHTSOFT" + i + "\n");
 			}
 		}
 		
